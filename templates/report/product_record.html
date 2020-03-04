@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>生产记录表</title>
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <script src="/static/js/md5.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            //页面加载时将所有文本框改为只读
+            $('input').prop('readonly', 'true');
+            $(":radio").click(function () {
+                if ($(this)[0].id == 'i_15') {
+                    $('#left input').removeAttr("readonly");
+                    $('#right input').attr("readonly", "readonly")
+                } else if ($(this)[0].id == 'i_16') {
+                    $('#left input').attr("readonly", "readonly")
+                    $('#right input').removeAttr("readonly");
+                }
+            });
+
+            $('#bu_1').bind('click', function () {
+                var writeAraay = submitArray($('#left input'));
+                var array = submitArray($('#up input'));
+                if (writeAraay.length == 0 && array.length == 0) {
+                    alert('请输入搜索内容');
+                    return false;
+                } else {
+                    if (writeAraay.length > 0) {
+                        $('#action').val('list');
+                        $('#detail_id_list').val(writeAraay);
+                    } else if (array.length > 0) {
+                        $('#action').val('');
+                    }
+                }
+            });
+        });
+    </script>
+    <style type="text/css">
+        #left {
+            float: left;
+        }
+
+        #right {
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<div id="" style="text-align: -webkit-center;margin-left: 35%	;">
+    <form action="product_record" method="post">
+        <input type="hidden" name="action" id="action">
+        <input type="hidden" name="detail_id_list" id="detail_id_list">
+        <div id="left">
+            <hr/>
+            <label>请输入每一个单一ITEM的ID号：</label>
+            <hr/>
+            <table border="" cellspacing="" cellpadding="">
+                <tr>
+                    <td><input type="text" id="i_1" name=""/></td>
+                    <td><input type="text" id="i_2" name=""/></td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="i_3" name=""/></td>
+                    <td><input type="text" id="i_4" name=""/></td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="i_5" name=""/></td>
+                    <td><input type="text" id="i_6" name=""/></td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="i_7" name=""/></td>
+                    <td><input type="text" id="i_8" name=""/></td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="i_9" name=""/></td>
+                    <td><input type="text" id="i_10" name=""/></td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="i_11" name=""/></td>
+                    <td><input type="text" id="i_12" name=""/></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="right">
+            <div id="up">
+                <hr/>
+                <label>请输入ITEM范围:</label>
+                <hr/>
+                <br/>
+                <label>From</label>
+                <br/>
+                <input type="text" id="i_13" name="start_id"/>
+                <br/>
+                <span>~</span>
+                <br/>
+                <label>To:</label>
+                <br/>
+                <input type="text" id="i_14" name="end_id"/>
+                <br/>
+            </div>
+    </form>
+    <div id="down">
+        <input type="radio" id="i_15" name="type"/>
+        <label>手工输入</label>
+        <input type="radio" id="i_16" name="type"/>
+        <label>指定范围</label>
+        <br/>
+        <button id="bu_1">打印</button>
+    </div>
+
+</div>
+</div>
+
+</body>
+
+</html>

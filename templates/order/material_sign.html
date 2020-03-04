@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>材料签收</title>
+        <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/js/tongyong.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+        <script src="/static/js/md5.js"></script>
+        <style type="text/css">
+            div {
+                text-align: -webkit-center;
+            }
+
+            table {
+                text-align: center;
+            }
+        </style>
+        <script type="text/javascript">
+            $(function () {
+                setLanguage();
+
+                var poid = $('#i_1').val();//poid
+                var detailID = $('#i_2').val();//DetailID
+                var omr = $('#i_3').val();//承办人员
+                var amount = $('#i_4').val();//数量
+                var po = $('#i_5').val();//pono
+                var item_no = $('#i_6').val();//item
+                var name = $('#i_7').val();//产品名称
+                var customer_pono = $('#i_8').val();//客人pono
+                var customer_item = $('#i_9').val();//cust
+                var factory = $('#i_10').val();//生产工厂
+
+                function showDatas(data) {
+                    debugger;
+                    var poid = $('#i_1').val(data.data.po.id);//poid
+                    var detailID = $('#i_2').val(data.data.po_detail.id);//DetailID
+                    var omr = $('#i_3').val(data.data.po.omr.name);//承办人员
+                    var amount = $('#i_4').val(data.data.po_detail.amount);//数量
+                    var po = $('#i_5').val(data.data.po_detail.po);//pono
+                    var item_no = $('#i_6').val(data.data.po_detail.item_no);//item
+                    var name = $('#i_7').val(data.data.po_detail.desc);//产品名称
+                    var customer_pono = $('#i_8').val(data.data.po.customer_pono);//客人pono
+                    var customer_item = $('#i_9').val(data.data.po_detail.customer_item);//cust
+                    {% comment %}var factory = $('#i_10').val(data.data.material_sign.);//生产工厂{% endcomment %}
+                    $('#div_1').html('');
+                    var text = "";
+                    text += " <table border=\"\" cellspacing=\"\" cellpadding=\"\">";
+                    text += "                <tr>";
+                    text += "<th><label>ID</label></th>";
+                    text += "                    <th><label>描述</label></th>";
+                    text += "                    <th><label>方式</label></th>";
+                    text += "                    <th><label>数量</label></th>";
+                    text += "                    <th><label>单位</label></th>";
+                    text += "                    <th><label>工厂</label></th>";
+                    text += "                    <th><label>备注</label></th>";
+                    text += "                </tr>";
+                    text += "                <tr>";
+                    for (var i in data.data.material_sign_detail) {
+                        debugger;
+                        text += "                    <td>" + data.data.material_sign_detail[i].id + "</td>";
+                        text += "                    <td>" + data.data.material_sign_detail[i].name + "</td>";
+                        text += "                    <td>" + data.data.material_sign_detail[i].provide_type + "</td>";
+                        text += "                    <td>" + data.data.material_sign_detail[i].need_qty + "</td>";
+                        text += "                    <td>" + data.data.material_sign_detail[i].need_qty_unit + "</td>";
+                        if (data.data.material_sign_detail[i].factory != null && data.data.material_sign_detail[i].factory.name != null) {
+                            text += "                    <td>" + data.data.material_sign_detail[i].factory.name + "</td>";
+                        } else {
+                            text += '<td></td>';
+                        }
+                        text += "                    <td>" + data.data.material_sign_detail[i].special_remark + "</td>";
+                        text += "                </tr>";
+                    }
+                    text += "            </table>";
+                    $('#div_1').html(text);
+                }
+
+                $('#sel_1').bind('click', function () {
+                    debugger;
+                    var detail_id = $('#i_2').val();
+                    if (detail_id == null || detail_id == '') {
+                        alert('请检查detail_id');
+                    } else {
+                        $.ax(
+                            '/order/material_sign/',
+                            {
+                                "detail_id": detail_id,
+                                "view": "view"
+                            },
+                            null,
+                            null,
+                            null,
+                            function (data) {
+                                debugger;
+                                if (data.status == 'fail' || data.status == 'unknown') {
+                                    alert(data.msg);
+                                } else {
+                                    showDatas(data);
+                                }
+                            },
+                            function () {
+                                alert("出错了");
+                            }
+                        );
+
+                    }
+
+
+                });
+                $('#upd_1').bind('click', function () {
+                    alert('修改请联系资讯！');
+                });
+                $('#del_1').bind('click', function () {
+                    alert('删除请联系资讯！');
+                });
+                $('#ins_1').bind('click', function () {
+                });
+                $('#fin_1').bind('click', function () {
+                    $.ax(
+                        '/order/material_sign/',
+                        {
+                            "final": "final"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            debugger;
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                });
+                $('#las_1').bind('click', function () {
+                    var po = $('#i_5').val();//pono
+                    var item_no = $('#i_6').val();//item
+                    if (po == null || po == '' || item_no == null || item_no == '') {
+                        alert('请检查po与item!');
+                    } else {
+                        $.ax(
+                            '/order/material_sign/',
+                            {
+                                "po": po,
+                                "item_no": item_no,
+                                "last": "last"
+                            },
+                            null,
+                            null,
+                            null,
+                            function (data) {
+                                debugger;
+                                if (data.status == 'fail' || data.status == 'unknown') {
+                                    alert(data.msg);
+                                } else {
+                                    showDatas(data);
+                                }
+                            },
+                            function () {
+                                alert("出错了");
+                            }
+                        );
+
+                    }
+                });
+                $('#nex_1').bind('click', function () {
+                    var po = $('#i_5').val();//pono
+                    var item_no = $('#i_6').val();//item
+                    if (po == null || po == '' || item_no == null || item_no == '') {
+                        alert('请检查po与item!');
+                    } else {
+                        $.ax(
+                            '/order/material_sign/',
+                            {
+                                "po": po,
+                                "item_no": item_no,
+                                "next": "next"
+                            },
+                            null,
+                            null,
+                            null,
+                            function (data) {
+                                debugger;
+                                if (data.status == 'fail' || data.status == 'unknown') {
+                                    alert(data.msg);
+                                } else {
+                                    showDatas(data);
+                                }
+                            },
+                            function () {
+                                alert("出错了");
+                            }
+                        );
+
+                    }
+                });
+                $('#fir_1').bind('click', function () {
+                    $.ax(
+                        '/order/material_sign/',
+                        {
+                            "first": "first"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            debugger;
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                });
+                $('#bu_1').bind('click', function () {
+                    var po = $('#i_5').val();//pono
+                    var item_no = $('#i_6').val();//item
+                    if (po == null || po == '' || item_no == null || item_no == '') {
+                        alert('请检查po与item');
+                    } else {
+                        window.location.href = "/order/material_sign_detail/?po=" + po + "&item_no=" + item_no;
+                    }
+                });
+            });
+        </script>
+
+    </head>
+    <body>
+        <div id="na">
+            {% include 'order/index.html' %}
+        </div>
+        <div>
+    <div style="">
+        <div class="topbutton">
+            <button id="fir_1" type="submit" value="button" name="first">第一条</button>
+            <button id="las_1" type="submit" value="button" name="last">上一条</button>
+            <button id="nex_1" type="submit" value="button" name="next">下一条</button>
+            <button id="fin_1" type="submit" value="button" name="final">最后一条</button>
+            <button id="ins_1" type="submit" value="button" name="add">保存信息</button>
+            <button id="del_1" type="submit" value="button" name="delete">删除信息</button>
+            <button id="upd_1" type="submit" value="button" name="modify">修改信息</button>
+            <button id="sel_1" type="submit" value="button" name="view">查询信息</button>
+        </div>
+        <div style="text-align: left;">
+            <hr/>
+            <label id="la_1">Po and PoDetail</label>
+            <hr/>
+        </div>
+        <table border="" cellspacing="" cellpadding="">
+            <tr>
+                <td><label id="la_2">PO ID</label>
+                    <input type="text" name="poid" id="i_1" value=""/>
+                </td>
+                <td><label id="la_3">DetailID</label>
+                    <input type="text" name="detailID" id="i_2" value=""/>
+                </td>
+                <td><label id="la_4">承办人员</label>
+                    <input type="text" name="omr" id="i_3" value=""/>
+                </td>
+                <td><label id="la_5">数量</label>
+                    <input type="text" name="amount" id="i_4" value=""/>
+                </td>
+            </tr>
+            <tr>
+                <td><label id="la_6">PONO</label>
+                    <input type="text" name="po" id="i_5" value=""/>
+                </td>
+                <td><label id="la_7">ITEM#</label>
+                    <input type="text" name="item_no" id="i_6" value=""/>
+                </td>
+                <td colspan="2"><label id="la_8">产品名称</label>
+                    <input type="text" name="name" id="i_7" value=""/>
+                </td>
+            </tr>
+            <tr>
+                <td><label id="la_9">客人PONO</label>
+                    <input type="text" name="customer_pono" id="i_8" value=""/>
+                </td>
+                <td><label id="la_10">Cust#</label>
+                    <input type="text" name="customer_item" id="i_9" value=""/>
+                </td>
+                <td colspan="2"><label id="la_11">生产工厂</label>
+                    <input type="text" name="factory" id="i_10" value=""/>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <hr/>
+        <div style="text-align: left;">
+            <label id="la_12">材料明细</label>
+        </div>
+        <hr/>
+        <div id="div_1">
+            <table border="" cellspacing="" cellpadding="">
+                <tr>
+                    <th><label>ID</label></th>
+                    <th><label>描述</label></th>
+                    <th><label>方式</label></th>
+                    <th><label>数量</label></th>
+                    <th><label>单位</label></th>
+                    <th><label>工厂</label></th>
+                    <th><label>备注</label></th>
+                </tr>
+            </table>
+        </div>
+        <div style="padding-right: 0px;">
+            <button id="bu_1" name=""> Dtail ID</button>
+        </div>
+    </div>
+</div>
+    </body>
+</html>

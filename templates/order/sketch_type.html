@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>sketch_type</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<script src="/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="/js/tongyong.js"></script>
+		<link rel="stylesheet" type="text/css" href="/css/button.css" />
+		<script type="text/javascript">
+			
+			$(function(){
+				//将需要验证是否为''或者null的元素对象放入数组中
+					var elargs=[$('#i_1')];
+				$('#ins_1').bind('click',function(){
+					//验证
+					return checkForms(elargs);
+					
+				});
+				$("#upd_1").bind('click', function() {
+					 return checkForms(elargs);
+				});
+				$("#sel_1").bind('click', function() {
+					
+					return checkForms(elargs);
+				});
+				$("#del_1").bind('click', function() {
+					return checkForms(elargs);
+				});
+				/*if({{ sketch_develop.is_finish }}=='True'){
+					$('#i_7').checked;
+					
+				}else if({{ sketch_develop.is_finish }}=='False'){
+					$('#i_7_1').checked;
+					
+				}*/
+				
+				
+			});
+			
+			
+		</script>
+	</head>
+
+	<body>
+		<nav id="nav">
+		</nav>
+		<script type="text/javascript">
+			$("#nav").load("../nav.html")
+		</script>
+		<hr />
+		<div style="text-align: -webkit-center;">
+			<form action="" method="post">
+				{% csrf_token %}
+				<div class="topbutton">
+					<button type="submit" value="button" id="ins_1" name="insert">添加</button>
+					<button type="submit" value="button" id="upd_1" name="update">修改</button>
+					<button type="submit" value="button" id="del_1" name="delete">删除</button>
+					<button type="submit" value="button" id="sel_1" name="select">查询</button>
+
+				</div>
+				<table>
+					<tr>
+						<td>
+							<lable id="l_a1">类型名称</lable>
+						</td>
+						<td> <input id="i_1" type="text" name="name" value="{{ sketch_type.name }}"/></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a2">类型英文描述</lable>
+						</td>
+						<td> <input id="i_2" type="text" name="edesc" value="{{ sketch_type.edesc }}"/></td>
+					</tr>
+					<!--<tr>
+						<td>
+							<lable id="l_a3">remark</lable>
+						</td>
+						<td> <input id="i_3" type="text" name="remark" /></td>
+					</tr>-->
+				</table> </form>
+		</div>
+	</body>
+
+</html>

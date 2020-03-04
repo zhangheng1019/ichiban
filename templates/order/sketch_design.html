@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>图稿设计</title>
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <script src="/static/js/md5.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <script type="text/javascript">
+        $(function () {
+            //将需要验证是否为''或者null的元素对象放入数组中
+            var code = $('#i_1').val(); //图稿编号
+            var name = $('#i_2').val(); //图稿名称
+            var dates = $('#i_3').val(); //开发时间
+            var category = $('#s_12').val(); //开发系列
+            var customer = $('#s_13').val(); //所属客户
+            var designer = $('#s_14').val(); //设计师
+            var developer = $('#s_15').val(); //开发人员
+            var texture = $('#s_16').val(); //主材质
+            var sketch_type = $('#s_17').val(); //类型
+            var photo1 = $('#i_4'); //图片1
+            var photo2 = $('#i_6'); //图片2
+            var photo3 = $('#i_8'); //图片3
+            var photo1_remark = $('#i_5').val(); //图1备注
+            var photo2_remark = $('#i_7').val(); //图2备注
+            var photo3_remark = $('#i_9').val(); //图3备注
+
+            var data ={{ data|safe }};
+
+            var text = "";
+            for (var i = 0; i < data.data.Category.length; i++) {
+                text += "<option value=\"" + data.data.Category[i].fields.code + "\">" + data.data.Category[i].fields.code + "</option>";
+            }
+            $('#s_12').append(text);
+            var text1 = "";
+            for (var i = 0; i < data.data.Customer.length; i++) {
+                text1 += "<option value=\"" + data.data.Customer[i].fields.code + "\">" + data.data.Customer[i].fields.code + "</option>";
+            }
+            $('#s_13').append(text1);
+            var text2 = "";
+            for (var i = 0; i < data.data.Staff.length; i++) {
+                text2 += "<option value=\"" + data.data.Staff[i].fields.name + "\">" + data.data.Staff[i].fields.name + "</option>";
+            }
+            $('#s_14').append(text2);
+            var text3 = "";
+            $('#s_15').append(text2);
+            var text4 = "";
+            for (var i = 0; i < data.data.Sketch_type.length; i++) {
+                text4 += "<option value=\"" + data.data.Sketch_type[i].fields.name + "\">" + data.data.Sketch_type[i].fields.name + "</option>";
+            }
+            $('#s_17').append(text4);
+            var text5 = "";
+            for (var i = 0; i < data.data.Texture.length; i++) {
+                text5 += "<option value=\"" + data.data.Texture[i].fields.name + "\">" + data.data.Texture[i].fields.name + "</option>";
+            }
+            $('#s_16').append(text5);
+            //加载下拉模糊查询
+            $.getScript('/static/js/select.js', function() {
+					setSelect(['s_12','s_13','s_14','s_15','s_16','s_17']);
+				});
+
+            $('select').css('width','200px');
+            console.log(data);
+
+            function showDatas(data) {
+                $('#i_1').val(data.data.sketch_design.code); //图稿编号
+                $('#i_2').val(data.data.sketch_design.name); //图稿名称
+                $('#i_3').val(data.data.sketch_design.date); //开发时间
+                selected($('#s_12'), data.data.sketch_design.category.code);
+                selected($('#s_13'), data.data.sketch_design.customer.code);
+                selected($('#s_14'), data.data.sketch_design.designer.name);
+                selected($('#s_15'), data.data.sketch_design.developer.name);
+                selected($('#s_16'), data.data.sketch_design.texture.name);
+                selected($('#s_17'), data.data.sketch_design.sketch_type.name);
+                $('#s_12').select2().val(data.data.sketch_design.category.code).trigger('change');
+
+
+                var photo1 = $('#i_4'); //图片1
+                var photo2 = $('#i_6'); //图片2
+                var photo3 = $('#i_8'); //图片3
+                $('#img').html('');
+                var text = "";
+                text += "<img src=\"/media/" + data.data.sketch_design.photo1 + "\" />";
+                text += "<img src=\"/media/" + data.data.sketch_design.photo2 + "\" />";
+                text += "<img src=\"/media/" + data.data.sketch_design.photo3 + "\" />";
+                $('#img').html(text);
+                $('#img').css('display', 'none');
+                var photo1_remark = $('#i_5').val(data.data.sketch_design.photo1_remark); //图1备注
+                var photo2_remark = $('#i_7').val(data.data.sketch_design.photo2_remark); //图2备注
+                var photo3_remark = $('#i_9').val(data.data.sketch_design.photo3_remark); //图3备注
+            }
+
+
+            $('#img').css('display', 'none');
+            $('#sel_1').bind('click', function () {
+                var code = $('#i_1').val(); //图稿编号
+                if (code == null || code == '') {
+                    alert('请输入图稿编号');
+                } else {
+                    $.ax(
+                        '/order/sketch_design/', {
+                            "view": "view",
+                            "code": code
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert('请检查图稿编号是否正确');
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function (data) {
+                            console.log(data);
+                        }
+                    );
+
+                }
+            });
+            $('#del_1').bind('click', function () {
+                alert("当前页面中不支持此操作");
+            });
+            $('#upd_1').bind('click', function () {
+                var code = $('#i_1').val(); //图稿编号
+                var category = $('#s_12').val(); //开发系列
+                var customer = $('#s_13').val(); //所属客户
+                var designer = $('#s_14').val(); //设计师
+                var developer = $('#s_15').val(); //开发人员
+                var texture = $('#s_16').val(); //主材质
+                var sketch_type = $('#s_17').val(); //类型
+                if (code == null || code == '' || category == null || category == ''
+                    || customer == null || customer == ''
+                    || designer == null || designer == ''
+                    || developer == null || developer == ''
+                    || texture == null || texture == ''
+                    || sketch_type == null || sketch_type == '') {
+                    $('.warn').text('*');
+                    $('.warn').css('color', 'red');
+                    alert('带*内容为必填项');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_'));
+                    formData.append('modify', 'modify');
+                    $.ajax({
+                        type: "post",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        url: "/order/sketch_design/",
+                        async: true,
+                        success: function (data) {
+                            alert(data.msg);
+                        }
+                    });
+                }
+            });
+            $('#ins_1').bind('click', function () {
+                var formData = new FormData(document.querySelector('#for_'));
+                formData.append('add', 'add');
+                var code = $('#i_1').val(); //图稿编号
+                var category = $('#s_12').val(); //开发系列
+                var customer = $('#s_13').val(); //所属客户
+                var designer = $('#s_14').val(); //设计师
+                var developer = $('#s_15').val(); //开发人员
+                var texture = $('#s_16').val(); //主材质
+                var sketch_type = $('#s_17').val(); //类型
+                if (code == null || code == '' || category == null || category == ''
+                    || customer == null || customer == ''
+                    || designer == null || designer == ''
+                    || developer == null || developer == ''
+                    || texture == null || texture == ''
+                    || sketch_type == null || sketch_type == '') {
+                    $('.warn').text('*');
+                    $('.warn').css('color', 'red');
+                    alert('带*内容为必填项');
+                } else {
+                    $.ajax({
+                        type: "post",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        url: "/order/sketch_design/",
+                        async: true,
+                        success: function (data) {
+                            alert(data.msg);
+                        }
+                    });
+                }
+            });
+            $('#fir_1').bind('click', function () {
+                $.ax(
+                    '/order/sketch_design/', {
+                        "first": "first"
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert('请检查图稿编号是否正确');
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function (data) {
+                        console.log(data);
+                    }
+                );
+            });
+            $('#las_1').bind('click', function () {
+                var code = $('#i_1').val(); //图稿编号
+                $.ax(
+                    '/order/sketch_design/', {
+                        "last": "last",
+                        "code": code,
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function (data) {
+                        console.log(data);
+                    }
+                );
+            });
+            $('#nex_1').bind('click', function () {
+                var code = $('#i_1').val(); //图稿编号
+                $.ax(
+                    '/order/sketch_design/', {
+                        "next": "next",
+                        "code": code
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function (data) {
+                        console.log(data);
+                    }
+                );
+            });
+            $('#fin_1').bind('click', function () {
+                $.ax(
+                    '/order/sketch_design/', {
+                        "final": "final"
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert('请检查图稿编号是否正确');
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function (data) {
+                        console.log(data);
+                    }
+                );
+            });
+            $('#bu_1').bind('click', function () {
+                $('#img').css('display', 'block');
+                return false;
+            });
+
+            setLanguage();
+        });
+    </script>
+    <style type="text/css">
+        #img img {
+            width: 100px;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+
+<div style="text-align: -webkit-center;">
+    <div class="topbutton">
+        <button id="fir_1" value="button" name="first">第一条</button>
+        <button id="las_1" value="button" name="last">上一条</button>
+        <button id="nex_1" value="button" name="next">下一条</button>
+        <button id="fin_1" value="button" name="final">最后一条</button>
+        <button id="ins_1" value="button" name="add">保存信息</button>
+        <button id="del_1" value="button" name="delete">删除信息</button>
+        <button id="upd_1" value="button" name="modify">修改信息</button>
+        <button id="sel_1" value="button" name="view">查询信息</button>
+    </div>
+    <form action="#" enctype="multipart/form-data" id="for_">
+        <table>
+            <tr>
+                <td>
+                    <span class="warn" id="wa_1"></span>
+                    <lable id="l_a1"> 图稿编号</lable>
+                </td>
+                <td>
+                    <input id="i_1" type="text" name="code" value="" class="no"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a2">图稿名称</lable>
+                </td>
+                <td><input id="i_2" type="text" name="name" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="warn"></span>
+                    <lable id="l_a3">开发时间</lable>
+                </td>
+                <td><input id="i_3" type="text" name="date" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a12">开发系列</lable>
+                </td>
+                <td>
+                    <select id="s_12" type="text" name="category">
+                        <option value="">请选择</option>
+                    </select>
+                    {% comment %}<input type="text" name="category_id" id="s_12" />{% endcomment %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a13">所属客户</lable>
+                </td>
+                <td>
+                    <select id="s_13" type="text" name="customer">
+                        <option value="">请选择</option>
+                    </select>
+                    {% comment %}<input type="text" name="customer" id="s_13" />{% endcomment %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a14">设计师</lable>
+                </td>
+                <td>
+                    <select id="s_14" type="text" name="designer">
+                        <option value="">请选择</option>
+                    </select>
+                    {% comment %}<input type="text" name="designer" id="s_14" />{% endcomment %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a15">开发人员</lable>
+                </td>
+                <td>
+                    {% comment %}<input type="text" id="s_15" name="developer">{% endcomment %}
+                    <select name="developer" id="s_15">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a16">主材质</lable>
+                </td>
+                <td>
+                    <select id="s_16" type="text" name="texture">
+                        <option value="">请选择</option>
+                    </select>
+                    {% comment %}<input type="text" id="s_16" name="texture">{% endcomment %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a17">类型</lable>
+                </td>
+                <td>
+                    <select id="s_17" type="text" name="sketch_type">
+                        <option value="">请选择</option>
+                    </select>
+                    {% comment %}<input type="text" id="s_17" name="sketch_type">{% endcomment %}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <lable id="l_a4">图片1所在路径</lable>
+                </td>
+                <td><input id="i_4" type="file" name="photo1"/></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <lable id="l_a5">图片1备注</lable>
+                </td>
+                <td><input id="i_5" type="text" name="photo1_remark" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a6">图片2所在路径</lable>
+                </td>
+                <td><input id="i_6" type="file" name="photo2"/></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <lable id="l_a7">图片2备注</lable>
+                </td>
+                <td><input id="i_7" type="text" name="photo2_remark" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a8">图片3所在路径</lable>
+                </td>
+                <td><input id="i_8" type="file" name="photo3"/></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <lable id="l_a9">图片3备注</lable>
+                </td>
+                <td><input id="i_9" type="text" name="photo3_remark" value=""/></td>
+            </tr>
+
+        </table>
+        <button id="bu_1">显示图片</button>
+    </form>
+    <div id="img">
+
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>业务预计付款报表</title>
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <script src="/static/js/md5.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            $('#daochu').bind('click', function () {
+                var end_date = $('#end_date').val();
+                var start_date = $('#start_date').val();
+                var end = new Date(end_date);
+                var start = new Date(start_date);
+                if (end_date == '' || end_date == null || start_date == '' || start_date == null) {
+                    alert('请检查日期');
+                    return false;
+                } else {
+                    if (start.getTime() > end.getTime()) {
+                        alert('开始日期不能大于结束日期');
+                        return false;
+                    }
+                }
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<div id="div_1" style="text-align: -webkit-center">
+    <hr/>
+    <label> 起止日期</label>
+
+    <hr/>
+    <form action="/report/check_invoice/" method="post">
+        <label>开始日期： </label>
+        <input type="date" name="start_date" id="start_date">
+        <br/>
+        <br/>
+        <label>结束日期： </label>
+        <input type="date" name="end_date" id="end_date">
+        <br/>
+        <br/>
+        <button id="daochu">导出</button>
+    </form>
+</div>
+</body>
+</html>

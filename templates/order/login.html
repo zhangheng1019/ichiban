@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>登陆</title>
+        <style>
+            body{
+                background-repeat:no-repeat ;
+                background-size: 100% 100%;
+                background-attachment: fixed;
+                overflow:hidden;
+                text-align: center;
+            }
+            div{
+                font-weight: bold;
+                font-size: 20px;
+                color: deeppink;
+            }
+            input{
+                border-radius: 15px;
+                width: 220px;
+                height: 30px;
+                font-size: 16px;
+                color: deeppink;
+            }
+            button, input.jump{
+                border-radius: 18px;
+                width: 180px;
+                height: 50px;
+                font-size: 26px;
+                font-weight: bold;
+                color: white;
+                background-color: darkorange;
+            }
+            button:hover, input.jump:hover{
+                border-radius: 26px;
+                width: 250px;
+                height: 60px;
+                font-size: 34px;
+                font-weight: bold;
+                color: white;
+                background-color: darkorange;
+            }
+        </style>
+    </head>
+    <body>
+    <div>
+        <form action="/login/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+                用户名：
+                <p>
+                    <input type="text" maxlength="20" name="username" placeholder="请输入用户名">
+                </p>
+            </div>
+            <div>
+                密码：
+                <p>
+                    <input type="password" name="pwd" placeholder="请输入密码">
+                </p>
+            </div>
+            <button>登陆</button>
+        </form>
+    </div>
+</body>
+</html>

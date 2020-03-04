@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>订单确认</title>
+
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <script src="/static/js/md5.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            var data = {{ data|safe }};
+            var text = "";
+            debugger;
+            for (var i in data.po) {
+                text += "<option value=\"" + data.po[i] + "\">" + data.po[i] + "</option>";
+            }
+            $('#s_1').append(text);
+             $.getScript('/static/js/select.js', function () {
+                setSelect(['s_1']);
+            });
+            $('select').css('width', '200px');
+
+        });
+
+    </script>
+</head>
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<div id="" style="text-align: -webkit-center;">
+
+    <label>请选择订单号：</label>
+    <br/>
+    <form action="/report/order_confirmation/" method="post">
+        <select id="s_1" name="order_number">
+            <option value="">请选择</option>
+        </select>
+        <br/>
+        <button id="bu_1">打印</button>
+    </form>
+</div>
+</body>
+</html>

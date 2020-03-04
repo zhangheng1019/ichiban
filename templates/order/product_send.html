@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+        <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/js/tongyong.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/js/md5.js"></script>
+        <script type="text/javascript" src="/static/js/select2.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+        <script type="text/javascript">
+            $(function () {
+                setLanguage();
+                $('#i_2').val(getQueryVariable('order_number'));
+                $('#i_2').prop('readonly', 'true');
+                var data ={{ data|safe }};
+                var text = "";
+                for (var i in data.data.Staff) {
+                    text += "<option value=\"" + data.data.Staff[i].fields.name + "\">" + data.data.Staff[i].fields.name + "</option>";
+                }
+                $('#i_9').append(text);
+                $('#i_10').append(text);
+                $('#i_11').append(text);
+                $('#i_12').append(text);
+                $('#i_13').append(text);
+                $('#i_14').append(text);
+                $('#i_15').append(text);
+                $('#i_19').append(text);
+
+
+                $.getScript('/static/js/select.js', function () {
+                    setSelect(['i_9', 'i_10', 'i_11', 'i_12', 'i_13', 'i_14','i_15','i_19']);
+                });
+                $('select').css('width', '200px');
+                var id = $('#i_1').val();//
+
+                var po = $('#i_2').val();//
+
+                var item_no = $('#i_3').val();//
+
+                var customer_item = $('#i_4').val();//
+
+                customer_item = $('#i_5').val();//
+
+                var desc = $('#i_6').val();//
+
+                var amount = $('#i_7').val();//
+
+                var unit = $('#i_8').val();//
+
+                var fmr = $('#i_9').val();//
+
+                var qc1 = $('#i_10').val();//
+
+                var qc2 = $('#i_11').val();//
+
+                var qc3 = $('#i_12').val();//
+
+                var rqc1 = $('#i_13').val();//
+
+                var rqc2 = $('#i_14').val();//
+
+                var fqc = $('#i_15').val();//
+
+                var cancle_date = $('#i_16').val();//
+
+                var sale_date = $('#i_17').val();//
+
+                var no_pass = $('#i_18').val();//
+
+                var send_person = $('#i_19').val();//
+
+                function showDatas(data) {
+                    debugger;
+                    var id = $('#i_1').val(data.data.po_detail.id);//
+
+                    var po = $('#i_2').val(data.data.po_detail.po);//
+
+                    var item_no = $('#i_3').val(data.data.po_detail.item_no);//
+
+                    var customer_item = $('#i_4').val(data.data.po_detail.customer_item);//
+
+                    customer_item = $('#i_5').val(data.data.po_detail.customer_item);//
+
+                    var desc = $('#i_6').val(data.data.po_detail.desc);//
+
+                    var amount = $('#i_7').val(data.data.po_detail.amount);//
+
+                    var unit = $('#i_8').val(data.data.po_detail.unit);//
+
+                    if (data.data.product_send.fmr != null) {
+
+                        selected($('#i_9'), data.data.product_send.fmr.name);
+                    }
+                    if (data.data.product_send.qc1 != null) {
+
+                        selected($('#i_10'), data.data.product_send.qc1.name);
+                    }
+                    if (data.data.product_send.qc2 != null) {
+
+                        selected($('#i_11'), data.data.product_send.qc2.name);
+                    }
+                    if (data.data.product_send.qc3 != null) {
+
+                        selected($('#i_12'), data.data.product_send.qc3.name);
+                    }
+                    if (data.data.product_send.rqc1 != null) {
+
+                        selected($('#i_13'), data.data.product_send.rqc1.name);
+                    }
+                    if (data.data.product_send.rqc2 != null) {
+
+                        selected($('#i_14'), data.data.product_send.rqc2.name);
+                    }
+                    if (data.data.product_send.fqc != null) {
+
+                        selected($('#i_15'), data.data.product_send.fqc.name);
+                    }
+
+                    var cancle_date = $('#i_16').val(data.data.product_send.cancle_date);//
+
+                    var sale_date = $('#i_17').val(data.data.product_send.sale_date);//
+
+                    var no_pass = $('#i_18').val();//
+                    if (data.data.product_send.no_pass == 'true') {
+                        $('#i_18').prop('checked', 'true');
+                    } else {
+                        $('#i_18').prop('checked', 'false');
+                    }
+
+                    if (data.data.product_send.send_person != null) {
+
+                        selected($('#i_19'), data.data.product_send.send_person.name);
+                    }
+                }
+
+                // 功能按钮
+                $('#sel_1').bind('click', function () {
+                    var po = $('#i_2').val(); //我司货号：
+                    var item_no = $('#i_3').val(); //Item NO
+                    if (po == null || po == "" || item_no == null || item_no == "") {
+                        alert('请检查我司货号与itemNo！');
+                    } else {
+                        $.ax(
+                            '/order/product_send/',
+                            {
+                                "po": po,
+                                "item_no": item_no,
+                                "view": "view"
+                            },
+                            null,
+                            null,
+                            null,
+                            function (data) {
+                                if (data.status == 'fail' || data.status == 'unknown') {
+                                    alert(data.msg);
+                                } else {
+                                    showDatas(data);
+                                    alert("查询成功");
+                                }
+                            },
+                            function () {
+                                alert("出错了");
+                            }
+                        );
+                    }
+                });
+                $('#upd_1').bind('click', function () {
+                    var po = $('#i_2').val(); //我司货号：
+                    var item_no = $('#i_3').val(); //Item NO
+                    if (po == null || po == "" || item_no == null || item_no == "") {
+                        alert('请检查我司货号与itemNo！');
+                    } else {
+                        var formData = new FormData(document.querySelector('#for_'));
+                        formData.append('modify', 'modify');
+                        $.ajax({
+                            type: "post",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            url: "/order/product_send/",
+                            async: true,
+                            success: function (data) {
+                                alert(data.msg);
+                            }
+                        });
+                    }
+                });
+                $('#ins_1').bind('click', function () {
+                    var po = $('#i_2').val(); //我司货号：
+                    var item_no = $('#i_3').val(); //Item NO
+                    if (po == null || po == "" || item_no == null || item_no == "") {
+                        alert('请检查我司货号与itemNo！');
+                    } else {
+                        var formData = new FormData(document.querySelector('#for_'));
+                        formData.append('add', 'add');
+                        $.ajax({
+                            type: "post",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            url: "/order/product_send/",
+                            async: true,
+                            success: function (data) {
+                                alert(data.msg);
+                            }
+                        });
+                    }
+                });
+                $('#fin_1').bind('click', function () {
+                    var po = $('#i_2').val();
+                    if (po == null || po == '') {
+                        alert('请检查pono!');
+                    } else {
+                        $.ax(
+                            '/order/product_send/',
+                            {
+                                "final": "final",
+                                "po": po
+                            },
+                            null,
+                            null,
+                            null,
+                            function (data) {
+                                if (data.status == 'fail' || data.status == 'unknown') {
+                                    alert(data.msg);
+                                } else {
+                                    showDatas(data);
+                                }
+                            },
+                            function () {
+                                alert("出错了");
+                            }
+                        );
+                    }
+                });
+                $('#las_1').bind('click', function () {
+                    var po = $('#i_2').val();
+                    var item_no = $('#i_3').val();
+                    if (po == null || po == '' || item_no == '' || item_no == null) {
+                        alert('请检查pono!');
+                    } else {
+                        $.ax(
+                            '/order/product_send/',
+                            {
+                                "last": "last",
+                                "po": po,
+                                "item_no": item_no
+                            },
+                            null,
+                            null,
+                            null,
+                            function (data) {
+                                if (data.status == 'fail' || data.status == 'unknown') {
+                                    alert(data.msg);
+                                } else {
+                                    showDatas(data);
+                                }
+                            },
+                            function () {
+                                alert("出错了");
+                            }
+                        );
+                    }
+                });
+                $('#nex_1').bind('click', function () {
+                    var po = $('#i_2').val();
+                    var item_no = $('#i_3').val();
+                    if (po == null || po == '' || item_no == '' || item_no == null) {
+                        alert('请检查pono!');
+                    } else {
+                        $.ax(
+                            '/order/product_send/',
+                            {
+                                "next": "next",
+                                "po": po,
+                                "item_no": item_no
+                            },
+                            null,
+                            null,
+                            null,
+                            function (data) {
+
+                                if (data.status == 'fail' || data.status == 'unknown') {
+                                    alert(data.msg);
+                                } else {
+                                    showDatas(data);
+                                }
+                            },
+                            function () {
+                                alert("出错了");
+                            }
+                        );
+                    }
+                });
+                $('#fir_1').bind('click', function () {
+                    var po = $('#i_2').val();
+                    if (po == null || po == '') {
+                        alert('请检查pono!');
+                    } else {
+                        $.ax(
+                            '/order/product_send/',
+                            {
+                                "first": "first",
+                                "po": po
+                            },
+                            null,
+                            null,
+                            null,
+                            function (data) {
+                                if (data.status == 'fail' || data.status == 'unknown') {
+                                    alert(data.msg);
+                                } else {
+                                    showDatas(data);
+                                }
+                            },
+                            function () {
+                                alert("出错了");
+                            }
+                        );
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+    <div id="na">
+        {% include 'order/index.html' %}
+    </div>
+    <div id="" style="text-align: -webkit-center;" class="topbutton">
+        <button id="fir_1" value="button" name="first">第一条</button>
+        <button id="las_1" value="button" name="last">上一条</button>
+        <button id="nex_1" value="button" name="next">下一条</button>
+        <button id="fin_1" value="button" name="final">最后一条</button>
+        <button id="ins_1" value="button" name="add">保存信息</button>
+        {#    <button id="del_1" value="button" name="delete">删除信息</button>#}
+        <button id="upd_1" value="button" name="modify">修改信息</button>
+        <button id="sel_1" value="button" name="view">查询信息</button>
+
+        <form action="#" method="post" enctype="multipart/form-data" id="for_">
+            <table border="" cellspacing="" cellpadding="">
+                <tr>
+                    <td><label id="la_1">ID:</label>
+                        <input type="text" name="id" id="i_1"/>
+                    </td>
+                    <td><label id="la_2">PONO:</label>
+                        <input type="text" name="po" id="i_2"/></td>
+                    <td><label id="la_3">Item NO:</label>
+                        <input type="text" name="item_no" id="i_3"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label id="la_4">Customer#</label>
+                        <input type="text" name="customer_item" id="i_4"/>
+                    </td>
+                    <td>
+                        <label id="la_5">工厂货号</label>
+                        <input type="text" name="fac_no" id="i_5"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label id="la_6">产品名称</label>
+                        <input type="text" name="desc" id="i_6"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label id="la_7">生产数量</label>
+                        <input type="text" name="amount" id="i_7"/>
+                        <input type="text" name="unit" id="i_8"/>
+                    </td>
+                    <td>
+                        <label id="la_8">FMR</label>
+                        {% comment %}<input type="text" name="fmr" id="i_9"/>{% endcomment %}
+                        <select name="fmr" id="i_9">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+            <label id="la_9">消出货</label>
+            <hr/>
+            <table border="" cellspacing="" cellpadding="">
+                <tr>
+                    <td>
+                        <label id="la_10">QC1:</label>
+                        {% comment %}<input type="text" name="qc1" id="i_10"/>{% endcomment %}
+                        <select name="qc1" id="i_10">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label id="la_11">QC2:</label>
+                        {% comment %}<input type="text" name="qc2" id="i_11"/>{% endcomment %}
+                        <select name="qc2" id="i_11">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label id="la_12">QC3:</label>
+                        {% comment %} <input type="text" name="qc3" id="i_12"/>{% endcomment %}
+                        <select name="qc3" id="i_12">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label id="la_13">复验QC1:</label>
+                        {% comment %} <input type="text" name="rqc1" id="i_13"/>{% endcomment %}
+                        <select name="rqc1" id="i_13">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label id="la_14">复验QC2:</label>
+                        {% comment %}<input type="text" name="rqc2" id="i_14"/>{% endcomment %}
+                        <select name="rqc2" id="i_14">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label id="la_15">FQC:</label>
+                        {% comment %}<input type="text" name="fqc" id="i_15"/>{% endcomment %}
+                        <select name="fqc" id="i_15">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label id="la_16">取消日期:</label>
+                        <input type="text" name="cancle_date" id="i_16"/>
+                    </td>
+                    <td>
+                        <label id="la_17">消出货:</label>
+                        <input type="text" name="sale_date" id="i_17"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="i_18" name="no_pass"/>
+                        <label id="la_18">验货不通过放货 </label>
+                    </td>
+                    <td>
+                        <label id="la_19">放货人：</label>
+                        {% comment %}<input type="text" name="send_person" id="i_19"/>{% endcomment %}
+                        <select name="send_person" id="i_19">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>omr</title>
+
+    <style type="text/css">
+        td {
+            padding-left: 30px;
+        }
+
+        table {
+            border-style: outset;
+        }
+
+        #i_1 {
+            width: 98%;
+        }
+    </style>
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script src="/static/js/md5.js"></script>
+     <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            var data ={{ data|safe }};
+            var text = "";
+            for (var i in data.data.Staff) {
+                text += "<option value=\"" + data.data.Staff[i].fields.name + "\">" + data.data.Staff[i].fields.name + "</option>";
+            }
+            $('#s_6').append(text);
+
+            $.getScript('/static/js/select.js', function() {
+					setSelect(['s_6']);
+				});
+				 $('select').css('width','200px');
+            var po = $('#s_7').val(); //我司PO
+            var customer_pono = $('#s_4').val(); //客人po
+            var receive_date = $('#s_8').val(); //接单日期
+            var cus_receive_date = $('#s_3').val(); //交货日期
+            var fac_send_date = $('#s_5').val(); //工厂交货期
+            var omr = $('#s_6').val(); //OMR
+            var special_remark = $('#i_1').val(); //注意事项
+
+            function showDatas(data) {
+                debugger;
+                var po = $('#s_7').val(data.data.po.order_number); //我司PO
+                var customer_pono = $('#s_4').val(data.data.po.customer_pono); //客人po
+                var receive_date = $('#s_8').val(data.data.po.receive_date); //接单日期
+                var cus_receive_date = $('#s_3').val(data.data.po.cus_receive_date); //交货日期
+                var fac_send_date = $('#s_5').val(data.data.po.fac_send_date); //工厂交货期
+                var omr = $('#s_6').val(); //OMR
+                selected($('#s_6'), data.data.po.omr.name);
+                var special_remark = $('#i_1').val(data.data.po.special_remark); //注意事项
+                $('#tab_1').html('');
+                var text = "";
+                text += "  <table border=\"\" cellspacing=\"\" cellpadding=\"\">";
+                text += "            <tr>";
+                text += "                <th><lable>ID#</lable></th>";
+                text += "                <th><lable>永旭PO#</lable></th>";
+                text += "                <th><lable>ITEMNO</lable></th>";
+                text += "                <th><lable>客人NO</lable></th>";
+                text += "                <th><lable>名称</lable></th>";
+                text += "            </tr>";
+                text += "            <tr>";
+                for (var i in data.data.po_detail) {
+
+                    text += "                <td>" + data.data.po_detail[i].id + "</td>";
+                    text += "                <td>" + data.data.po_detail[i].po + "</td>";
+                    text += "                <td>" + data.data.po_detail[i].item_no + "</td>";
+                    text += "                <td>" + data.data.po_detail[i].customer_item + "</td>";
+                    text += "                <td>" + data.data.po_detail[i].desc + "</td>";
+                    text += "            </tr>";
+                }
+                text += "        </table>";
+                $('#tab_1').html(text);
+            }
+
+            $('#sel_1').bind('click', function () {
+                var po = $('#s_7').val(); //我司PO
+                if (po == null || po == "") {
+                    alert('请检查我司po！');
+                } else {
+                    $.ax(
+                        '/order/omr/',
+                        {
+                            "po": po,
+                            "view": "view"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+
+            });
+            $('#upd_1').bind('click', function () {
+                var po = $('#s_7').val(); //我司PO
+                if (po == null || po == "") {
+                    alert('请检查我司po！');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_'));
+                    formData.append('modify', 'modify');
+                    $.ajaxForm('/order/omr/', formData, function (data) {
+                        alert(data.msg);
+                    })
+                }
+            });
+            $('#del_1').bind('click', function () {
+
+            });
+            $('#ins_1').bind('click', function () {
+                var po = $('#s_7').val(); //我司PO
+                if (po == null || po == "") {
+                    alert('请检查我司po！');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_'));
+                    formData.append('add', 'add');
+                    $.ajaxForm('/order/omr/', formData, function (data) {
+                        alert(data.msg);
+                    })
+                }
+            });
+            $('#fin_1').bind('click', function () {
+                $.ax(
+                    '/order/omr/',
+                    {
+                        "final": "final"
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+            $('#las_1').bind('click', function () {
+                var po = $('#s_7').val(); //我司PO
+                if (po == null || po == "") {
+                    alert('请检查我司po！');
+                } else {
+                    $.ax(
+                        '/order/omr/',
+                        {
+                            "po": po,
+                            "last": "last"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#nex_1').bind('click', function () {
+                var po = $('#s_7').val(); //我司PO
+                if (po == null || po == "") {
+                    alert('请检查我司po！');
+                } else {
+                    $.ax(
+                        '/order/omr/',
+                        {
+                            "po": po,
+                            "next": "next"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#fir_1').bind('click', function () {
+                $.ax(
+                    '/order/omr/',
+                    {
+                        "first": "first"
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+
+            $('#po_det').bind('click', function () {
+                var po = $('#s_7').val(); //我司PO
+                if (po == null || po == "") {
+                    alert('请检查我司po！');
+                } else {
+                    window.location.href = "/order/omr_po_detail/?po=" + po;
+                }
+                return false;
+            });
+            $('#pj').bind('click', function () {
+                return false;
+            });
+            $('#frm').bind('click', function () {
+                return false;
+            });
+
+
+        });
+    </script>
+</head>
+z
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<div style="text-align: -webkit-center;">
+
+
+    <div class="topbutton">
+        <button id="fir_1" type="submit" value="button" name="first">第一条</button>
+        <button id="las_1" type="submit" value="button" name="last">上一条</button>
+        <button id="nex_1" type="submit" value="button" name="next">下一条</button>
+        <button id="fin_1" type="submit" value="button" name="final">最后一条</button>
+        <button id="ins_1" type="submit" value="button" name="add">保存信息</button>
+        <button id="del_1" type="submit" value="button" name="delete">删除信息</button>
+        <button id="upd_1" type="submit" value="button" name="modify">修改信息</button>
+        <button id="sel_1" type="submit" value="button" name="view">查询信息</button>
+    </div>
+    <form action="#" method="post" enctype="multipart/form-data" id="for_">
+        <table>
+            <tr>
+                <td>
+                    <lable id="l_a7">我司 PO#</lable>
+                </td>
+
+                <td>
+                    <lable id="l_a4">客人 PO#</lable>
+                </td>
+
+                <td>
+                    <lable id="l_a8">接单日期</lable>
+                </td>
+
+                <td>
+                    <lable id="l_a3">交货日期</lable>
+                </td>
+
+                <td>
+                    <lable id="l_a5">工厂交货期</lable>
+                </td>
+
+                <td>
+                    <lable id="l_a6">OMR</lable>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" id="s_7" name="po" value=""/>
+                </td>
+                <td>
+                    <input type="text" id="s_4" name="customer_pono" value=""/>
+                </td>
+                <td>
+                    <input type="text" id="s_8" name="receive_date" value=""/>
+                </td>
+                <td>
+                    <input type="text" id="s_3" name="cus_receive_date" value=""/>
+                </td>
+                <td>
+                    <input type="text" id="s_5" name="fac_send_date" value=""/>
+                </td>
+                <td>
+                    <select name="omr" id="s_6">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="6" style="text-align: center;">
+                    <button id="po_det">PO Detail</button>
+                    <button id="pj">配件</button>
+                    <button id="frm">FRM进度跟进</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a1">注意事项</lable>
+                </td>
+            </tr>
+            <tr>
+
+                <td colspan="11">
+                    <textarea id="i_1" rows="7" name="special_remark"/>
+                    </textarea>
+                </td>
+
+            </tr>
+
+        </table>
+    </form>
+    <div id="tab_1">
+        <table border="" cellspacing="" cellpadding="">
+            <tr>
+                <th><label> ID#</label></th>
+                <th><label>永旭PO#</label></th>
+                <th><label>ITEMNO</label></th>
+                <th><label>客人NO</label></th>
+                <th><label>名称</label></th>
+            </tr>
+        </table>
+
+    </div>
+</div>
+</body>
+
+</html>

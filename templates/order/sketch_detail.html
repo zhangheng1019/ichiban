@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>开发单明细</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <script src="/static/js/md5.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            var data = {{ data|safe }};
+            var text = "";
+            var number = $('#s_39').val(); //开发单号
+            var item_number = $('#i_1').val(); //开发item编号
+            var name = $('#i_2').val(); //中文品名
+            var customer_price = $('#i_4').val(); //客人目标价
+            var customer_currency = $('#s_34').val(); //客人目标价单位
+            var ename = $('#i_3').val(); //英文品名
+            var factory_price = $('#i_5').val(); //工厂报价
+            var factory_currency = $('#s_36').val(); //工厂报价单位
+            {% comment %}var material_category = $('#s_38').val(); //材质{% endcomment %}
+
+            for (var i in data.data.Texture) {
+                text += "<option value=\"" + data.data.Texture[i].fields.name + "\">" + data.data.Texture[i].fields.name + "</option>";
+            }
+            $('#s_38').append(text);
+
+
+            var fmr_plan_date = $('#i_15').val(); //fmr需要完成日期
+            var long = $('#i_6').val(); //尺寸 长
+            var width = $('#i_7').val(); //尺寸 宽
+            var height = $('#i_8').val(); //尺寸 高
+            var fmr_change_plan_date = $('#i_16').val(); //FMR修改样预计完成日期
+            var amount = $('#i_9').val(); //打样数量
+            var fmr_change_act_date = $('#i_17').val(); //FMR修改样实际完成日期
+            {% comment %}var fmr_undertake = $('#s_37').val(); //承办员（fmr）{% endcomment %}
+            text = "";
+            for (var i in data.data.Staff) {
+                text += "<option value=\"" + data.data.Staff[i].fields.name + "\">" + data.data.Staff[i].fields.name + "</option>";
+            }
+            $('#s_37').append(text);
+
+            var receive_date = $('#i_18').val(); //样品收到日期
+
+            var refer_data_im = $('#i_11_1').val(); //参考资料-图稿
+            var refer_data_img = $('#i_11_2').val(); //参考资料-图片
+            var refer_data_s = $('#i_11_3').val(); //参考资料-样品
+            var refer_data_na = $('#i_11_4').val(); //参考资料-NA
+
+            var sent_date = $('#i_19').val(); //样品寄出日期
+
+            var refer_data_no = $('#i_11').val(); //参考资料编号
+
+            var mould_min = $('#i_20').val(); //模具最小返回数（元）
+            var photo_src = $('#i_14').val(); //图片路径 上传
+            var other_fee = $('#i_21').val(); //其他费用
+            {% comment %}var factory = $('#s_35').val(); //生产工厂{% endcomment %}
+            text = "";
+            for (var i in data.data.Factory) {
+                text += "<option value=\"" + data.data.Factory[i].fields.code + "\">" + data.data.Factory[i].fields.name + "</option>";
+            }
+            $('#s_35').append(text);
+            var express_fee = $('#i_22').val(); //快递费用
+            var fmr_50 = $('#i_12').val(); //fmr样品50%完成
+            var start_date = $('#i_13').val(); //工厂开工时间
+            {% comment %}var size_unit = $('#s_42').val(); //尺寸单位{% endcomment %}
+
+            var is_customer_price_true = $('#i_23_1').val(); //客人是否报价 是
+            var is_customer_price_false = $('#i_23_2').val(); //客人是否报价 否
+            var is_finish_true = $('#i_24_1').val(); //开发是否完成 是
+            var is_finish_false = $('#i_24_2').val(); //开发是否完成 否
+            var product_explain = $('#i_25').val(); //产品说明
+            //传递过来的开发单号只读
+            $('#s_39').val(getQueryVariable('number'));
+            $('#s_39').prop('readonly', 'true');
+            $.getScript('/static/js/select.js', function() {
+					setSelect(['s_38','s_34','s_36','s_37','s_35']);
+				});
+				 $('select').css('width','200px');
+
+				 $("#s_35").off().on("change",function(){
+				      $('#facCode').val($('#s_35').val());
+                 });
+
+
+            $('#sel_1').bind('click', function () {
+
+                var number = $('#s_39').val(); //开发单号
+                var item_number = $('#i_1').val(); //开发item编号
+                if (number == null || number == '' || item_number == '' || item_number == null) {
+                    alert("请输入开发单号和开发item编号");
+                    return false;
+                } else {
+                    var data = {
+                        "view": "view",
+                        "number": number,
+                        "item_number": item_number
+                    }
+
+                    $.ax(
+                        '/order/sketch_detail/',
+                        data,
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unkown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+
+                            }
+                        },
+                        function () {
+                            alert("出错了,请重试");
+                        }
+                    );
+
+                }
+            });
+            $('#del_1').bind('click', function () {
+                alert("删除暂时不能使用");
+                return false;
+            });
+            $('#upd_1').bind('click', function () {
+                var number = $('#s_39').val(); //开发单号
+                var item_number = $('#i_1').val(); //开发item编号
+                var name = $('#i_2').val(); //中文品名
+                var customer_price = $('#i_4').val(); //客人目标价
+                var customer_currency = $('#s_34').val(); //客人目标价单位
+                var ename = $('#i_3').val(); //英文品名
+                var factory_price = $('#i_5').val(); //工厂报价
+                var factory_currency = $('#s_36').val(); //工厂报价单位
+                var material_category = $('#s_38').val(); //材质
+                var fmr_plan_date = $('#i_15').val(); //fmr需要完成日期
+                var long = $('#i_6').val(); //尺寸 长
+                var width = $('#i_7').val(); //尺寸 宽
+                var height = $('#i_8').val(); //尺寸 高
+                var fmr_change_plan_date = $('#i_16').val(); //FMR修改样预计完成日期
+                var amount = $('#i_9').val(); //打样数量
+                var fmr_change_act_date = $('#i_17').val(); //FMR修改样实际完成日期
+                var fmr_undertake = $('#s_37').val(); //承办员（fmr）
+                var receive_date = $('#i_18').val(); //样品收到日期
+
+                /*var refer_data_im = $('#i_11_1').val(); //参考资料-图稿
+                var refer_data_img = $('#i_11_2').val(); //参考资料-图片
+                var refer_data_s = $('#i_11_3').val(); //参考资料-样品
+                var refer_data_na = $('#i_11_4').val(); //参考资料-NA*/
+                var refer_data = [];
+                if ($('#i_11_1').prop('checked')) {
+                    refer_data.push('图稿');
+                }
+                if ($('#i_11_2').prop('checked')) {
+                    refer_data.push('图片');
+                }
+                if ($('#i_11_3').prop('checked')) {
+                    refer_data.push('样品');
+                }
+                if ($('#i_11_4').prop('checked')) {
+                    refer_data.push('NA');
+                }
+                var sent_date = $('#i_19').val(); //样品寄出日期
+
+                var refer_data_no = $('#i_11').val(); //参考资料编号
+
+                var mould_min = $('#i_20').val(); //模具最小返回数（元）
+                var photo_src = $('#i_14').val(); //图片路径 上传
+                var other_fee = $('#i_21').val(); //其他费用
+                var factory = $('#s_35').val(); //生产工厂
+                var express_fee = $('#i_22').val(); //快递费用
+                var fmr_50 = $('#i_12').val(); //fmr样品50%完成
+                var start_date = $('#i_13').val(); //工厂开工时间
+                {% comment %}var size_unit = $('#s_42').val(); //尺寸单位{% endcomment %}
+
+                /*var is_customer_price_true = $('#i_23_1').val(); //客人是否报价 是
+                var is_customer_price_false = $('#i_23_2').val(); //客人是否报价 否*/
+                var is_customer_price = null;
+                if ($('#i_23_1').prop('checked')) {
+                    is_customer_price = 'True';
+                } else if ($('#i_23_2').prop('checked')) {
+                    is_customer_price = 'False';
+                }
+                /*var is_finish_true = $('#i_24_1').val(); //开发是否完成 是
+                var is_finish_false = $('#i_24_2').val(); //开发是否完成 否*/
+                var is_finish = null;
+                if ($('#i_24_1').prop('checked')) {
+                    is_finish = 'True';
+                } else if ($('#i_24_2').prop('checked')) {
+                    is_finish = 'False';
+                }
+
+                var product_explain = $('#i_25').val(); //产品说明
+                var formData = new FormData(document.querySelector('#for_'));
+                formData.append('modify', 'modify');
+                $.ajax({
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    url: "/order/sketch_detail/",
+                    async: true,
+                    success: function (data) {
+                        alert(data.msg);
+                    }
+                });
+            });
+            $('#ins_1').bind('click', function () {
+                var formData = new FormData(document.querySelector('#for_'));
+                formData.append('add', 'add');
+                $.ajax({
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    url: "/order/sketch_detail/",
+                    async: true,
+                    success: function (data) {
+                        alert(data.msg);
+                    }
+                });
+            });
+            $('#fin_1').bind('click', function () {
+                var number = $('#s_39').val(); //开发单号
+                $.ax(
+                    "/order/sketch_detail/", {
+                        "final": "final",
+                        "number": number
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+                        //渲染数据
+                        showDatas(data);
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+            $('#las_1').bind('click', function () {
+                var number = $('#s_39').val(); //开发单号
+                var item_number = $('#i_1').val(); //开发item编号
+                $.ax(
+                    '/order/sketch_detail/', {
+                        'last': 'last',
+                        'number': number,
+                        'item_number': item_number
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+                        debugger;
+                        //渲染数据
+                        showDatas(data);
+                    },
+                    function () {
+                        alert('出错了');
+                    }
+                );
+            });
+            $('#nex_1').bind('click', function () {
+                var number = $('#s_39').val(); //开发单号
+                var item_number = $('#i_1').val(); //开发item编号
+                $.ax(
+                    '/order/sketch_detail/', {
+                        'next': 'next',
+                        'number': number,
+                        'item_number': item_number
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+                        //渲染数据
+                        showDatas(data);
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+            $('#fir_1').bind('click', function () {
+                debugger;
+                var number = $('#s_39').val(); //开发单号
+                $.ax(
+                    '/order/sketch_detail/', {
+                        'first': 'first',
+                        'number': number
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+                        //渲染数据
+                        showDatas(data);
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+
+            function showDatas(data) {
+                if (data.status == 'fail' || data.status == 'unknown') {
+                    alert(data.msg);
+                } else {
+
+                    var number = $('#s_39').val(data.data.sketch_detail.number); //开发单号
+                    var item_number = $('#i_1').val(data.data.sketch_detail.item_number); //开发item编号
+                    var name = $('#i_2').val(data.data.sketch_detail.name); //中文品名
+                    var customer_price = $('#i_4').val(data.data.sketch_detail.customer_price); //客人目标价
+                    selected($('#s_34'), data.data.sketch_detail.customer_currency.code);
+                    var ename = $('#i_3').val(data.data.sketch_detail.ename); //英文品名
+                    var factory_price = $('#i_5').val(data.data.sketch_detail.factory_price); //工厂报价
+                    selected($('#s_36'), data.data.sketch_detail.factory_currency.code);
+                    selected($('#s_38'), data.data.sketch_detail.texture.name);
+                    var fmr_plan_date = $('#i_15').val(data.data.sketch_detail.fmr_plan_date); //fmr需要完成日期
+                    var long = $('#i_6').val(data.data.sketch_detail.long); //尺寸 长
+                    var width = $('#i_7').val(data.data.sketch_detail.width); //尺寸 宽
+                    var height = $('#i_8').val(data.data.sketch_detail.height); //尺寸 高
+                    var fmr_change_plan_date = $('#i_16').val(data.data.sketch_detail.fmr_change_plan_date); //FMR修改样预计完成日期
+                    var amount = $('#i_9').val(data.data.sketch_detail.amount); //打样数量
+                    var fmr_change_act_date = $('#i_17').val(data.data.sketch_detail.fmr_change_act_date); //FMR修改样实际完成日期
+                    var fmr_undertake = $('#s_37').val(data.data.sketch_detail.fmr_undertake); //承办员（fmr）
+                    var receive_date = $('#i_18').val(data.data.sketch_detail.receive_date); //样品收到日期
+                    if (data.data.sketch_detail.refer_data != null) {
+                        //复选框默认选中
+                        boxChecked($('#i_11_1'), data.data.sketch_detail.refer_data);
+                        boxChecked($('#i_11_2'), data.data.sketch_detail.refer_data);
+                        boxChecked($('#i_11_3'), data.data.sketch_detail.refer_data);
+                        boxChecked($('#i_11_4'), data.data.sketch_detail.refer_data);
+                    }
+                    var sent_date = $('#i_19').val(data.data.sketch_detail.sent_date); //样品寄出日期
+                    var refer_data_no = $('#i_11').val(data.data.sketch_detail.refer_data_no); //参考资料编号
+                    var mould_min = $('#i_20').val(data.data.sketch_detail.mould_min); //模具最小返回数（元）
+                    var other_fee = $('#i_21').val(data.data.sketch_detail.other_fee); //其他费用
+                    selected($('#s_35'), data.data.sketch_detail.factory.code);
+                    var express_fee = $('#i_22').val(data.data.sketch_detail.express_fee); //快递费用
+                    var fmr_50 = $('#i_12').val(data.data.sketch_detail.fmr_50); //fmr样品50%完成
+                    var start_date = $('#i_13').val(data.data.sketch_detail.start_date); //工厂开工时间
+                    if (data.data.sketch_detail.is_customer_price != null) {
+                        if (data.data.sketch_detail.is_customer_price == 'True') {
+                            $('#i_23_1').prop('checked', 'true');
+                        }
+                        if (data.data.sketch_detail.is_customer_price == 'False') {
+                            $('#i_23_2').prop('checked', 'true');
+                        }
+                    }
+                    if (data.data.sketch_detail.is_finish != null) {
+                        if (data.data.sketch_detail.is_finish == 'True') {
+                            $('#i_24_1').prop('checked', 'true');
+                        }
+                        if (data.data.sketch_detail.is_finish == 'False') {
+                            $('#i_24_2').prop('checked', 'true');
+                        }
+                    }
+                    var product_explain = $('#i_25').val(data.data.sketch_detail.product_explain); //产品说明
+                }
+            }
+
+        });
+    </script>
+</head>
+
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<hr/>
+<div style="text-align: -webkit-center;">
+
+    <div class="topbutton">
+        <button id="fir_1" value="button" name="first">第一条</button>
+        <button id="las_1" value="button" name="last">上一条</button>
+        <button id="nex_1" value="button" name="next">下一条</button>
+        <button id="fin_1" value="button" name="final">最后一条</button>
+        <button id="ins_1" value="button" name="add">保存信息</button>
+        <button id="del_1" value="button" name="delete">删除信息</button>
+        <button id="upd_1" value="button" name="modify">修改信息</button>
+        <button id="sel_1" value="button" name="view">查询信息</button>
+
+    </div>
+    <form action="#" enctype="multipart/form-data" id="for_">
+        <table style="border: solid 1px black;">
+            <tr>
+                <td colspan="2">
+                    {% comment %}<input type="button" value="相似记录导入" style="background-color: gray;" readonly="readonly"></td>{% endcomment %}
+                    <button style="background-color: gray;">相似记录导入</button>
+
+                <td>
+                    <span class="warn"></span>
+                    <lable id="l_a39"> 开发单号</lable>
+                </td>
+                <td>
+                    <input type="text" id='s_39' value="" name="number"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="warn"></span>
+                    <lable id="l_a1"> 开发item编号</lable>
+                </td>
+                <td><input id="i_1" type="text" name="item_number" value=""/></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a2">中文品名</lable>
+                </td>
+                <td><input id="i_2" type="text" name="name" value=""/></td>
+                <td>
+                    <lable id="l_a4">客人目标价</lable>
+                </td>
+                <td><input id="i_4" type="text" name="customer_price" value=""/></td>
+                <td>
+                    <select id="s_34" type="text" name="customer_currency" style="width: 62px;">
+                        <option value="">Please Choose a value</option>
+                        <option value="US$">US$</option>
+                        <option value="RMB">RMB</option>
+                        <option value="HK$">HK$</option>
+                        <option value="NT$">NT$</option>
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a3">英文品名</lable>
+                </td>
+                <td><input id="i_3" type="text" name="ename" value=""/></td>
+                <td>
+                    <span class="warn"></span>
+                    <lable id="l_a5">工厂报价</lable>
+                </td>
+                <td><input id="i_5" type="text" name="factory_price" value=""/></td>
+                <td>
+                    <select id="s_36" type="text" name="factory_currency" style="width: 62px;">
+                        <option value="">Please Choose a value</option>
+                        <option value="US$">US$</option>
+                        <option value="RMB">RMB</option>
+                        <option value="HK$">HK$</option>
+                        <option value="NT$">NT$</option>
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="warn"></span>
+                    <lable id="l_a38">材质</lable>
+                </td>
+                <td>
+                    <select id="s_38" type="text" name="texture">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+                <td>
+                    <lable id="l_a15">FMR需要完成日期</lable>
+                </td>
+                <td><input id="i_15" type="text" name="fmr_plan_date" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a6">尺寸（长*宽*高）</lable>
+                </td>
+                <td>
+                    <input id="i_6" type="text" name="long" style="width: 40px;" value=""/>x
+                    <input id="i_7" type="text" name="width" style="width: 40px;" value=""/>x
+                    <input id="i_8" type="text" name="height" style="width: 40px;" value=""/>
+                    <label style="color: blue;">Inch</label>
+                </td>
+                <td>
+                    <lable id="l_a16">FMR修改样预计完成日期</lable>
+                </td>
+                <td><input id="i_16" type="text" name="fmr_change_plan_date" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a9">打样数量</lable>
+                </td>
+                <td><input id="i_9" type="text" name="amount" value=""/></td>
+                <td>
+                    <lable id="l_a17">FMR修改样实际完成日期</lable>
+                </td>
+                <td><input id="i_17" type="text" name="fmr_change_act_date" value=""/>
+            </tr>
+            <tr>
+                <td>
+                    <span class="warn"></span>
+                    <lable id="l_a37">承办员（FMR）</lable>
+                </td>
+                <td>
+                    <select id="s_37" type="text" name="fmr_undertake">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+                <td>
+                    <lable id="l_a18">样品收到日期</lable>
+                </td>
+                <td><input id="i_18" type="text" name="receive_date" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a10">参考资料</lable>
+                </td>
+                <td>
+                    <input type="checkbox" id="i_11_1" name="refer_data" value="图稿"/><label>图稿</label>
+                    <input type="checkbox" id="i_11_2" name="refer_data" value="图片"/><label>图片</label>
+                    <input type="checkbox" id="i_11_3" name="refer_data" value="样品"/><label>样品</label>
+                    <input type="checkbox" id="i_11_4" name="refer_data" value="NA"/><label>NA</label>
+                </td>
+                <td>
+                    <lable id="l_a19">样品寄出日期</lable>
+                </td>
+                <td><input id="i_19" type="text" name="sent_date" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a11">参考资料编号</lable>
+                </td>
+                <td>
+                    <input id="i_11" type="text" name="refer_data_no" value=""/>
+                </td>
+                <td>
+                    <lable id="l_a20">模具最小返回数（元）</lable>
+                </td>
+                <td><input id="i_20" type="text" name="mould_min" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a14">图片路径</lable>
+                </td>
+                <td><input id="i_14" type="file" name="photo_src" value=""/></td>
+                <td>
+                    <lable id="l_a21">其他费用（元）</lable>
+                </td>
+                <td><input id="i_21" type="text" name="other_fee" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a35">生产工厂</lable>
+                </td>
+                <td>
+                    <input type="text" id="facCode" name="" style="width: 80px;">
+                    <select id="s_35" type="text" name="factory">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+                <td>
+                    <lable id="l_a22">快递费用（元）</lable>
+                </td>
+                <td><input id="i_22" type="text" name="express_fee" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a12">FMR样品50%完成</lable>
+                </td>
+                <td><input id="i_12" type="text" name="fmr_50" value=""/></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a13">开/雕模（工厂开工时间）</lable>
+                </td>
+                <td><input id="i_13" type="text" name="start_date" value=""/></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% comment %}<tr>
+						<td>
+							<lable id="l_a42">尺寸单位</lable>
+						</td>
+						<td>
+							<select id="s_42" type="text" name="size_unit">
+								<option value="">请选择</option>
+							</select>
+						</td>
+					</tr>{% endcomment %}
+            <tr>
+                <td>
+                    <lable id="l_a23">客人是否报价</lable>
+                </td>
+                <td>
+                    <label>完成</label><input id="i_23_1" type="radio" name="is_customer_price"/>
+                    <label>未完成</label><input id="i_23_2" type="radio" name="is_customer_price"/>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a24">开发是否完成</lable>
+                </td>
+                <td>
+                    <label>完成</label><input id="i_24_1" type="radio" name="is_finish"/>
+                    <label>未完成</label><input id="i_24_2" type="radio" name="is_finish"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <lable id="l_a25">产品说明</lable>
+                </td>
+                <td colspan="2">
+							<textarea id="i_25" cols="55" rows="4" name="product_explain">
+								
+							</textarea>
+                </td>
+                <button>修改样资料</button>
+                </td>
+            </tr>
+
+            <tr>
+
+            </tr>
+
+        </table>
+    </form>
+</div>
+</body>
+
+</html>

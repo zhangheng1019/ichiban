@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+
+			body,
+			div,
+			ul,
+			li,
+			a {
+				margin: 0;
+				padding: 0;
+				text-decoration: none;
+			}
+			/* 一级导航 */
+			
+			.one-nav li {
+				list-style-type: none;
+				float: left;
+				width: 19.80%;
+				text-align: center;
+				background-color: #3391E6;
+				border-right: 1px solid white;
+				cursor: pointer;
+				height: 35px;
+				line-height: 35px;
+			}
+			
+			.one-nav li:nth-last-child(1) {
+				border-right: none;
+			}
+			
+			.one-nav li a {
+				color: white;
+			}
+			
+			.one-nav li:hover .two-nav {
+				display: block;
+			}
+			
+			.one-nav li:hover {
+				background-color: #4260D7;
+			}
+			/* 二级导航 */
+			
+			.two-nav {
+				display: none;
+                position: relative;
+                z-index: 999999;
+			}
+			
+			.two-nav li {
+				width: 100%;
+			}
+			
+			.two-nav li:hover .three-nav {
+				display: block;
+				position: relative;
+			}
+			/* 三级导航 */
+			
+			.three-nav {
+				position: absolute;
+				width: 100%;
+				left: 100%;
+				bottom: 100%;
+			}
+			/* 最右边的三级导航显示在左边 */
+			
+			.one-nav li:nth-last-child(1) .two-nav li .three-nav li {
+				width: 100%;
+				position: relative;
+				right: 200%;
+			}
+            .unuse{
+                background-color: #999999;
+            }
+		</style>
+        {% block head %}
+        {% endblock %}
+	</head>
+	<body>
+        <br>
+        <div style="font-size: 18px;">
+            {% if user.is_authenticated %}
+                Welcome <span style=""><b>{{ user.username }} </b></span>.&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="/logout/" style="color: blue;">注销登录</a>
+            {% endif %}
+        </div><br>
+        <div class="main">
+			<ul class="one-nav">
+				<li>
+					<a href="/xadmin/">基础设置</a>
+                    <!-- <ul class="two-nav">
+						<li>
+							<a href="/basic_info/texture/">产品材质</a>
+						</li>
+                        <li>
+							<a href="/basic_info/texture_process/">材质进度</a>
+						</li>
+                        <li>
+							<a href="/basic_info/material_cate/">材料类别</a>
+						</li>
+                        <li>
+							<a href="/basic_info/material/">材料设置</a>
+						</li>
+                        <li>
+							<a href="/basic_info/position/">职位设置</a>
+						</li>
+                        <li>
+							<a href="/basic_info/currency/">货币设置</a>
+						</li>
+                        <li>
+							<a href="/basic_info/category/">系列设置</a>
+						</li>
+                        <li>
+							<a href="/basic_info/unit/">单位设置</a>
+						</li>
+						<li>
+							<a href="/basic_info/area/">地区设置</a>
+						</li>
+						<li>
+							<a href="/basic_info/department/">部门设置</a>
+						</li>
+						<li>
+							<a href="/basic_info/head_quarter/">总部设置</a>
+						</li>
+						<li>
+							<a href="/basic_info/company/">公司设置</a>
+						</li>
+						<li>
+							<a href="/basic_info/delivery/">出货条件设置</a>
+						</li>
+						<li>
+							<a href="/basic_info/export_port/">出货港口设置</a>
+						</li>
+						<li>
+							<a href="/basic_info/export_type/">出货类型设置</a>
+						</li>
+						<li>
+							<a href="/basic_info/customer/">客户设置</a>
+						</li>
+						<li>
+							<a href="/basic_info/customer_mark/">客户唛头设置</a>
+						</li>
+						<li>
+							<a href="/basic_info/export_country/">出口国家设置</a>
+						</li>
+						<li >
+							<a href="/basic_info/export_company/">进出口公司</a>
+						</li>
+						<li>
+							<a href="/basic_info/staff/">员工设置</a>
+						</li>
+						<li>
+							<a href="/basic_info/factory/">工厂设置</a>
+						</li>
+                        <li>
+							<a href="/basic_info/code/">编码设置</a>
+						</li>
+                        <li>
+							<a href="/basic_info/status/">状态设置</a>
+						</li>
+                        <li>
+							<a href="/basic_info/matrial_process/">产品进度设置</a>
+						</li>
+					</ul> -->
+				</li>
+				<li>
+					<a href="javascript:;">业务</a>
+					<ul class="two-nav">
+						<li>
+							<a href="/order/sketch_design/">图稿</a>
+						</li>
+						<li>
+							<a href="/order/sketch_develop/">开发</a>
+						</li>
+						<li>
+							<a href="/order/sample_detail/">样品</a>
+						</li>
+						<li>
+							<a href="/order/repeat_sample/">复样</a>
+						</li>
+						<li>
+							<a href="javascript:;">订单&gt;</a>
+							<ul class="three-nav">
+								<li>
+									<a href="/order/po/">资讯部</a>
+								</li>
+								<li>
+									<a href="/order/omr/">OMR</a>
+								</li>
+								<li style="background-color: #999999">
+									<a href="/order/fmr/">FMR</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="/order/material_sign/">材料签收</a>
+						</li>
+
+					</ul>
+				</li>
+
+				<li>
+					<a href="javascript:;">财务付款</a>
+					<ul class="two-nav">
+						<li style="background-color: #999999">
+							<a href="javascript:;">进出口公司设置</a>
+						</li>
+						<li>
+							<a href="/report/check_invoice/">业务预计付款报表</a>
+						</li>
+						<li>
+							<a href="/finance/ship_payment/">大货付款</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="/finance/finance_bill/">财务传票</a>
+						</li>
+						<li>
+							<a href="/report/material_sign_report_by_id/">材料配件付款</a>
+						</li>
+						<li>
+							<a href="/finance/claim_payment/">索赔扣款</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="">材料配件扣款</a>
+						</li>
+						<li>
+							<a href="/report/pay_notice/">付款通知</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">材料付款通知</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">消大货付款</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="javascript:;">报表</a>
+					<ul class="two-nav">
+						<li style="background-color: #999999">
+							<a href="javascript:;">开发单报表</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">OMR复样单资料</a>
+						</li>
+
+						<li style="background-color: #999999">
+							<a href="javascript:;">复样单报表</a>
+						</li>
+						<li>
+							<hr style="height:1px;border:none;border-top:1px solid #555555;" />
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">未完成开发报表</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">已完成开发报表</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">未完成样品报表</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">已完成复样报表</a>
+						</li>
+						<li>
+							<hr style="height:1px;border:none;border-top:1px solid #555555;" />
+						</li>
+
+						<li style="background-color: #999999">
+							<a href="">For profit Report</a>
+						</li>
+						<li>
+							<hr style="height:1px;border:none;border-top:1px solid #555555;" />
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">未完成订单报表 &gt;</a>
+							<ul class="three-nav">
+								<li>
+									<a href="javascipt:;">To Manager</a>
+								</li>
+								<li>
+									<a href="javascipt:;">按OMR分类</a>
+								</li>
+								<li>
+									<a href="javascipt:;">按客人</a>
+								</li>
+								<li>
+									<a href="javascipt:;">按FMR分</a>
+								</li>
+							</ul>
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">QC验货报表</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">交货期更新周报表</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">FMR助理分材质报表 </a>
+						</li>
+						<li>
+							<a href="/report/order_confirmation/">Order confirmation</a>
+						</li>
+						<li>
+							<hr style="height:1px;border:none;border-top:1px solid #555555;" />
+						</li>
+						<li>
+							<a href="/report/contract_report_by_id/">打印合同</a>
+						</li>
+						<li>
+							<a href="/report/material_sign_report_by_id/">打印配件合同</a>
+						</li>
+
+						<li>
+							<a href="/report/profit_report/">profit Report by PO new</a>
+						</li>
+						<li>
+							<hr style="height:1px;border:none;border-top:1px solid #555555;" />
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">核对订单(PO)</a>
+						</li>
+						<li>
+							<a href="/report/product_record/">生产记录表</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">Quote Sheet Inquiry Record</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="">Quote_Confirmation</a>
+						</li>
+
+						<li>
+							<hr style="height:1px;border:none;border-top:1px solid #555555;" />
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">当年未出货报表-OMR</a>
+						</li>
+						<li style="background-color: #999999">
+							<a href="javascript:;">当年未出货报表-Info</a>
+						</li>
+					</ul>
+				</li>
+
+				<li style="background-color: #999999">
+					<a href="javascript:;">查询</a>
+					<ul class="two-nav">
+						<li>
+							<a href="javascript:;">查ITEM价格</a>
+						</li>
+						<li>
+							<a href="javascript:;">通用查询</a>
+						</li>
+						<li>
+							<a href="javascript:;">开发查询</a>
+						</li>
+						<li>
+							<a href="javascript:;">样品查询</a>
+						</li>
+						<li>
+							<a href="javascript:;">复样查询</a>
+						</li>
+						<li>
+							<a href="javascript:;">订单查询</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+        <br><br><br>
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>

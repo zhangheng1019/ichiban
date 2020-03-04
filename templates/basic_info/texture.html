@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>texture</title>
+	</head>
+
+	<body>
+		<div style="text-align: -webkit-center;">
+			<form action="/basic_info/texture/" method="post">
+				{% csrf_token %}
+                <table>
+					<tr>
+						<td>
+							<lable id="l_a1">中文名</lable>
+						</td>
+						<td> <input id="i_1" type="text" name="name" /></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a2">材质编码</lable>
+						</td>
+						<td> <input id="i_2" type="text" name="code" /></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a3">英文名</lable>
+						</td>
+						<td> <input id="i_3" type="text" name="ename" /></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a4">中文描述</lable>
+						</td>
+						<td> <input id="i_4" type="text" name="desc" /></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a5">英文描述</lable>
+						</td>
+						<td> <input id="i_5" type="text" name="edesc" /></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a6">最后操作时间</lable>
+						</td>
+						<td> <input id="i_6" type="text" name="lastdate" /></td>
+					</tr>
+				</table>
+                <input type="submit" value="submit"/>
+                <br/>
+                <input type="button" value="增加进度"/>
+            </form>
+		</div>
+	</body>
+
+</html>

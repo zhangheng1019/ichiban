@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>材料配件合同</title>
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <script src="/static/js/md5.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <style type="text/css">
+        #div_0 {
+            text-align: -webkit-center;
+            margin-left: 38%;
+        }
+
+        #div_1 {
+            float: left;
+        }
+
+        #div_2 {
+            float: left;
+        }
+        #div_3{
+            float: left;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            //页面加载时将所有文本框改为只读
+            $('input').prop('readonly', 'true');
+
+            $(":radio").click(function () {
+                if ($(this)[0].id == 'r_1') {
+                    $('#div_1 input').removeAttr("readonly");
+                    $('#div_2 input').attr("readonly", "readonly")
+                } else if ($(this)[0].id == 'r_2') {
+                    $('#div_1 input').attr("readonly", "readonly");
+                    $('#div_2 input').removeAttr("readonly");
+                }
+            });
+             $('#bu_1').bind('click', function () {
+                 debugger;
+                var writeAraay = submitArray($('#div_1 input'));
+                var array = submitArray($('#div_2 input'));
+                if (writeAraay.length==0 && array.length==0) {
+                    alert('请输入搜索内容');
+                    return false;
+                } else {
+                    if (writeAraay.length > 0) {
+                        $('#action').val('list');
+                        $('#mat_detail_id_list').val(writeAraay);
+                    } else if (array.length > 0) {
+                        $('#action').val('');
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<div id="div_0">
+    <form action="/report/material_sign_report_by_id/" method="post">
+        <input type="hidden" id="action" name="action">
+        <input type="hidden" id="mat_detail_id_list" name="mat_detail_id_list">
+        <div id="div_1">
+            <hr/>
+            <label>手动写入</label>
+            <hr/>
+            <table border="" cellspacing="" cellpadding="">
+                <tr>
+                    <td>
+                        <input type="text" id="i_1"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="i_2"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="i_3"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="i_4"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="i_5"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="i_6"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="i_7"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="i_8"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="i_9"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" id="i_10"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="div_2">
+            <hr/>
+            <label>指定范围</label>
+            <hr/>
+            <table border="" cellspacing="" cellpadding="">
+                <tr>
+                    <td>
+                        <label>从</label>
+                    </td>
+                    <td>
+                        <input type="text" id="i_11" name="start_id"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>至</label>
+                    </td>
+                    <td>
+                        <input type="text" id="i_12" name="end_id"/>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div id="div_3">
+            <hr/>
+            <input type="radio" name="type" id="r_1"/><label>手动输入 </label>
+            <br/>
+            <input type="radio" name="type" id="r_2"/><label>指定范围 </label>
+            <hr/>
+            <button id="bu_1">打印订单</button>
+        </div>
+    </form>
+</div>
+</body>
+
+</html>

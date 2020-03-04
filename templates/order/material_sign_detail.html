@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>材料签收明细</title>
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/tongyong.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script src="/static/js/md5.js"></script>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <style type="text/css">
+        #con {
+            text-align: -webkit-center;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            $('#i_2').val(getQueryVariable('po'));
+            $('#i_3').val(getQueryVariable('item_no'));
+            $('#i_2').prop('checked', 'true');
+            $('#i_3').prop('checked', 'true');
+            var po = $('#i_2').val(); //po
+            var item_no = $('#i_3').val(); //item
+            var po_datail = $('#i_4').val(); //detail id
+            var texture = $('#i_5').val(); //材料明细
+            var pc_count = $('#i_6').val(); //每PC用量
+            var pc_unit = $('#i_6_1').val(); //每PC用量单位
+            var need_qty = $('#i_7').val(); //所需数量
+            var need_qty_unit = $('#i_7_1').val(); //所需数量单位
+            var name = $('#i_8').val(); //材料名称
+            var provide_type = $('#i_9').val(); //提代方式
+            var provide_from = $('#i_10').val(); //哪里提供
+            var is_order = $('#i_11').val(); //是否需订购 （复选框）
+            var actual_qty = $('#i_12').val(); //实送数量
+            var actual_qty_unit = $('#i_12_1').val(); //实送数量单位
+            var send_material_date = $('#i_26').val(); //送料日期
+            var sender = $('#i_27').val(); //经送人
+            var special_remark = $('#t_1').val(); //备注
+
+            var accessory_cost = $('#i_13').val(); //材料单价
+            var accessory_cost_total = $('#i_14').val(); //材料总价
+            var deduct_invoice_no = $('#i_15').val(); //扣款发票号码
+            var factory = $('#i_16').val(); //下单工厂
+            var fac_qty = $('#i_17').val(); //工厂数量
+            var fac_qty_unit = $('#i_17_1').val(); //工厂数量单位
+            var price = $('#i_18').val(); //下单单价
+            var order_date = $('#i_19').val(); //下单日期
+            var pay_date = $('#i_20').val(); //交费期
+            var total = $('#i_21').val(); //下单总价
+            var aaa = $('#i_22').val(); //是否消出货 CheckBox
+            var qc = $('#i_23').val(); //QC
+            var fqc = $('#i_24').val(); //fqc
+            var actual_date = $('#i_25').val(); //实际出货期
+            var data ={{ data|safe }};
+            var text = "";
+            for (var i in data.data.Staff) {
+                text += "<option value=\"" + data.data.Staff[i].fields.name + "\">" + data.data.Staff[i].fields.name + "</option>";
+            }
+            $('#i_23').append(text);
+            $('#i_24').append(text);
+            text = "";
+            for (var i in data.data.Texture) {
+                text += "<option value=\"" + data.data.Texture[i].fields.code + "\">" + data.data.Texture[i].fields.name + "</option>";
+            }
+            $('#i_5').append(text);
+            text = "";
+            for (var i in data.data.Currency) {
+                text += "<option value=\"" + data.data.Currency[i].fields.code + "\">" + data.data.Currency[i].fields.code + "</option>";
+            }
+            $('#s_1').append(text);
+            $('#s_2').append(text);
+            $('#s_3').append(text);
+            $('#s_4').append(text);
+            text = "";
+            for (var i in data.data.Factory) {
+                text += "<option value=\"" + data.data.Factory[i].fields.code + "\">" + data.data.Factory[i].fields.name + "</option>";
+            }
+            $('#i_16').append(text);
+
+            $.getScript('/static/js/select.js', function () {
+                setSelect(['s_1', 's_2', 's_3', 's_4', 'i_16', 'i_23', 'i_24', 'i_5']);
+            });
+            $("#i_16").off().on("change", function () {
+                $('#facCode').val($('#i_16').val());
+            });
+            //监听文本框
+            $('#i_14').prop('readonly', 'true');
+            $('#i_21').prop('readonly', 'true');
+            $('#i_7').on('input propertychange', function () {
+                $('#i_12').val($('#i_7').val());
+                $('#i_17').val($('#i_7').val());
+            })
+
+            $('#i_13').on('input propertychange', function () {
+                $('#i_18').val($('#i_13').val());
+                $('#i_14').val(calc($('#i_7').val(), $('#i_13').val()));
+                $('#i_21').val(calc($('#i_7').val(), $('#i_13').val()));
+            });
+
+            $('#i_7_1').on('input propertychange', function () {
+                $('#i_12_1').val($('#i_7_1').val());
+                $('#i_17_1').val($('#i_7_1').val());
+            });
+
+            $('#s_1').on('input propertychange', function () {
+                $('#s_2').val($('#s_1').val());
+                $('#s_3').val($('#s_1').val());
+                $('#s_4').val($('#s_1').val());
+            });
+
+            function showDatas(data) {
+                debugger;
+                $('#i_10086').val(data.data.material_sign_detail.id);//id
+                var po = $('#i_2').val(data.data.material_sign_detail.po); //po
+                var item_no = $('#i_3').val(data.data.material_sign_detail.item_no); //item
+                var po_datail = $('#i_4').val(data.data.po_detail.id); //detail id
+                selected($('#i_5'), data.data.material_sign_detail.texture.code);
+                selected($('#i_16'), data.data.material_sign_detail.factory.code);
+                selected($('#i_23'), data.data.material_sign_detail.qc.name);
+                selected($('#i_24'), data.data.material_sign_detail.fqc.name);
+                var pc_count = $('#i_6').val(data.data.material_sign_detail.pc_count); //每PC用量
+                var pc_unit = $('#i_6_1').val(data.data.material_sign_detail.pc_unit); //每PC用量单位
+                var need_qty = $('#i_7').val(data.data.material_sign_detail.need_qty); //所需数量
+                var need_qty_unit = $('#i_7_1').val(data.data.material_sign_detail.need_qty_unit); //所需数量单位
+                var name = $('#i_8').val(data.data.material_sign_detail.name); //材料名称
+                var provide_type = $('#i_9').val(data.data.material_sign_detail.provide_type); //提代方式
+                var provide_from = $('#i_10').val(data.data.material_sign_detail.provide_from); //哪里提供
+                var is_order = $('#i_11').val(); //是否需订购 （复选框）
+                if (data.data.material_sign_detail.is_order == 'True') {
+                    $('#i_11').prop('checked', 'true');
+                }
+                var actual_qty = $('#i_12').val(data.data.material_sign_detail.actual_qty); //实送数量
+                var actual_qty_unit = $('#i_12_1').val(data.data.material_sign_detail.actual_qty_unit); //实送数量单位
+                var send_material_date = $('#i_26').val(data.data.material_sign_detail.send_material_date); //送料日期
+                var sender = $('#i_27').val(data.data.material_sign_detail.sender.name); //经送人
+                var special_remark = $('#t_1').val(data.data.material_sign_detail.special_remark); //备注
+                var accessory_cost = $('#i_13').val(data.data.material_sign_detail.accessory_cost); //材料单价
+                var accessory_cost_total = $('#i_14').val(data.data.material_sign_detail.accessory_cost_total); //材料总价
+                selected($('#s_1'), data.data.material_sign_detail.accessory_currency.code); //材料单价货币
+                selected($('#s_2'), data.data.material_sign_detail.accessory_total_currency.code); //材料总价货币
+                selected($('#s_3'), data.data.material_sign_detail.order_currency.code); //下单单价货币
+                selected($('#s_4'), data.data.material_sign_detail.total_currency.code); //下单总价货币
+                var deduct_invoice_no = $('#i_15').val(data.data.material_sign_detail.deduct_invoice_no); //扣款发票号码
+                var factory = $('#i_16').val(); //下单工厂
+
+                var fac_qty = $('#i_17').val(data.data.material_sign_detail.fac_qty); //工厂数量
+                var fac_qty_unit = $('#i_17_1').val(data.data.material_sign_detail.fac_qty_unit); //工厂数量单位
+                var price = $('#i_18').val(data.data.material_sign_detail.price); //下单单价
+                var order_date = $('#i_19').val(data.data.material_sign_detail.order_date); //下单日期
+                var pay_date = $('#i_20').val(data.data.material_sign_detail.pay_date); //交费期
+                var total = $('#i_21').val(data.data.material_sign_detail.total); //下单总价
+                var is_shipment = $('#i_22').val(); //是否消出货 CheckBox
+                if (data.data.material_sign_detail.is_shipment == 'True') {
+                    $('#i_22').prop('checked', 'true');
+                }
+                var qc = $('#i_23').val(); //qc
+                var fqc = $('#i_24').val(); //fqc
+                var actual_date = $('#i_25').val(data.data.material_sign_detail.actual_date); //实际出货期
+
+
+
+
+            }
+
+            $('#sel_1').bind('click', function () {
+                var ids = $('#i_10086').val();
+                var po = $('#i_2').val(); //po
+                var item_no = $('#i_3').val(); //item
+                if (ids == '' || ids == null) {
+                    alert('请检查id!');
+                } else {
+                    $.ax(
+                        '/order/material_sign_detail/',
+                        {
+                            "po": po,
+                            "item_no": item_no,
+                            "id": ids,
+                            "view": "view"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+
+                }
+            });
+            $('#upd_1').bind('click', function () {
+                var po = $('#i_2').val(); //po
+                var item_no = $('#i_3').val(); //item
+                var ids = $('#i_10086').val();
+                if (po == null || po == '' || item_no == null || item_no == '' || ids == '' || ids == null) {
+                    alert('请检查po与item以及id!');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_'));
+                    formData.append('modify', 'modify');
+                    $.ajaxForm('/order/material_sign_detail/', formData, function (data) {
+                        alert(data.msg);
+                    });
+                }
+            });
+            $('#del_1').bind('click', function () {
+                alert("请联系资讯！");
+            });
+            $('#ins_1').bind('click', function () {
+                var po = $('#i_2').val(); //po
+                var item_no = $('#i_3').val(); //item
+                var ids = $('#i_10086').val();
+                if (po == null || po == '' || item_no == null || item_no == '') {
+                    alert('请检查po与item以及id!');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_'));
+                    formData.append('add', 'add');
+                    $.ajaxForm('/order/material_sign_detail/', formData, function (data) {
+                        alert(data.msg);
+                    });
+                }
+            });
+            $('#fin_1').bind('click', function () {
+                var po = $('#i_2').val(); //po
+                var item_no = $('#i_3').val(); //item
+                if (po == null || po == '' || item_no == null || item_no == '') {
+                    alert('请检查po与item!');
+                } else {
+                    $.ax(
+                        '/order/material_sign_detail/',
+                        {
+                            "final": "final",
+                            "po": po,
+                            "item_no": item_no
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#las_1').bind('click', function () {
+                var po = $('#i_2').val(); //po
+                var item_no = $('#i_3').val(); //item
+                var ids = $('#i_10086').val();
+                if (po == null || po == '' || item_no == null || item_no == '' || ids == '' || ids == null) {
+                    alert('请检查po与item!');
+                } else {
+                    $.ax(
+                        '/order/material_sign_detail/',
+                        {
+                            "po": po,
+                            "item_no": item_no,
+                            "last": "last",
+                            "id": ids
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#nex_1').bind('click', function () {
+                var po = $('#i_2').val(); //po
+                var item_no = $('#i_3').val(); //item
+                var ids = $('#i_10086').val();
+                if (po == null || po == '' || item_no == null || item_no == '' || ids == '' || ids == null) {
+                    alert('请检查po与item!');
+                } else {
+                    $.ax(
+                        '/order/material_sign_detail/',
+                        {
+                            "po": po,
+                            "item_no": item_no,
+                            "next": "next",
+                            "id": ids
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+
+                }
+            });
+            $('#fir_1').bind('click', function () {
+                var po = $('#i_2').val(); //po
+                var item_no = $('#i_3').val(); //item
+                if (po == null || po == '' || item_no == null || item_no == '') {
+                    alert('请检查po与item!');
+                } else {
+                    $.ax(
+                        '/order/material_sign_detail/',
+                        {
+                            "first": "first",
+                            "po": po,
+                            "item_no": item_no
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<div id="con">
+    <div class="topbutton">
+        <button id="fir_1" value="button" name="first">第一条</button>
+        <button id="las_1" value="button" name="last">上一条</button>
+        <button id="nex_1" value="button" name="next">下一条</button>
+        <button id="fin_1" value="button" name="final">最后一条</button>
+        <button id="ins_1" value="button" name="add">保存信息</button>
+        <button id="del_1" value="button" name="delete">删除信息</button>
+        <button id="upd_1" value="button" name="modify">修改信息</button>
+        <button id="sel_1" value="button" name="view">查询信息</button>
+    </div>
+    <form method="post" enctype="multipart/form-data" id="for_">
+        <table border="" cellspacing="" cellpadding="">
+            <tr>
+                <td colspan="4">
+                    <label id="la_10086">ID #</label>
+                    <input type="text" name="id" id="i_10086"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="la_1">PO#</label>
+                    <input type="text" name="po" id="i_2"/>
+                </td>
+                <td>
+                    <label id="la_2">ITEM#</label>
+                    <input type="text" name="item_no" id="i_3"/>
+
+                </td>
+                <td>
+                    <label id="la_3">Detail ID#</label>
+                    <input type="text" name="po_datail" id="i_4"/>
+
+                </td>
+                <td>
+                    <label id="la_4">材料明细</label>
+                    {% comment %}<input type="text" name="texture" id="i_5"/>{% endcomment %}
+                    <select name="texture" id="i_5">
+                        <option value="">请选择</option>
+                    </select>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <label id="la_5">每PC用量</label>
+                    <input type="text" name="pc_count" id="i_6"/>
+                    <input type="text" name="pc_unit" id="i_6_1"/>
+                </td>
+                <td>
+                    <label id="la_6">所需数量</label>
+                    <input type="text" name="need_qty" id="i_7"/>
+                    <input type="text" name="need_qty_unit" id="i_7_1"/>
+                </td>
+                <td colspan="2">
+                    <label id="la_7">材料名称</label>
+                    <input type="text" name="name" id="i_8"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <label id="la_8"> 提代方式</label>
+                    <input type="text" name="provide_type" id="i_9"/>
+                </td>
+                <td>
+                    <label id="la_9"> 哪里提供</label>
+                    <input type="text" name="provide_from" id="i_10"/>
+                </td>
+                <td colspan="2">
+                    <label id="la_10"> 是否需订购</label>
+                    <input type="checkbox" name="is_order" id="i_11"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <label id="la_11">实送数量</label>
+                    <input type="text" name="actual_qty" id="i_12"/>
+                    <input type="text" name="actual_qty_unit" id="i_12_1"/>
+
+                </td>
+                <td>
+                    <label id="la_12">送料日期</label>
+                    <input type="text" name="send_material_date" id="i_26"/>
+
+                </td>
+                <td colspan="2">
+                    <label id="la_13">经送人</label>
+                    <input type="text" name="sender" id="i_27"/>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <label id="la_14">备注</label>
+                    <textarea name="special_remark" rows="10" cols="100" id="t_1">
+					</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="la_15"> 材料单价</label>
+                    <input type="text" name="accessory_cost" id="i_13"/>
+                    <select name="accessory_currency" id="s_1">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+                <td>
+                    <label id="la_16"> 材料总价</label>
+                    <input type="text" name="accessory_cost_total" id="i_14"/>
+                    <select name="accessory_total_currency" id="s_2">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+                <td colspan="2">
+                    <label id="la_17"> 扣款发票号码</label>
+                    <input type="text" name="deduct_invoice_no" id="i_15"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label id="la_18">下单工厂</label>
+                    <input type="text" name="" id="facCode" style="width: 80px;">
+
+                    <select name="factory" id="i_16">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+                <td>
+                    <label id="la_19">数量</label>
+                    <input type="text" name="fac_qty" id="i_17" value=""/>
+                    <input type="text" name="fac_qty_unit" id="i_17_1" value=""/>
+                </td>
+                <td>
+                    <label id="la_20">下单单价</label>
+                    <input type="text" name="price" id="i_18" value=""/>
+                    <select name="order_currency" id="s_3">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label id="la_21">下单日期</label>
+                    <input type="text" name="order_date" id="i_19" value=""/>
+                </td>
+                <td>
+                    <label id="la_22">交费期</label>
+                    <input type="text" name="pay_date" id="i_20" value=""/>
+                </td>
+                <td>
+                    <label id="la_23">下单总价</label>
+                    <input type="text" name="total" id="i_21" value=""/>
+                    <select name="total_currency" id="s_4">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="is_shipment" id="i_22" value="True"/>
+                    <label id="la_24">是否消出货</label>
+                </td>
+                <td>
+                    <label id="la_25">QC:</label>
+                    {% comment %}<input type="text" name="qc" id="i_23" value=""/>{% endcomment %}
+                    <select name="qc" id="i_23">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+                <td>
+                    <label id="la_26">FQC:</label>
+                    {% comment %}<input type="text" name="fqc" id="i_24" value=""/>{% endcomment %}
+                    <select name="fqc" id="i_24">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+                <td>
+                    <label id="la_27">实际出货期:</label>
+                    <input type="text" name="actual_date" id="i_25" value=""/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+</body>
+
+</html>

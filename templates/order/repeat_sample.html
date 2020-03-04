@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>样品</title>
+    <style type="text/css">
+        table {
+            border: solid 1px black;
+        }
+
+        .td_01 {
+            width: 240px;
+        }
+    </style>
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <script src="/static/js/md5.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            //将需要验证是否为''或者null的元素对象放入数组中
+            var elargs = [$('#i_1'), $('#s_10')];
+            var elarg_change = [$('#i_1')];
+            var number = $('#i_1').val(); //复样单号
+            var receive_date = $('#i_2').val(); //收到日期
+            var customer = $('#s_10').val(); //客户代码
+            var fac_send_date = $('#i_3').val(); //工厂交期
+            var undertaker = $('#s_11').val(); //承办人员
+            var explain = $('#i_4').val(); //备注说明
+            var data ={{ data|safe }};
+
+            var text = "";
+            for (var i in data.data.Customer) {
+                text += "<option value=\"" + data.data.Customer[i].fields.code + "\">" + data.data.Customer[i].fields.code + "</option>";
+            }
+            $('#s_10').append(text);
+            text = "";
+            for (var i in data.data.Staff) {
+                text += "<option value=\"" + data.data.Staff[i].fields.name + "\">" + data.data.Staff[i].fields.name + "</option>";
+            }
+            $('#s_11').append(text);
+            $.getScript('/static/js/select.js', function () {
+                setSelect(['s_10', 's_11']);
+            });
+            $('select').css('width', '200px');
+
+            function showDatas(data) {
+                var number = $('#i_1').val(data.data.repeat_sample.number); //复样单号
+                var receive_date = $('#i_2').val(data.data.repeat_sample.receive_date); //收到日期
+                {% comment %}var customer_id = $('#s_10').val(data.data.repeat_sample.customer); //客户代码{% endcomment %}
+                selected($('#s_10'), data.data.repeat_sample.customer.code);
+                var fac_send_date = $('#i_3').val(data.data.repeat_sample.fac_send_date); //工厂交期
+                {% comment %}var undertaker_id = $('#s_11').val(data.data.undertaker_id); //承办人员{% endcomment %}
+                selected($('#s_11'), data.data.repeat_sample.undertaker.name);
+                var explain = $('#i_4').val(data.data.repeat_sample.explain); //备注说明
+                //渲染#tab_1 中table
+                $('#tab_1').html('');
+                var text = "";
+                text += "<table border=\"\" cellspacing=\"\" cellpadding=\"\">";
+                text += "				<tr>";
+                text += "					<th><label>DetailID</label></th>";
+                text += "					<th><label>ITEM#</label></th>";
+                text += "					<th><label>工厂编号</label></th>";
+                text += "					<th><label>产品名称</label></th>";
+                text += "					<th><label>材质</label></th>";
+                text += "					<th><label>生产工厂</label></th>";
+                text += "					<th><label>是否完成</label></th>";
+                text += "				</tr>";
+                //遍历 样品单下的 详细资料
+                for (var i in data.data.repeat_sample_detail) {
+                    text += "				<tr>";
+                    text += "					<td>" + data.data.repeat_sample_detail[i].id + "</td>";
+                    text += "					<td>" + data.data.repeat_sample_detail[i].item_no + "</td>";
+                    text += "					<td>" + data.data.repeat_sample_detail[i].fac_number + "</td>";
+                    text += "					<td>" + data.data.repeat_sample_detail[i].desc + "</td>";
+                    if (data.data.repeat_sample_detail[i].texture_id == null) {
+                        text += "<td></td>";
+                    } else {
+                        text += "					<td>" + data.data.repeat_sample_detail[i].texture_id.name + "</td>";
+                    }
+                    if (data.data.repeat_sample_detail[i].factory_id == null) {
+                        text += "<td></td>";
+                    } else {
+                        text += "					<td>" + data.data.repeat_sample_detail[i].factory_id.name + "</td>";
+                    }
+                    if (data.data.repeat_sample_detail[i].finish == 'True') {
+                        text += '<td>Y</td>';
+                    } else {
+                        text += '<td>N</td>';
+                    }
+                    {% comment %}text += "					<td>"+ data.data.repeat_sample_detail[i].finish+"</td>";{% endcomment %}
+                    text += "				</tr>";
+                }
+
+                //结束遍历
+                text += "			</table>";
+                $('#tab_1').html(text);
+            }
+
+            $('#ins_1').bind('click', function () {
+                //验证
+                var number = $('#i_1').val(); //复样单号
+                var formData = new FormData(document.querySelector('#for_'));
+                formData.append('add', 'add');
+                if (number == null || number == '') {
+                    alert('请输入复样单号');
+                } else {
+                    $.ajax({
+                        type: "post",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        url: "/order/repeat_sample/",
+                        async: true,
+                        success: function (data) {
+                            alert(data.msg);
+                        }
+                    });
+                }
+
+            });
+            $("#upd_1").bind('click', function () {
+                var number = $('#i_1').val(); //复样单号
+                var formData = new FormData(document.querySelector('#for_'));
+                formData.append('modify', 'modify');
+                if (number == null || number == '') {
+                    alert('请输入复样单号');
+                } else {
+                    $.ajax({
+                        type: "post",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        url: "/order/repeat_sample/",
+                        async: true,
+                        success: function (data) {
+                            alert(data.msg);
+                        }
+                    });
+                }
+            });
+            $("#sel_1").bind('click', function () {
+                var number = $('#i_1').val(); //复样单号
+                if (number == null || number == '') {
+                    alert("请输入复样单号");
+                } else {
+                    $.ax(
+                        '/order/repeat_sample/', {
+                            "view": "view",
+                            "number": number
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert('请检查复样单号是否正确');
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+
+                }
+                return checkForms(elarg_change);
+            });
+            $("#del_1").bind('click', function () {
+                alert('在当前模块中不支持相应的操作！')
+            });
+            $('#fin_1').bind('click', function () {
+                $.ax(
+                    '/order/repeat_sample/', {
+                        "final": "final"
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert('请检查复样单号是否正确');
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+            $('#las_1').bind('click', function () {
+                var number = $('#i_1').val(); //复样单号
+                if (number == '' || number == null) {
+                    alert('请输入复样单号');
+                } else {
+                    $.ax(
+                        '/order/repeat_sample/', {
+                            "last": "last",
+                            "number": number
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#nex_1').bind('click', function () {
+                var number = $('#i_1').val(); //复样单号
+                if (number == '' || number == null) {
+                    alert('请输入复样单号');
+                } else {
+                    $.ax(
+                        '/order/repeat_sample/', {
+                            "next": "next",
+                            "number": number
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            debugger;
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#fir_1').bind('click', function () {
+                $.ax(
+                    '/order/repeat_sample/', {
+                        "first": "first"
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert('请检查复样单号是否正确');
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+            //sono_detail 按钮查看样品详情带入参数样品单号
+            $('#sono_detail').bind('click', function () {
+
+                var number = $('#i_1').val();
+                if (number == '' || number == null) {
+                    alert('请输入复样单号');
+                } else {
+                    window.location.href = "/order/repeat_sample_detail/?number=" + number;
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<div style="text-align: -webkit-center;">
+
+    <div class="topbutton">
+        <button id="fir_1" value="button" name="first">第一条</button>
+        <button id="las_1" value="button" name="last">上一条</button>
+        <button id="nex_1" value="button" name="next">下一条</button>
+        <button id="fin_1" value="button" name="final">最后一条</button>
+        <button id="ins_1" value="button" name="add">保存信息</button>
+        <button id="del_1" value="button" name="delete">删除信息</button>
+        <button id="upd_1" value="button" name="modify">修改信息</button>
+        <button id="sel_1" value="button" name="view">查询信息</button>
+    </div>
+    <form action="" method="post" enctype="multipart/form-data" id="for_">
+        <table>
+            <tr>
+                <td>
+                    <lable id="l_a1">复样单号</lable>
+                </td>
+                <td class="td_01"><input id="i_1" type="text" name="number" value="" class="no"/></td>
+                <td>
+                    <lable id="l_a2">收到日期</lable>
+                </td>
+                <td><input id="i_2" type="text" name="receive_date" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a10">客户代码</lable>
+                </td>
+                <td>
+                    <select id="s_10" type="text" name="customer">
+                        <option value="">请选择</option>
+                    </select>
+                    {% comment %}<input type="text" id="s_10" name="customer_id" />{% endcomment %}
+                </td>
+                <td>
+                    <lable id="l_a3">工厂交期</lable>
+                </td>
+                <td><input id="i_3" type="text" name="fac_send_date" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a11">承办人员</lable>
+                </td>
+                <td>
+                    <select id="s_11" type="text" name="undertaker">
+                        <option value="">请选择</option>
+                    </select>
+                    {% comment %}<input type="text" id="s_11" name="undertaker_id" />{% endcomment %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a4">备注说明</lable>
+                </td>
+                <td colspan="3">
+							<textarea id="i_4" rows="3" cols="60" name="explain">
+							</textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div id="">
+        <button id="sono_detail">SONO Detail</button>
+    </div>
+    <div id="tab_1">
+        <table border="" cellspacing="" cellpadding="">
+            <tr>
+                <th><label>DetailID</label></th>
+                <th><label>ITEM#</label></th>
+                <th><label>工厂编号</label></th>
+                <th><label>产品名称</label></th>
+                <th><label>材质</label></th>
+                <th><label>生产工厂</label></th>
+                <th><label>是否完成</label></th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+
+</html>

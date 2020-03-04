@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>材料付款</title>
+</head>
+<script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/js/tongyong.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/js/jquery-ui.min.js" type="text/javascript"></script>
+<script src="/static/js/md5.js" type="text/javascript" charset="utf-8"></script>
+<!--<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">-->
+<link rel="stylesheet" type="text/css" href="/static/css/j-ui.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+<script type="text/javascript" src="/static/js/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+<script type="text/javascript">
+    $(function () {
+        setLanguage();
+        var id = $('#i_1').val();//id
+        var customer_id = $('#i_2').val();//客户id
+        var factory = $('#i_3').val();//工厂全称
+        var po = $('#i_4').val();//po
+        var customer_po = $('#i_5').val();//客人PO
+        var customer_item = $('#i_6').val();//客人货号
+        var po_detail = $('#i_7').val();//Item No
+        var product = $('#i_8').val();//品名与规格
+        var amount = $('#i_9').val();//数量/单位
+        var unit = $('#i_10').val();//数量/单位
+        var final_date = $('#i_11').val();//实际交货日期
+        var qc1 = $('#i_12').val();//qc
+        var omr = $('#i_13').val();//承办员
+        var cus_price = $('#i_14').val();//客人单价
+        var cus_currency = $('#i_15').val();//客人单价货币单位
+        var fac_cost = $('#i_16').val();//工厂单价
+        var fac_cost_currency = $('#i_17').val();//工厂单价货币单位
+        var forProfitReport = $('#i_18').val();//for profit report
+        var cus_total = $('#i_19').val();//客人总价
+        var cus_total_currency = $('#i_20').val();//客人总价货币单位
+        var fac_total = $('#i_21').val();//工厂总价
+        var fac_total_currency = $('#i_22').val();//工厂总价货币单位
+        var code = $('#i_23').val();//公司代码
+        var name = $('#i_24').val();//进出口公司
+        var title = $('#i_25').val();//户口抬头
+        var account_no = $('#i_26').val();//户口账号
+        var bank = $('#i_27').val();//开户银行
+        //var custom_id = $('#t_1').val(); //备注
+        //模态框
+        var po_id = $('#i_28').val();//PO id
+        var invoice_no = $('#i_29').val();//发票号码
+        var custom = $('#i_30').val();//付款币种
+        var custom_id = $('#s_1').val();//付款币种
+        var explain = $('#t_2').val();//备注
+        var pay_amount = $('#i_31').val();//付款金额
+        var remit_no = $('#i_32').val();//汇款单号码
+        var pay_date = $('#i_33').val();//付款日期
+        function showDatas(data) {
+            debugger;
+
+            var customer_id = $('#i_2').val(data.data.po.customer.code);//客户id
+            var factory = $('#i_3').val(data.data.contract.factory.name);//工厂全称
+            var po = $('#i_4').val(data.data.po.order_number);//po
+            var customer_po = $('#i_5').val(data.data.po.customer_pono);//客人PO
+            var customer_item = $('#i_6').val(data.data.po_detail.customer_item);//客人货号
+            var po_detail = $('#i_7').val(data.data.po_detail.item_no);//Item No
+            var product = $('#i_8').val(data.data.po_detail.desc);//品名与规格
+            var amount = $('#i_9').val(data.data.po_detail.amount);//数量/单位
+            var unit = $('#i_10').val(data.data.po_detail.unit);//数量/单位
+            var final_date = $('#i_11').val(data.data.po.fina_date);//实际交货日期
+            {% comment %}var qc1 = $('#i_12').val(data.data.product_);{% endcomment %}
+            var omr = $('#i_13').val(data.data.po.omr.name);//承办员
+            var cus_price = $('#i_14').val(data.data.po_detail.costrate);//客人单价
+            if (data.data.po_detail.currency != null) {
+                var cus_currency = $('#i_15').val(data.data.po_detail.currency.name);//客人单价货币单位
+                var cus_total_currency = $('#i_20').val(data.data.po_detail.currency.name);//客人总价货币单位
+            }
+            var fac_cost = $('#i_16').val(data.data.contract.fac_cost);//工厂单价
+            if (data.data.contract.fac_currency != null) {
+                var fac_cost_currency = $('#i_17').val(data.data.contract.fac_currency.name);//工厂单价货币单位
+                var fac_total_currency = $('#i_22').val(data.data.contract.fac_currency.name);//工厂总价货币单位
+            }
+            var forProfitReport = $('#i_18').val();//for profit report
+            var cus_total = $('#i_19').val(data.data.po_detail.costrate * data.data.po_detail.amount);//客人总价
+            var fac_total = $('#i_21').val(data.data.contract.fac_total);//工厂总价
+            for (var i in data.data.accessory_pay) {
+                var id = $('#i_1').val(data.data.accessory_pay[i].id);//id
+                var code = $('#i_23').val(data.data.accessory_pay[i].code);//公司代码
+                var name = $('#i_24').val(data.data.accessory_pay[i].name);//进出口公司
+                var title = $('#i_25').val(data.data.accessory_pay[i].title);//户口抬头
+                var account_no = $('#i_26').val(data.data.accessory_pay[i].account_no);//户口账号
+                var bank = $('#i_27').val(data.data.accessory_pay[i].bank);//开户银行
+                var po_id = $('#i_28').val(data.data.accessory_pay[i].id);//PO id
+            }
+            $('#i_28').prop('readonly', 'true');
+            //var custom_id = $('#t_1').val(); //备注
+            //模态框
+
+            {% comment %}var invoice_no = $('#i_29').val(data.data.accessory_pay.invoice_no);//发票号码
+            if (data.data.accessory_pay.currency != null) {
+                var custom = $('#i_30').val(data.data.accessory_pay.currency.name);//付款币种
+                selected($('#s_1'), data.data.accessory_pay.currency.name);
+            }
+            var explain = $('#t_2').val(data.data.accessory_pay.explain);//备注
+            var pay_amount = $('#i_31').val(data.data.accessory_pay.pay_amount);//付款金额
+            var remit_no = $('#i_32').val(data.data.accessory_pay.remit_no);//汇款单号码
+            var pay_date = $('#i_33').val(data.data.accessory_pay.pay_date);//付款日期{% endcomment %}
+            $("#div_1").html("");
+            var text = "";
+            text += "<table border=\"\" cellspacing=\"\" cellpadding=\"\">";
+            text += "        <tr>";
+            text += " <th><label>id</label></th>";
+            text += "            <th><label>付款日期</label></th>";
+            text += "            <th><label>发票号码</label></th>";
+            text += "            <th><label>付款金额</label></th>";
+            text += "            <th><label>付款币种</label></th>";
+            text += "            <th><label>备注</label></th>";
+            text += "        </tr>";
+            text += "        <tr>";
+            for (var i in data.data.accessory_pay) {
+                text += "            <td>" + data.data.accessory_pay[i].id + "</td>";
+                text += "            <td>" + data.data.accessory_pay[i].pay_date + "</td>";
+                text += "            <td>" + data.data.accessory_pay[i].invoice_no + "</td>";
+                text += "            <td>" + data.data.accessory_pay[i].pay_amount + "</td>";
+                if (data.data.accessory_pay[i].currency != null) {
+                    text += "            <td>" + data.data.accessory_pay[i].currency.name + "</td>";
+                } else {
+                    text += "<td><td/>";
+                }
+                text += "            <td>" + data.data.accessory_pay[i].explain + "</td>";
+                text += "        </tr>";
+            }
+            text += "    </table>";
+            $('#div_1').html(text);
+        }
+
+        $('#sel_1').bind('click', function () {
+            debugger;
+            var factory = $('#i_3').val();//po
+            var po = $('#i_4').val();//po
+            var po_detail = $('#i_7').val();//po
+            //if (po == null || po == '') {
+            //    alert('请检查po!');
+            //} else {
+            $.ax(
+                '/finance/accessory_pay/',
+                {
+                    "factory": factory,
+                    "po": po,
+                    "po_detail": po_detail,
+                    "view": "view"
+                },
+                null,
+                null,
+                null,
+                function (data) {
+                    if (data.status == 'fail' || data.status == 'unknown') {
+                        alert(data.msg);
+                    } else {
+                        showDatas(data);
+                    }
+                },
+                function () {
+                    alert("出错了");
+                }
+            );
+            //}
+            return false;
+        });
+        $('#fin_1').bind('click', function () {
+            /*var po = $('#i_4').val();//po
+            if (po == null || po == '') {
+                alert('请检查po!');
+            } else {*/
+            $.ax(
+                '/finance/accessory_pay/',
+                {
+                    {#"po": po,#}
+                    "final": "final"
+                },
+                null,
+                null,
+                null,
+                function (data) {
+
+                    if (data.status == 'fail' || data.status == 'unknown') {
+                        alert(data.msg);
+                    } else {
+                        showDatas(data);
+                    }
+                },
+                function () {
+                    alert("出错了");
+                }
+            );
+            //}
+            return false;
+        });
+        $('#las_1').bind('click', function () {
+            var po = $('#i_4').val();//po
+            var po_detail = $('#i_7').val();//Item No
+            if (po == null || po == '' || po_detail == null || po_detail == '') {
+                alert('请检查po与itemNo!');
+            } else {
+                $.ax(
+                    '/finance/accessory_pay/',
+                    {
+                        "po": po,
+                        "po_detail": po_detail,
+                        "last": "last"
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            }
+            return false;
+        });
+        $('#nex_1').bind('click', function () {
+            var po = $('#i_4').val();//po
+            var po_detail = $('#i_7').val();//Item No
+            if (po == null || po == '' || po_detail == null || po_detail == '') {
+                alert('请检查po与itemNo!');
+            } else {
+                $.ax(
+                    '/finance/accessory_pay/',
+                    {
+                        "po": po,
+                        "po_detail": po_detail,
+                        "next": "next"
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            }
+            return false;
+        });
+        $('#fir_1').bind('click', function () {
+            /*
+            var po = $('#i_4').val();//po
+            if (po == null || po == '') {
+                alert('请检查po!');
+            } else {*/
+            $.ax(
+                '/finance/accessory_pay/',
+                {
+                    {#"po": po,#}
+                    "first": "first"
+                },
+                null,
+                null,
+                null,
+                function (data) {
+
+                    if (data.status == 'fail' || data.status == 'unknown') {
+                        alert(data.msg);
+                    } else {
+                        showDatas(data);
+                    }
+
+                },
+                function () {
+                    alert("出错了");
+                }
+            );
+            //}
+            return false;
+        });
+
+
+        $("#dialog-form").dialog({
+            autoOpen: false,
+            height: 500,
+            width: 1000,
+            modal: true,
+            buttons: {
+                "保存": function () {
+
+                    var bValid = true;
+                    if (bValid) {
+                        var invoice_no = $('#i_29').val();//发票号码
+                        var pay_amount = $('#i_31').val();//付款金额
+                        var remit_no = $('#i_32').val();//汇款单号码
+                        var po_id = $('#i_28').val();//PO id
+                        var currency = $('#s_1').val();//付款币种
+                        var explain = $('#t_2').val();//备注
+                        var pay_date = $('#i_33').val();//付款日期
+                        if (invoice_no == '' || invoice_no == null || pay_amount == '' || pay_amount == null
+                            || remit_no == null || remit_no == '') {
+                            alert('请输入发票号码和付款金额！！！')
+                            return false;
+                        } else {
+                            var po = $('#i_4').val();//po
+                            var po_detail = $('#i_7').val();//Item No
+                            if (po == null || po == '' || po_detail == null || po_detail == '') {
+                                alert('请检查po与itemNo!');
+                            } else {
+                                var formData = new FormData(document.querySelector('#for_'));
+                                formData.append('add', 'add');
+                                formData.append('invoice_no', invoice_no);
+                                formData.append('pay_amount', pay_amount);
+                                formData.append('remit_no', remit_no);
+                                formData.append('currency', currency);
+                                formData.append('explain', explain);
+                                formData.append('pay_date', pay_date);
+
+                                $.ajaxForm('/finance/accessory_pay/', formData, function (data) {
+
+                                    alert(data.msg);
+                                })
+                            }
+                            //确认后将发票信息传给后台成功后关闭窗口
+                            /*$(this).dialog("close");*/
+                        }
+                    }
+                    return false;
+                },
+                "退出": function () {
+                    $(this).dialog("close");
+                    return false;
+                }
+            },
+            close: function () {
+            }
+        });
+        $("#ins_1")
+            .button()
+            .click(function () {
+                $("#dialog-form").dialog("open");
+                return false;
+            });
+    });
+
+</script>
+<style type="text/css">
+    #con {
+        text-align: -webkit-center;
+    }
+
+    table {
+        text-align: center;
+    }
+
+    .bu button {
+        height: 30px;
+        width: 120px;
+        font-size: xx-small;
+
+    }
+
+</style>
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<form action="#" enctype="multipart/form-data" id="for_">
+    <div id="dialog-form" title="大货付款明细">
+        <table border="" cellspacing="" cellpadding="">
+            <tr>
+                <td>
+                    <label id="la_22">PO id</label>
+                    <input type="text" id="i_28" style="width: 80px;" name="po_id"/>
+                </td>
+                <td>
+                    <label id="la_23">发票号码</label>
+                    <input type="text" id="i_29" style="width: 100px;" name="invoice_no"/>
+                </td>
+                <td>
+                    <label id="la_24">付款币种</label>
+                    {% comment %}<input type="text" id="i_30" name="" style="width: 50px;" name="currency"/>{% endcomment %}
+                    &nbsp;
+                    <select id="s_1" name="currency">
+                        <option value="">请选择</option>
+                        <option value="RMB">RMB</option>
+                        <option value="US$">US$</option>
+                        <option value="HK$">HK$</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <label id="la_25">备注</label>
+                    <textarea name="explain" rows="3" cols="60" id="t_2"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="la_26">付款金额</label>
+                    <input type="text" id="i_31" name="pay_amount" style="width: 120px;"/>
+
+                </td>
+                <td>
+                    <label id="la_27">汇款单号码</label>
+                    <input type="text" id="i_32" name="remit_no" style="width: 120px;"/>
+
+                </td>
+                <td>
+                    <label id="la_28">付款日期</label>
+                    <input type="text" id="i_33" name="pay_date" style="width: 120px;"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="con">
+        <div class="bu">
+            <button id="fir_1" value="button" name="first"
+                    class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"
+                    aria-disabled="false">
+                <span class="ui-button-text">第一条
+                </span>
+            </button>
+            <button id="las_1" value="button" name="last"
+                    class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"
+                    aria-disabled="false">
+                <span class="ui-button-text">上一条
+                </span>
+            </button>
+            <button id="nex_1" value="button" name="next"
+                    class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"
+                    aria-disabled="false">
+                <span class="ui-button-text">下一条
+                </span>
+            </button>
+            <button id="fin_1" value="button" name="final"
+                    class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"
+                    aria-disabled="false">
+                <span class="ui-button-text">最后一条
+                </span>
+            </button>
+            <button id="ins_1" value="button" name="add">添加</button>
+            <button id="del_1" value="button" name="delete"
+                    class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"
+                    aria-disabled="false">
+                <span class="ui-button-text">
+                    删除信息
+                </span>
+            </button>
+            <button id="upd_1" value="button" name="modify"
+                    class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"
+                    aria-disabled="false">
+                <span class="ui-button-text">
+                    修改信息
+                </span>
+            </button>
+            <button id="sel_1" value="button" name="view"
+                    class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"
+                    aria-disabled="false">
+                <span class="ui-button-text">查询信息
+                </span>
+            </button>
+        </div>
+        <hr/>
+        <label>客户和工厂资料</label>
+        <hr/>
+        <table border="" cellspacing="" cellpadding="">
+            <tr>
+
+                <td><label id="la_1">ID#</label>
+                    <input type="text" name="id" id="i_1" value=""/>
+                </td>
+                <td><label id="la_2">客户ID</label>
+                    <input type="text" name="customer_id" id="i_2" value=""/>
+                </td>
+                <td colspan="2"><label id="la_3">工厂全称</label>
+                    <input type="text" name="factory" id="i_3" value=""/>
+                </td>
+
+            </tr>
+            <tr>
+
+                <td><label id="la_4">PO#</label>
+                    <input type="text" name="po" id="i_4" value=""/>
+                </td>
+                <td><label id="la_5">客户PO#</label>
+                    <input type="text" name="customer_po" id="i_5" value=""/>
+                </td>
+                <td><label id="la_6">客人货号</label>
+                    <input type="text" name="customer_item" id="i_6" value=""/>
+                </td>
+                </td>
+                <td><label id="la_7">Item No</label>
+                    <input type="text" name="po_detail" id="i_7" value=""/>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="4"><label id="la_8">品名与规格</label>
+                    <input type="text" name="product" id="i_8" value=""/>
+
+                </td>
+            </tr>
+            <tr>
+                <td><label id="la_9">数量/单位</label>
+                    <input type="text" name="amount" id="i_9" value=""/> &nbsp;&nbsp;
+                    <input type="text" name="unit" id="i_10" value=""/>
+                </td>
+                <td><label id="la_10">实际交货日期</label>
+                    <input type="text" name="final_date" id="i_11" value=""/>
+                </td>
+                <td><label id="la_11">QC</label>
+                    <input type="text" name="qc1" id="i_12" value=""/>
+                </td>
+                </td>
+                <td><label id="la_12">承办员</label>
+                    <input type="text" name="omr" id="i_13" value=""/>
+                </td>
+
+            </tr>
+            <tr>
+                <td><label id="la_13">客人单价</label>
+                    <input type="text" name="cus_price" id="i_14" value=""/> &nbsp;
+                    <input type="text" name="cus_currency" id="i_15" value=""/>
+                </td>
+                <td><label id="la_14">工厂单价</label>
+                    <input type="text" name="fac_cost" id="i_16" value=""/> &nbsp;
+                    <input type="text" name="fac_cost_currency" id="i_17" value=""/>
+                </td>
+                <td colspan="2">
+                    <input type="checkbox" name="forProfitReport" id="i_18" value=""/>
+                    <label id="la_15">for profit report</label>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="2"><label id="la_16">客人总价</label>
+                    <input type="text" name="cus_total" id="i_19" value=""/> &nbsp;
+                    <input type="text" name="cus_total_currency" id="i_20" value=""/>
+                </td>
+                <td colspan="2"><label id="la_17">工厂总价</label>
+                    <input type="text" name="fac_total" id="i_21" value=""/> &nbsp;
+                    <input type="text" name="fac_total_currency" id="i_22" value=""/>
+            </tr>
+        </table>
+        <hr/>
+        <label>进出品公司信息</label>
+        <hr/>
+        <table border="" cellspacing="" cellpadding="">
+            <tr>
+                <td><label id="la_18">公司代码</label>
+                    <input type="text" name="code" id="i_23"/>
+                </td>
+                <td colspan="2"><label id="la_19">进出口公司</label>
+                    <input type="text" name="name" id="i_24"/>
+                    <!--<button id="com_set">进出口与公司设置</button>-->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="la_20">户口抬头</label>
+                    <input type="text" name="title" id="i_25"/>
+                </td>
+                <td>
+                    <label id="la_20">户口账号</label>
+                    <input type="text" name="account_no" id="i_26"/>
+                </td>
+                <td>
+                    <label id="la_20">开户银行</label>
+                    <input type="text" name="bank" id="i_27"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <label id="la_21">备注</label>
+                    <textarea name="" rows="4" cols="100" id="t_1"></textarea>
+                </td>
+            </tr>
+        </table>
+
+
+    </div>
+</form>
+<div id="div_1" style="text-align: -webkit-center">
+    <table border="" cellspacing="" cellpadding="">
+        <tr>
+            <th><label>id</label></th>
+            <th><label>付款日期</label></th>
+            <th><label>发票号码</label></th>
+            <th><label>付款金额</label></th>
+            <th><label>付款币种</label></th>
+            <th><label>备注</label></th>
+        </tr>
+    </table>
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>登陆展示首页</title>
+    <script type="text/javascript" src="/static/js/2.1.4jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //页面加载
+            var data = {{ data|safe }};
+            debugger;
+            showCaseInfo(data);
+            showTodayCase(data);
+
+            function showTodayCase(data) {
+                debugger;
+                $('#todayCase').html('');
+                var text = '';
+                text += "<table border=\"1\">";
+                text += "                <thead>";
+                text += "                <th>";
+                text += "                    <input type=\"checkbox\" id=\"check\"/>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>工厂</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>订单PO号</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>订单item号</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>品名</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>数量</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>事项内容</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>应该完成时间</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>是否完成</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>实际完成时间</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>操作人</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>操作</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>备注</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>是否上传</label>";
+                text += "                </th>";
+                text += "                </thead>";
+                text += "                <tbody>";
+                for (var i in data.data.today_reminds) {
+
+                    if (data.data.today_reminds[i].fields.is_order == 'False') {
+                        //无关于订单
+                        text += "                <tr>";
+                        text += "                    <td><input type=\"checkbox\"></td>";
+                        text += "                    <td></td>";
+                        text += "                    <td></td>";
+                        text += "                    <td></td>";
+                        text += "                    <td></td>";
+                        text += "                    <td></td>";
+                        text += "                    <td>" + data.data.today_reminds[i].fields.event.name + "</td>";
+                        text += "                    <td>" + data.data.today_reminds[i].fields.plan_date + "</td>";
+                        if (data.data.today_reminds[i].fields.status == 'True') {
+                            text += "<td> <font color=\"green\">已完成</font></td>";
+                        } else {
+                            text += "<td> <font color=\"red\">未完成</font></td>";
+                        }
+
+                        text += "                    <td>" + data.data.today_reminds[i].fields.actual_date + "</td>";
+                        text += "                    <td>" + data.data.today_reminds[i].fields.person + "</td>";
+                        if (data.data.today_reminds[i].fields.status == 'True') {
+                            text += "<td> </td>";
+                        } else {
+                            text += "<td> <span id=\"sp" + data.data.today_reminds[i].pk + "\"> <button color=\"red\" onclick=\"complete('" + data.data.today_reminds[i].pk + "')\">确认完成</button></span></td>";
+                        }
+                        text += "<td><input type=\"date\" id=\"in" + data.data.today_reminds[i].pk + "\"><button id=\"btn\" onclick=\"extension('" + data.data.today_reminds[i].pk + "')\">延期</button> </td>";
+                        if (data.data.today_reminds[i].fields.is_upload_file == 'True') {
+                            //上传文件
+
+                            text += "<td> <input type=\"file\" id=\"file" + data.data.today_reminds[i].pk + "\"/></td>";
+                        } else {
+                            text += "                    <td></td>";
+                        }
+
+
+                        text += "                </tr>";
+                    } else if (data.data.today_reminds[i].fields.is_order == 'True') {
+                        //订单相关
+                        text += "                <tr>";
+                        text += "                    <td><input type=\"checkbox\"></td>";
+                        text += "                    <td>" + data.data.today_reminds[i].fields.factory + "</td>";
+                        text += "                    <td>" + data.data.today_reminds[i].fields.po + "</td>";
+                        text += "                    <td>" + data.data.today_reminds[i].fields.item_no + "</td>";
+                        text += "                    <td>" + data.data.today_reminds[i].fields.desc + "</td>";
+                        text += "                    <td>" + data.data.today_reminds[i].fields.amount + "</td>";
+                        text += "                    <td>" + data.data.today_reminds[i].fields.event.name + "</td>";
+                        text += "                    <td>" + data.data.today_reminds[i].fields.plan_date + "</td>";
+                        if (data.data.today_reminds[i].fields.status == 'True') {
+                            text += "<td> <font color=\"green\">已完成</font></td>";
+                        } else {
+                            text += "<td> <font color=\"red\">未完成</font></td>";
+                        }
+                        text += "                    <td>" + data.data.today_reminds[i].fields.actual_date + "</td>";
+                        text += "                    <td>" + data.data.today_reminds[i].fields.person + "</td>";
+                        if (data.data.today_reminds[i].fields.status == 'True') {
+                            text += "<td> </td>";
+                        } else {
+                            text += "<td> <span id=\"sp" + data.data.today_reminds[i].pk + "\"> <button color=\"red\" onclick=\"complete('" + data.data.today_reminds[i].pk + "')\">确认完成</button></span></td>";
+                        }
+                        text += "<td><input type=\"date\" id=\"in" + data.data.today_reminds[i].pk + "\"><button id=\"btn\" onclick=\"extension('" + data.data.today_reminds[i].pk + "')\">延期</button> </td>";
+                        if (data.data.today_reminds[i].fields.is_upload_file == 'True') {
+                            //上传文件
+
+                            text += "<td> <input type=\"file\" id=\"file" + data.data.today_reminds[i].pk + "\"/></td>";
+                        } else {
+                            text += "                    <td></td>";
+                        }
+                        text += "                </tr>";
+                    }
+
+                }
+                text += "                </tbody>";
+                text += "";
+                text += "            </table>";
+                text += "            <label>共 " + data.today_page_info.page_max + "页 &nbsp;当前第 <span id=\"todayPage\">" + data.today_page_info.page_now + "</span> 页</label>";
+                $('#todayCase').html(text);
+            }
+
+
+            //展示总事项简略信息
+            function showCaseInfo(data) {
+                $('#caseInfo').html('');
+                var text = "";
+                text += " <table border=\"1\" cellpadding=\"0\" cellspacing=\"1\">";
+                text += "                <thead>";
+                text += "                <th>";
+                text += "                    <label>日期</label>";
+                text += "                </th>";
+                text += "                <th>";
+                text += "                    <label>操作</label>";
+                text += "                </th>";
+                for (var i in data.data.all_reminds) {
+
+                    text += "                <tr>";
+                    text += "                    <td>" + data.data.all_reminds[i].plan_date + "</td>";
+                    if (data.data.all_reminds[i].status == '已完成') {
+                        text += "<td><a style=\"color: green\" href=\"/pom/show_all_reminds_detail/?plan_date=" + data.data.all_reminds[i].plan_date + "\">" + data.data.all_reminds[i].status + "</a></td>";
+                    } else {
+                        text += "<td><a style=\"color: red\" href=\"/pom/show_all_reminds_detail/?plan_date=" + data.data.all_reminds[i].plan_date + "\">" + data.data.all_reminds[i].status + "</a></td>";
+                    }
+                    text += "                </tr>";
+                }
+                text += "                </thead>";
+                text += "            </table>";
+                text += "";
+                text += "            <label>共 " + data.all_page_info.page_max + " 页 &nbsp;当前第 <span id=\"totalPage\">" + data.all_page_info.page_now + " </span>页</label>";
+                $('#caseInfo').html(text);
+
+            }
+
+            $('#over').bind('click', function () {
+            });
+
+            //当日事项翻页
+            //第一页
+            $('#first_d').bind('click', function () {
+                $.ajax({
+                    url: '/pom/show_reminds/',
+                    type: 'post',
+                    async: false,
+                    data: {
+                        'page_type': 'today',
+                        'first': 'first'
+                    },
+                    success: function (data) {
+                        showTodayCase(data);
+                    }
+                });
+            });
+            //上一页
+            $('#last_d').bind('click', function () {
+                var page = $('#todayPage').text();
+                $.ajax({
+                    url: '/pom/show_reminds/',
+                    type: 'post',
+                    async: false,
+                    data: {
+                        'page_type': 'today',
+                        'last': 'last',
+                        'page': page
+                    },
+                    success: function (data) {
+                        showTodayCase(data);
+                    }
+                });
+
+            });
+            //下一页
+            $('#next_d').bind('click', function () {
+                var page = $('#todayPage').text();
+                $.ajax({
+                    url: '/pom/show_reminds/',
+                    type: 'post',
+                    async: false,
+                    data: {
+                        'page_type': 'today',
+                        'next': 'next',
+                        'page': page
+                    },
+                    success: function (data) {
+                        debugger;
+                        showTodayCase(data);
+                    }
+
+                });
+            });
+            //最后一页
+            $('#final_d').bind('click', function () {
+                $.ajax({
+                    url: '/pom/show_reminds/',
+                    type: 'post',
+                    async: false,
+                    data: {
+                        'page_type': 'today',
+                        'final': 'final'
+                    },
+                    success: function (data) {
+                        showTodayCase(data);
+                    }
+                });
+            });
+
+
+            //日期操作翻页（所有历史事项）
+            //第一页
+            $('#first').bind('click', function () {
+                $.ajax({
+                    url: '/pom/show_reminds/',
+                    type: 'post',
+                    async: false,
+                    data: {
+                        'page_type': 'all',
+                        'first': 'first'
+                    },
+                    success: function (data) {
+                        showCaseInfo(data);
+                    }
+                });
+            });
+            //上一页
+            $('#last').bind('click', function () {
+                var page = $('#totalPage').text();
+                $.ajax({
+                    url: '/pom/show_reminds/',
+                    type: 'post',
+                    async: false,
+                    data: {
+                        'page_type': 'all',
+                        'last': 'last',
+                        'page': page
+                    },
+                    success: function (data) {
+                        showCaseInfo(data);
+                    }
+                });
+            });
+            //下一页
+            $('#next').bind('click', function () {
+                var page = $('#totalPage').text();
+                $.ajax({
+                    url: '/pom/show_reminds/',
+                    type: 'post',
+                    async: false,
+                    data: {
+                        'page_type': 'all',
+                        'next': 'next',
+                        'page': page
+                    },
+                    success: function (data) {
+
+                        showCaseInfo(data);
+                    }
+                });
+            });
+            //最后一页
+            $('#final').bind('click', function () {
+                $.ajax({
+                    url: '/pom/show_reminds/',
+                    type: 'post',
+                    async: false,
+                    data: {
+                        'page_type': 'all',
+                        'final': 'final'
+                    },
+                    success: function (data) {
+                        showCaseInfo(data);
+                    }
+                });
+            });
+            //页面跳转
+            $('#go').bind('click', function () {
+                var page = $('#goPage').val();
+                if (page == '' || page == null) {
+                    alert('请输入页码');
+                } else {
+                    $.ajax({
+                        url: '/pom/show_reminds/',
+                        type: 'post',
+                        async: false,
+                        data: {
+                            'page_type': 'all',
+                            'turn': 'turn',
+                            'page_go': page
+                        },
+                        success: function (data) {
+                            showCaseInfo(data);
+                        }
+                    });
+                }
+            });
+        });
+
+        //点击完成事项
+        function complete(id) {
+            //完成事项同时文件上传提交
+            var formdata = new FormData();
+            if ($('#file' + id).length > 0) {
+                var file = $('#file' + id)[0].files[0];
+                formdata.append('file', file);
+            }
+            formdata.append('id', id);
+            $.ajax({
+                url: '/pom/refresh_status/',
+                type: 'post',
+                data: formdata,
+                processData: false, // 不处理数据( 必须有)
+                contentType: false,  //不设置内容类型 ( 必须要)
+                success: function (data) {
+                    debugger;
+                    //判断完成事项是否成功
+                    if (data.status == 'success') {
+
+                        //成功则修改页面显示
+                        $('#sp' + id).html('');
+                        $('#sp' + id).parent().prev().prev().html("" + new Date().Format("yyyy-MM-dd"));
+                        $('#sp' + id).parent().prev().prev().prev().html("<font color=\"green\">已完成</font>");
+
+                        //可展示回显功能
+
+
+                    } else {
+                        alert('出错，请重试！');
+                    }
+                }
+            })
+
+
+        }
+
+        //事项延期
+        function extension(id) {
+            var date = $('#in' + id).val();
+            if (date == '' || date == null) {
+                alert('请输入日期');
+            } else {
+                date = new Date(date).Format("yyyy-MM-dd");
+                console.log(date);
+                $.ajax({
+                    url: '',
+                    type: 'post',
+                    async: false,
+                    data: {
+                        'id': id,
+                        'date': date,
+                        'delay': "delay"
+                    },
+                    success: function (data) {
+                        alert(data.msg);
+                    }
+                });
+            }
+
+        }
+
+
+    </script>
+
+    <style type="text/css">
+
+        table th {
+            background-color: darkgray;
+        }
+    </style>
+</head>
+
+<body>
+<div style="text-align: -webkit-center;">
+    <div id="">
+        <div id="caseInfo">
+        </div>
+        <br/>
+        <button id="first">&laquo;</button>
+        <button id="last">&lt;</button>
+        <button id="next">&gt;</button>
+        <button id="final"> &raquo;</button>
+        <input type="text" id="goPage" style="width: 30px;"/>
+        <button id="go">GO</button>
+    </div>
+
+    <div id="content">
+        <hr/>
+        <label>
+            当天监控事项
+        </label>
+        <hr/>
+        <div id="todayCase">
+            <table border="1">
+                <thead>
+                <th>
+                    <input type="checkbox" id="check"/>
+                </th>
+                <th>
+                    <label>工厂</label>
+                </th>
+                <th>
+                    <label>订单PO号</label>
+                </th>
+                <th>
+                    <label>订单item号</label>
+                </th>
+                <th>
+                    <label>品名</label>
+                </th>
+                <th>
+                    <label>数量</label>
+                </th>
+                <th>
+                    <label>事项内容</label>
+                </th>
+                <th>
+                    <label>应该完成时间</label>
+                </th>
+                <th>
+                    <label>是否完成</label>
+                </th>
+                <th>
+                    <label>实际完成时间</label>
+                </th>
+                <th>
+                    <label>操作人</label>
+                </th>
+                <th>
+                    <label>操作</label>
+                </th>
+                <th>
+                    <label>备注</label>
+                </th>
+                <th>
+                    <label>是否上传</label>
+                </th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                </tr>
+                </tbody>
+
+            </table>
+            <label>共 79页 &nbsp;当前第 70 页</label>
+        </div>
+        <br/>
+        <button id="first_d">&laquo;</button>
+        <button id="last_d">&lt;</button>
+        <button id="next_d">&gt;</button>
+        <button id="final_d">&raquo;</button>
+        <br/>
+        <!--<button id="over">完成</button>-->
+    </div>
+</div>
+</body>
+
+</html>

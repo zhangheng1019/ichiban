@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>索赔</title>
+
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/tongyong.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/md5.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/j-ui.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script src="/static/js/jquery-ui.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+
+    <style type="text/css">
+        #con {
+            text-align: -webkit-center;
+        }
+
+        table {
+            text-align: center;
+        }
+
+        #la_14 {
+            display: block;
+            text-align: left;
+        }
+
+        #la_15 {
+            display: block;
+            text-align: left;
+        }
+
+        #la_16 {
+            display: block;
+            text-align: left;
+        }
+
+        #dialog-form,
+        #dialog-bu_2 {
+            font-size: small;
+        }
+
+        #dialog-form,
+        #dialog-bu_2 table {
+            text-align: left;
+        }
+
+        #i_15 {
+            width: 100px;
+        }
+
+        #bu_1,
+        #bu_2 {
+            font-size: smaller;
+        }
+
+        #i_29,
+        #i_30,
+        #i_31,
+        #i_32,
+        #i_33,
+        #i_34,
+        #i_36,
+        #i_37 {
+            width: 100px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            var id = $('#i_1').val(); //id
+            var customerID = $('#i_2').val(); //客户id
+            var factory = $('#i_3').val(); //工厂全称
+            var mr = $('#i_4').val(); //MR
+            var explain = $('#i_5').val(); //备注
+            var po = $('#i_6').val(); //升辉po
+            var customer_po = $('#i_7').val(); //客户po
+            var customer_item = $('#i_8').val(); //客户货号
+            var po_detail = $('#i_9').val(); //item no
+            var product = $('#i_10').val(); //品名
+            var amount = $('#i_11').val(); //数量
+            //var aaa = $('#i_13').val(); //数量单位 EA
+            var final_date = $('#i_12').val(); //实际交期
+
+            var qc1 = $('#i_14').val(); //QC
+            //模态框
+            //索赔明细
+            var PoDetailID = $('#i_15').val(); //podetail id
+            var claim_category = $('#s_1').val(); //赔款种类
+            var date = $('#i_16').val(); //索赔日期
+            var count = $('#i_17').val(); //索赔数量
+            var currency = $('#s_2').val(); //索赔金额
+            var amount = $('#i_18').val(); //索赔金额
+            var type = $('#s_3').val(); //分类
+            var category_remark = $('#i_19').val(); //分类备注
+            var claim_detail_explain = $('#t_1').val(); //赔款明细
+            var currency1 = $('#s_4').val(); //赔款工厂金额 单位
+            var fac_amount = $('#i_20').val(); //赔款工厂金额
+            var fac_claim_detail = $('#t_2').val(); //索赔工厂金额明细
+            var invoice_no = $('#i_21').val(); //结算发票号码
+            var pay_date = $('#i_22').val(); //付清日期
+
+            //扣款明细资料
+            var material_id = $('#i_23').val(); //材料 id
+            var method = $('#i_24').val(); //提供方式
+            var material_from = $('#i_25').val(); //材料来源
+
+            //var bbb = $('#i_26').val(); //明细
+
+            var is_order = $('#i_27').val(); //是否需深圳订购
+            var factory = $('#i_28').val(); //深圳下单工厂
+            var fac_order_qty = $('#i_29').val(); //订购数量
+            var qty_unit = $('#i_30').val(); //订购数量
+            var total = $('#i_31').val(); //扣款总额
+            var qty_unit = $('#i_32').val(); //扣款总额
+            var order_cost = $('#i_33').val(); //下单单价
+            var order_currency = $('#i_34').val(); //下单单价
+            var deducted_date = $('#i_35').val(); //扣款日期
+            var fac_actual_qty = $('#i_36').val(); //实送数量
+            var fac_actual_unit = $('#i_37').val(); //实送数量
+            var invoice_no = $('#i_38').val(); //扣款发票号码
+            var data ={{ data|safe }};
+            var text = "";
+            for (var i in data.data.Claim_category) {
+                text += "<option value=\"" + data.data.Claim_category[i].fields.name + "\">" + data.data.Claim_category[i].fields.name + "</option>";
+            }
+            $('#s_1').append(text);
+            text = "";
+            for (var i in data.data.Currency) {
+                text += "<option value=\"" + data.data.Currency[i].fields.name + "\">" + data.data.Currency[i].fields.name + "</option>";
+            }
+            $('#s_2').append(text);
+            text = "";
+            for (var i in data.data.Type) {
+                text += "<option value=\"" + data.data.Type[i].fields.desc + "\">" + data.data.Type[i].fields.desc + "</option>";
+            }
+            $('#s_3').append(text);
+            $('#s_4').append(text);
+
+            //查看索赔明细 默认显示第一条
+            {% comment %}$('#bu_1').bind('click', function () {
+
+                var p_id = $('#i_1').val(data.data.claim_payment.id); //id
+                if (p_id == null || p_id == '') {
+                    alert('请检查订单信息中的id');
+                } else {
+                    $.ax(
+                        '/finance/claim_detail/',
+                        {
+                            "p_id": p_id,
+                            "first": "first"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showSuoPeiDetail(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });{% endcomment %}
+            //上一条
+            $('#bu_3').bind('click', function () {
+                var p_id = $('#i_1').val(); //id
+                var d_id = $('#i_15').val();
+                if (p_id == null || p_id == '' || d_id == null || d_id == '') {
+                    alert('请检查订单信息id与索赔信息id!');
+                } else {
+                    $.ax(
+                        '/finance/claim_detail/',
+                        {
+                            "p_id": p_id,
+                            "dd_id": d_id,
+                            "last": "last"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showSuoPeiDetail(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+
+                }
+                return false;
+            });
+            //下一条
+            $('#bu_4').bind('click', function () {
+                debugger;
+                var p_id = $('#i_1').val(); //id
+                var d_id = $('#i_15').val();
+                if (p_id == null || p_id == '' || d_id == null || d_id == '') {
+                    alert('请检查订单信息id与索赔信息id!');
+                } else {
+                    $.ax(
+                        '/finance/claim_detail/',
+                        {
+                            "p_id": p_id,
+                            "d_id": d_id,
+                            "next": "next"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showSuoPeiDetail(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+
+                }
+                return false;
+            });
+            //添加
+            $('#bu_5').bind('click', function () {
+
+                var p_id = $('#i_1').val(); //id
+                var d_id = $('#i_15').val();
+                if (p_id == null || p_id == '' || d_id == null || d_id == '') {
+                    alert('请检查订单信息id与索赔信息id!');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_1'));
+                    formData.append('add', 'add');
+                    $.ajaxForm('/finance/claim_detail/', formData, function (data) {
+                        alert(data.msg);
+                    })
+                }
+
+            });
+            //修改
+            $('#bu_6').bind('click', function () {
+                var p_id = $('#i_1').val(); //id
+                var d_id = $('#i_15').val();
+                if (p_id == null || p_id == '' || d_id == null || d_id == '') {
+                    alert('请检查订单信息id与索赔信息id!');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_1'));
+                    formData.append('modify', 'modify');
+                    $.ajaxForm('/finance/claim_detail/', formData, function (data) {
+                        alert(data.msg);
+                    })
+                }
+            });
+            //删除
+            $('#bu_7').bind('click', function () {
+                alert('请联系资讯');
+            });
+            //保存
+            $('#bu_8').bind('click', function () {
+
+            });
+
+
+            //查看扣款信息 默认显示第一条
+            {% comment %} $('#bu_2').bind('click', function () {
+                 var p_id = $('#i_1').val(); //id
+                 if (p_id == null || p_id == '') {
+                     alert('请检查订单信息中的id');
+                 } else {
+                     $.ax(
+                         '/finance/deduction_detail/',
+                         {
+                             "p_id": p_id,
+                             "first": "first"
+                         },
+                         null,
+                         null,
+                         null,
+                         function (data) {
+                             if (data.status == 'fail' || data.status == 'unknown') {
+                                 alert(data.msg);
+                             } else {
+                                 showKouKuanDetail(data);
+                             }
+                         },
+                         function () {
+                             alert("出错了");
+                         }
+                     );
+                 }
+             });{% endcomment %}
+            //上一
+            $('#bu_9').bind('click', function () {
+                var p_id = $('#i_1').val(); //id
+                var dd_id = $('#i_23').val();
+                if (p_id == null || p_id == '' || dd_id == null || dd_id == '') {
+                    alert('请检查订单信息中的id与扣款明细id');
+                } else {
+                    $.ax(
+                        '/finance/deduction_detail/',
+                        {
+                            "p_id": p_id,
+                            "dd_id": dd_id,
+                            "last": "last"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showKouKuanDetail(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+                return false;
+            });
+            //下一
+            $('#bu_10').bind('click', function () {
+                var p_id = $('#i_1').val(); //id
+                var dd_id = $('#i_23').val();
+                if (p_id == null || p_id == '' || dd_id == null || dd_id == '') {
+                    alert('请检查订单信息中的id与扣款明细id');
+                } else {
+                    $.ax(
+                        '/finance/deduction_detail/',
+                        {
+                            "p_id": p_id,
+                            "dd_id": dd_id,
+                            "next": "next"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showKouKuanDetail(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+                return false;
+            });
+            //修改
+            $('#bu_11').bind('click', function () {
+                var p_id = $('#i_1').val(); //id
+                var dd_id = $('#i_23').val();
+                if (p_id == null || p_id == '' || dd_id == null || dd_id == '') {
+                    alert('请检查订单信息id与索赔信息id!');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_2'));
+                    formData.append('modify', 'modify');
+                    $.ajaxForm('/finance/deduction_detail/', formData, function (data) {
+                        alert(data.msg);
+                    })
+                }
+
+            });
+            //保存
+            $('#bu_12').bind('click', function () {
+                var p_id = $('#i_1').val(); //id
+                var dd_id = $('#i_23').val();
+                if (p_id == null || p_id == '' || dd_id == null || dd_id == '') {
+                    alert('请检查订单信息id与索赔信息id!');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_2'));
+                    formData.append('add', 'add');
+                    $.ajaxForm('/finance/deduction_detail/', formData, function (data) {
+                        alert(data.msg);
+                    })
+                }
+            });
+
+
+            function showSuoPeiDetail(data) {
+                //索赔明细
+                var PoDetailID = $('#i_15').val(data.data.claim_detail.id); //podetail id
+                $('#i_15').prop('readonly', 'true');
+                {% comment %}var claim_category = $('#s_1').val(data.data.claim_detail.claim_category.code); //赔款种类{% endcomment %}
+                //选中事件code
+                if (!$.isEmptyObject(data.data.claim_detail.claim_category)) {
+                    selected($('#s_1'), data.data.claim_detail.claim_category.code);
+                }
+                var date = $('#i_16').val(data.data.claim_detail.date); //索赔日期
+                var count = $('#i_17').val(data.data.claim_detail.amount); //索赔数量
+                {% comment %}var currency = $('#s_2').val(data.data.claim_detail.currency.code); //索赔金额单位{% endcomment %}
+                //选中事件code
+                if (!$.isEmptyObject(data.data.claim_detail.currency)) {
+                    selected($('#s_2'), data.data.claim_detail.currency.code);
+                }
+                var amount = $('#i_18').val(data.data.claim_detail.amount); //索赔金额
+                {% comment %}var type = $('#s_3').val(data.data.claim_detail.type.desc); //分类{% endcomment %}
+                //选中事件
+                if (!$.isEmptyObject(data.data.claim_detail.type)) {
+                    selected($('#s_3'), data.data.claim_detail.type.desc);
+                }
+                var category_remark = $('#i_19').val(data.data.claim_detail.category_remark); //分类备注
+                var claim_detail_explain = $('#t_1').val(data.data.claim_detail.claim_detail_explain); //赔款明细
+                {% comment %}var currency1 = $('#s_4').val(data.data.claim_detail.currency1.code); //赔款工厂金额 单位{% endcomment %}
+                //选中事件code
+                if (!$.isEmptyObject(data.data.claim_detail.currency1)) {
+                    selected($('#s_4'), data.data.claim_detail.currency1.code);
+                }
+                var fac_amount = $('#i_20').val(data.data.claim_detail.fac_amount); //赔款工厂金额
+                var fac_claim_detail = $('#t_2').val(data.data.claim_detail.fac_claim_detail); //索赔工厂金额明细
+                var invoice_no = $('#i_21').val(data.data.claim_detail.invoice_no); //结算发票号码
+                var pay_date = $('#i_22').val(data.data.claim_detail.pay_date); //付清日期
+            }
+
+            function showKouKuanDetail(data) {
+                //扣款明细资料
+                var material_id = $('#i_23').val(data.data.deduction_detail.id); //材料 id
+                $('#i_23').prop('readonly', 'true');
+                var method = $('#i_24').val(data.data.deduction_detail.method); //提供方式
+                var material_from = $('#i_25').val(data.data.deduction_detail.material_from); //材料来源
+
+                //var bbb = $('#i_26').val(); //明细
+
+                var is_order = $('#i_27').val(data.data.deduction_detail.is_order); //是否需深圳订购
+                //
+                if (!$.isEmptyObject(data.data.deduction_detail.factory)) {
+
+                    var factory = $('#i_28').val(data.data.deduction_detail.factory.name); //深圳下单工厂
+                }
+                var fac_order_qty = $('#i_29').val(data.data.deduction_detail.fac_order_qty); //订购数量
+                var qty_unit = $('#i_30').val(data.data.deduction_detail.qty_unit); //订购数量
+                var total = $('#i_31').val(data.data.deduction_detail.total); //扣款总额
+                if (!$.isEmptyObject(data.data.deduction_detail.order_currency)) {
+
+                    var qty_unit = $('#i_32').val(data.data.deduction_detail.order_currency.code); //扣款总额
+                }
+                var order_cost = $('#i_33').val(data.data.deduction_detail.order_cost); //下单单价
+                if (!$.isEmptyObject(data.data.deduction_detail.order_currency)) {
+
+                    var order_currency = $('#i_34').val(data.data.deduction_detail.order_currency.code); //下单单价
+                }
+                var deducted_date = $('#i_35').val(data.data.deduction_detail.deducted_date); //扣款日期
+                var fac_actual_qty = $('#i_36').val(data.data.deduction_detail.fac_actual_qty); //实送数量
+                var fac_actual_unit = $('#i_37').val(data.data.deduction_detail.fac_actual_unit); //实送数量
+                var invoice_no = $('#i_38').val(data.data.deduction_detail.invoice_no); //扣款发票号码
+
+            }
+
+            function showDatas(data) {
+                var id = $('#i_1').val(data.data.claim_payment.id); //id
+                $('#i_1').prop('readonly', 'true');
+                var customerID = $('#i_2').val(data.data.po.customer.code); //客户id
+                var factory = $('#i_3').val(data.data.contract.factory.name); //工厂全称
+                var mr = $('#i_4').val(data.data.po.omr.name); //MR
+                var explain = $('#i_5').val(data.data.claim_payment.explain); //备注
+                var po = $('#i_6').val(data.data.po.order_number); //升辉po
+                var customer_po = $('#i_7').val(data.data.po.customer_pono); //客户po
+                var customer_item = $('#i_8').val(data.data.po_detail.customer_item); //客户货号
+                var po_detail = $('#i_9').val(data.data.po_detail.item_no); //item no
+                var product = $('#i_10').val(data.data.po_detail.desc); //品名
+                var amount = $('#i_11').val(data.data.po_detail.amount); //数量
+                //var aaa = $('#i_13').val(); //数量单位 EA
+                var final_date = $('#i_12').val(data.data.po.fina_date); //实际交期
+                if (!$.isEmptyObject(data.data.product_send)) {
+
+                    var qc1 = $('#i_14').val(data.data.product_send.qc1.name); //QC
+
+                }
+                //模态框
+                $('#div_1').html('');
+                var text = "";
+                text += "<table border=\"\" cellspacing=\"\" cellpadding=\"\">";
+                text += "					<tr>";
+                text += "<th><label>ID</label></th>";
+                text += "                    <th><label>付清日期</label></th>";
+                text += "                    <th><label>索赔日期</label></th>";
+                text += "                    <th><label>索赔金额</label></th>";
+                text += "                    <th><label>工厂金额</label></th>";
+                text += "                    <th><label>币种</label></th>";
+                text += "                    <th><label>结算发票号码</label></th>";
+                text += "                    <th><label>备注</label></th>";
+                text += "					</tr>";
+                for (var i in data.data.claim_detail) {
+
+                    text += "					<tr>";
+                    text += "						<td>" + data.data.claim_detail[i].id + "</td>";
+                    text += "						<td>" + data.data.claim_detail[i].pay_date + "</td>";
+                    text += "						<td>" + data.data.claim_detail[i].date + "</td>";
+                    text += "						<td>" + data.data.claim_detail[i].amount + "</td>";
+                    text += "						<td>" + data.data.claim_detail[i].fac_amount + "</td>";
+                    if (!$.isEmptyObject(data.data.claim_detail[i].currency1)) {
+
+                        text += "						<td>" + data.data.claim_detail[i].currency1.name + "</td>";
+                    }
+                    text += "						<td>" + data.data.claim_detail[i].invoice_no + "</td>";
+                    text += "						<td>" + data.data.claim_detail[i].category_remark + "</td>";
+                    text += "					</tr>";
+                }
+                text += "				</table>";
+                $('#div_1').html(text);
+
+                $('#div_2').html('');
+                text = "";
+                text += "<table border=\"\" cellspacing=\"\" cellpadding=\"\">";
+                text += "					<tr>";
+                text += "  <th><label>ID</label></th>";
+                text += "                        <th><label>描述</label></th>";
+                text += "                        <th><label>数量</label></th>";
+                text += "                        <th><label>单位</label></th>";
+                text += "                        <th><label>单价</label></th>";
+                text += "                        <th><label>日期</label></th>";
+                text += "                        <th><label>付款金额</label></th>";
+                text += "                        <th><label>币种</label></th>";
+                text += "                        <th><label>扣款日期</label></th>";
+                text += "                        <th><label>扣款发票号码</label></th>";
+                text += "";
+                text += "					</tr>";
+                for (var i in data.data.deduction_detail) {
+
+
+                    text += "					<tr>";
+                    text += "						<td>" + data.data.deduction_detail[i].id + "</td>";
+                    text += "						<td>" + data.data.deduction_detail[i].material + "</td>";//描述
+                    text += "						<td>" + data.data.deduction_detail[i].fac_order_qty + "</td>";//数量
+                    text += "						<td>" + data.data.deduction_detail[i].qty_unit + "</td>";
+                    text += "						<td>" + data.data.deduction_detail[i].order_cost + "</td>";
+                    text += "						<td>" + data.data.deduction_detail[i].deducted_date + "</td>";
+                    text += "						<td>" + data.data.deduction_detail[i].total + "</td>";
+                    if (!$.isEmptyObject(data.data.deduction_detail[i].order_currency.name)) {
+
+                        text += "						<td>" + data.data.deduction_detail[i].order_currency.name + "</td>";
+                    }
+                    text += "						<td>" + data.data.deduction_detail[i].deducted_date + "</td>";
+                    text += "						<td>" + data.data.deduction_detail[i].invoice_no + "</td>";
+                    text += "					</tr>";
+                }
+                text += "				</table>";
+                $('#div_2').html(text);
+            }
+
+
+            $('#sel_1').bind('click', function () {
+                var factory = $('#i_3').val();
+                var po = $('#i_6').val(); //升辉po
+                var po_detail = $('#i_9').val(); //item no
+                //if (po == null || po == '' || po_detail == null || po_detail == '') {
+                //    alert('请检查po与itemNo');
+                //} else {
+                $.ax(
+                    '/finance/claim_payment/',
+                    {
+                        "factory": factory,
+                        "po": po,
+                        "po_detail": po_detail,
+                        "view": "view"
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+                //}
+            });
+            $('#fir_1').bind('click', function () {
+                $.ax(
+                    '/finance/claim_payment/',
+                    {
+                        "first": "first"
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+            $('#fin_1').bind('click', function () {
+                $.ax(
+                    '/finance/claim_payment/',
+                    {
+                        "final": "final"
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+            $('#las_1').bind('click', function () {
+                var po = $('#i_6').val(); //升辉po
+                var po_detail = $('#i_9').val(); //item no
+                if (po == null || po == '' || po_detail == null || po_detail == '') {
+                    alert('请检查po与itemNo');
+                } else {
+                    $.ax(
+                        '/finance/claim_payment/',
+                        {
+                            "po": po,
+                            "po_detail": po_detail,
+                            "last": "last"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+
+            });
+            $('#nex_1').bind('click', function () {
+                var po = $('#i_6').val(); //升辉po
+                var po_detail = $('#i_9').val(); //item no
+                if (po == null || po == '' || po_detail == null || po_detail == '') {
+                    alert('请检查po与itemNo');
+                } else {
+                    $.ax(
+                        '/finance/claim_payment/',
+                        {
+                            "po": po,
+                            "po_detail": po_detail,
+                            "next": "next"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+
+            });
+
+            $("#bu_1")
+                .button()
+                .click(function () {
+                    var p_id = $('#i_1').val(); //id
+                    if (p_id == null || p_id == '') {
+                        alert('请检查订单信息中的id');
+                    } else {
+                        $("#dialog-form").dialog("open");
+                        $.ax(
+                            '/finance/claim_detail/',
+                            {
+                                "p_id": p_id,
+                                "first": "first"
+                            },
+                            null,
+                            null,
+                            null,
+                            function (data) {
+                                if (data.status == 'fail' || data.status == 'unknown') {
+                                    alert(data.msg);
+                                } else {
+                                    showSuoPeiDetail(data);
+                                }
+                            },
+                            function () {
+                                alert("出错了");
+                            }
+                        );
+                    }
+                });
+            $("#bu_2")
+                .button()
+                .click(function () {
+                    var p_id = $('#i_1').val(); //id
+                    if (p_id == null || p_id == '') {
+                        alert('请检查订单信息中的id');
+                    } else {
+                        $("#dialog-bu_2").dialog("open");
+                        $.ax(
+                            '/finance/deduction_detail/',
+                            {
+                                "p_id": p_id,
+                                "first": "first"
+                            },
+                            null,
+                            null,
+                            null,
+                            function (data) {
+                                if (data.status == 'fail' || data.status == 'unknown') {
+                                    alert(data.msg);
+                                } else {
+                                    showKouKuanDetail(data);
+                                }
+                            },
+                            function () {
+                                alert("出错了");
+                            }
+                        );
+                    }
+                });
+            //索赔明细 弹窗
+            $("#dialog-form").dialog({
+                autoOpen: false,
+                height: 500,
+                width: 1000,
+                modal: true,
+                buttons: {
+                    "确认": function () {
+                        var bValid = true;
+                        if (bValid) {
+                            $(this).dialog("close");
+                        }
+                    },
+                    "退出": function () {
+                        $(this).dialog("close");
+                    }
+                },
+                close: function () {
+                }
+            });
+            //扣款明细 弹窗
+            $("#dialog-bu_2").dialog({
+                autoOpen: false,
+                height: 500,
+                width: 1000,
+                modal: true,
+                buttons: {
+                    "确认": function () {
+                        var bValid = true;
+                        if (bValid) {
+
+                            $(this).dialog("close");
+                        }
+                    },
+                    "退出": function () {
+                        $(this).dialog("close");
+                    }
+                },
+                close: function () {
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<div id="con">
+    <div class="topbutton">
+        <button id="fir_1" value="button" name="first">第一条</button>
+        <button id="las_1" value="button" name="last">上一条</button>
+        <button id="nex_1" value="button" name="next">下一条</button>
+        <button id="fin_1" value="button" name="final">最后一条</button>
+        <button id="sel_1" value="button" name="view">查询信息</button>
+    </div>
+    <div>
+        <hr/>
+        <div><label id="la_14" style="text-align: center;">订单信息</label></div>
+        <hr/>
+        <table id="ta_1" border="" cellspacing="" cellpadding="">
+            <tr>
+                <td>
+                    <label id="la_1">ID#</label>
+                    <input type="text" name="id" id="i_1" value=""/>
+                </td>
+                <td>
+                    <label id="la_2">客户ID</label>
+                    <input type="text" name="customerID" id="i_2" value=""/>
+                </td>
+                <td>
+                    <label id="la_3">工厂全称</label>
+                    <input type="text" name="factory" id="i_3" value=""/>
+                </td>
+                <td>
+                    <label id="la_4">MR</label>
+                    <input type="text" name="mr" id="i_4" value=""/>
+                </td>
+                <td>
+                    <label id="la_5">备注</label>
+                    <input type="text" name="explain" id="i_5" value=""/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="la_6">升辉PO#</label>
+                    <input type="text" name="po" id="i_6" value=""/>
+                </td>
+                <td>
+                    <label id="la_7">客户PO#</label>
+                    <input type="text" name="customer_po" id="i_7" value=""/>
+                </td>
+                <td colspan="2">
+                    <label id="la_8">客户货号</label>
+                    <input type="text" name="customer_item" id="i_8" value=""/>
+                </td>
+                <td>
+                    <label id="la_9">Item No</label>
+                    <input type="text" name="po_detail" id="i_9" value=""/>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label id="la_10">品名</label>
+                    <input type="text" name="product" id="i_10" value=""/>
+                </td>
+                <td colspan="2">
+                    <label id="la_11">数量</label>
+                    <input type="text" name="amount" id="i_11" value=""/>
+                    <input type="text" name="" id="i_13" value="EA"/>
+                </td>
+                <td>
+                    <label id="la_12">实际交期</label>
+                    <input type="text" name="final_date" id="i_12" value=""/> &nbsp;
+
+                </td>
+                <td>
+                    <label id="la_13">QC</label>
+                    <input type="text" name="qc1" id="i_14" value=""/>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div>
+        <hr/>
+        <div><label id="la_15" style="text-align: center;">索赔摘要</label></div>
+        <hr/>
+        <div id="div_1">
+            <table border="" cellspacing="" cellpadding="">
+                <tr>
+                    <th><label>ID</label></th>
+                    <th><label>付清日期</label></th>
+                    <th><label>索赔日期</label></th>
+                    <th><label>索赔金额</label></th>
+                    <th><label>工厂金额</label></th>
+                    <th><label>币种</label></th>
+                    <th><label>结算发票号码</label></th>
+                    <th><label>备注</label></th>
+                </tr>
+            </table>
+        </div>
+        <div style="">
+            <button id="bu_1">查看索赔明细</button>
+            <button id="bu_2">查看扣款明细</button>
+        </div>
+
+        <div>
+            <hr/>
+            <div><label id="la_16" style="text-align: center;">扣款摘要</label></div>
+            <hr/>
+            <div id="div_2">
+                <table border="" cellspacing="" cellpadding="">
+                    <tr>
+                        <th><label>ID</label></th>
+                        <th><label>描述</label></th>
+                        <th><label>数量</label></th>
+                        <th><label>单位</label></th>
+                        <th><label>单价</label></th>
+                        <th><label>日期</label></th>
+                        <th><label>付款金额</label></th>
+                        <th><label>币种</label></th>
+                        <th><label>扣款日期</label></th>
+                        <th><label>扣款发票号码</label></th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="dialog-form" title="索赔明细资料">
+        <hr/>
+        <label id="la_17">索赔信息</label>
+        <hr/>
+        <form action="#" enctype="multipart/form-data" id="for_1">
+            <table border="" cellspacing="" cellpadding="">
+                <tr>
+                    <td><label id="la_18">PoDetailID#</label>
+                        <input name="PoDetailID" id="i_15" type="text"/>
+                    </td>
+                    <td>
+                        <label id="la_19">赔款种类#</label>
+                        <select name="claim_category" id="s_1">
+                            <option value="">请选择</option>
+                        </select>
+
+                    </td>
+                    <td>
+                        <label id="la_20">索赔日期</label>
+                        <input name="date" id="i_16" type="text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label id="la_21">索赔数量</label>
+                        <input type="text" id="i_17" name="count"/>
+                    </td>
+                    <td colspan="2">
+                        <label id="la_21">索赔金额</label>
+                        <select id="s_2" name="currency">
+                            <option value="">请选择</option>
+                        </select>
+                        &nbsp;
+                        <input type="text" id="i_18" name="amount"/>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label id="la_22">
+                            分类
+                        </label>
+                        <select id="s_3" name="type">
+                            <option value="">请选择</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label id="la_23">分类备注</label>
+                        <input type="text" id="i_19" name="category_remark"/>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label id="la_24">赔款明细</label>
+                        <textarea rows="3" cols="75" id="t_1" name="claim_detail"></textarea>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label id="la_25">索赔工厂金额 </label>
+                        <select id="s_4" name="currency1">
+                            <option value="">请选择</option>
+                        </select>
+                        &nbsp;
+                        <input type="text" id="i_20" name="fac_amount"/>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label id="la_26">索赔工厂金额明细</label>
+                        <textarea rows="3" cols="70" id="t_2" name="fac_claim_detail"></textarea>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label id="la_27">结算发票号码</label>
+                        <input type="text" id="i_21" name="invoice_no"/>
+                    </td>
+                    <td>
+                        <label id="la_28">付清日期：</label>
+                        <input type="text" id="i_22" name="pay_date"/>
+                    </td>
+                </tr>
+                <tr style="text-align: right;">
+                    <td colspan="3">
+                        <button id="bu_3">上一笔</button>
+                        <button id="bu_4">下一笔</button>
+                        <button id="bu_5">添加</button>
+                        <button id="bu_6">修改</button>
+                        <button id="bu_7">删除</button>
+                        <button id="bu_8">保存</button>
+
+                    </td>
+
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <div id="dialog-bu_2" title="扣款明细资料">
+        <form action="#" enctype="multipart/form-data" id="for_2">
+            <table border="" cellspacing="" cellpadding="">
+                <tr>
+                    <td colspan="2">
+                        <label id="la_29">材料id：</label>
+                        <input type="text" name="material_id" id="i_23"/></td>
+                </tr>
+                <tr>
+                    <td>
+                        <label id="la_30">提供方式：</label>
+                        <input type="text" name="method" id="i_24"/>
+                    </td>
+                    <td>
+                        <label id="la_31">材料来源：</label>
+                        <input type="text" name="material_from" id="i_25"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label id="la_32">明细：</label>
+                        <input type="text" name="" id="i_26"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label id="la_33">是否需深圳订购：</label>
+                        <input type="text" name="is_order" id="i_27"/>
+                    </td>
+                    <td>
+                        <label id="la_34">深圳下单工厂：</label>
+                        <input type="text" name="factory" id="i_28"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label id="la_34">订购数量：</label>
+                        <input type="text" name="fac_order_qty" id="i_29"/> &nbsp;
+                        <input type="text" name="qty_unit" id="i_30"/>
+                    </td>
+                    <td>
+                        <label id="la_35">扣款总额：</label>
+                        <input type="text" name="total" id="i_31"/> &nbsp;
+                        <input type="text" name="qty_unit" id="i_32"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label id="la_36">下单单价：</label>
+                        <input type="text" name="order_cost" id="i_33"/> &nbsp;
+                        <input type="text" name="order_currency" id="i_34"/>
+                    </td>
+                    <td>
+                        <label id="la_37">扣款日期：</label>
+                        <input type="text" name="deducted_date" id="i_35"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label id="la_38">实送数量：</label>
+                        <input type="text" name="fac_actual_qty" id="i_36"/> &nbsp;
+                        <input type="text" name="fac_actual_unit" id="i_37"/>
+                    </td>
+                    <td>
+                        <label id="la_39">扣款发票号码：</label>
+                        <input type="text" name="invoice_no" id="i_38"/>
+                    </td>
+                </tr>
+                <tr style="text-align: right;">
+                    <td colspan="2">
+                        <button id="bu_9">上一笔</button>
+                        <button id="bu_10">下一笔</button>
+                        <button id="bu_11">修改</button>
+                        <button id="bu_12">保存</button>
+
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

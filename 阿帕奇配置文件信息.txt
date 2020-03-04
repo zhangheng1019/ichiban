@@ -1,0 +1,3 @@
+LoadFile "c:/users/program/anaconda/python37.dll"
+LoadModule wsgi_module "c:/users/program/anaconda/lib/site-packages/mod_wsgi/server/mod_wsgi.cp37-win_amd64.pyd"
+WSGIPythonHome "c:/users/program/anaconda"

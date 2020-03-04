@@ -1,0 +1,90 @@
+{% extends 'order/index.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>sea_rate</title>
+        {% block head %}
+
+
+		<script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="/static/js/tongyong.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/css/button.css" />
+		<script type="text/javascript">
+			$(function(){
+				//将需要验证是否为''或者null的元素对象放入数组中
+					var elargs=[$('#i_1'),$('#i_2')];
+					var el_change=[$('#i_1')];
+				$('#ins_1').bind('click',function(){
+					//验证
+					return checkForms(elargs,'ins_1','');
+
+				});
+				$("#upd_1").bind('click', function() {
+					 return checkForms(elargs,'upd_1','');
+				});
+				$("#sel_1").bind('click', function() {
+
+					return checkForms(el_change,'sel_1',[$('#wa_1')]);
+				});
+				$("#del_1").bind('click', function() {
+					return checkForms(el_change,'del_1',[$('#wa_1')]);
+				});
+
+
+			});
+
+
+		</script>
+		{% endblock %}
+
+
+
+
+	</head>
+
+	<body>
+    {% block body %}
+		<div style="text-align: -webkit-center;">
+			<form action="" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="topbutton">
+                    {% if perms.Order.view_sketch_develop %}
+                        <button id="fir_1" type="submit" value="button" name="first">第一条</button>
+                        <button id="las_1" type="submit" value="button" name="last">上一条</button>
+                        <button id="nex_1" type="submit" value="button" name="next">下一条</button>
+                        <button id="fin_1" type="submit" value="button" name="final">最后一条</button>
+                    {% endif %}
+                    {% if perms.Order.add_sketch_develop %}
+                        <button id="ins_1" type="submit" value="button" name="add">保存信息</button>
+                    {% endif %}
+                    {% if perms.Order.delete_sketch_develop %}
+                        <button id="del_1" type="submit" value="button" name="delete">删除信息</button>
+                    {% endif %}
+                    {% if perms.Order.change_sketch_develop %}
+                        <button id="upd_1" type="submit" value="button" name="modify">修改信息</button>
+                    {% endif %}
+                    {% if perms.Order.view_sketch_develop %}
+                        <button id="sel_1" type="submit" value="button" name="view">查询信息</button>
+                    {% endif %}
+				</div>
+				<table>
+					<tr>
+						<td>
+							<lable id="l_a1"> <span class="warn" id="wa_1"></span> 海关税则</lable>
+						</td>
+						<td> <input id="i_1" type="text" name="tariff" value="{{ sea_rate.tariff }}"/></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a2"><span class="warn"></span>海关税率</lable>
+						</td>
+						<td> <input id="i_2" type="text" name="rate" value="{{ sea_rate.rate }}"/></td>
+					</tr>
+				</table> </form>
+		</div>
+    {% endblock %}
+	</body>
+
+</html>

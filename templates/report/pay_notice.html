@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>付款通知</title>
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <script src="/static/js/md5.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            var data={{ data|safe }};
+            var text = "";
+            for (var i in data.data.Currency) {
+                text += "<option value=\"" + data.data.Currency[i].fields.code + "\">" + data.data.Currency[i].fields.code + "</option>";
+            }
+            $('#s_2').append(text);
+            $('#report').bind('click', function () {
+                var a1 = $('#i_1').val();//
+
+                var a2 = $('#i_2').val();//
+
+                var a3 = $('#i_3').val();//
+
+                var a4 = $('#i_4').val();//
+
+                var a5 = $('#i_5').val();//
+
+                var aray = [a1, a2, a3, a4, a5];
+                var invoice_list = arrayList(aray, '');
+                $('#invoice_list').val(invoice_list);
+                $('#form').attr('action','/report/pay_notice/');
+            });
+            $('#cailiaoReport').bind('click', function () {
+                var a1 = $('#i_1').val();//
+
+                var a2 = $('#i_2').val();//
+
+                var a3 = $('#i_3').val();//
+
+                var a4 = $('#i_4').val();//
+
+                var a5 = $('#i_5').val();//
+                var aray = [a1, a2, a3, a4, a5];
+                var invoice_list = arrayList(aray, '');
+                $('#invoice_list').val(invoice_list);
+                $('#form').attr('action','/report/material_pay/');
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<div style="text-align: -webkit-center;">
+    <hr/>
+    <label>付款通知</label>
+    <hr/>
+    <form  method="post" id="form" enctype="multipart/form-data">
+        <input type="hidden" name="invoice_list" id="invoice_list">
+        <table border="" cellspacing="" cellpadding="">
+            <tr>
+                <td><label> 公司名称：</label></td>
+                <td>
+                    <select id="s_1" name="company">
+                        <option value="HALSTON LIMITED">HALSTON LIMITED.</option>
+                        <option value="EVERGLOW LIMITED">EVERGLOW LIMITED.</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label> 付款币种：</label></td>
+                <td>
+                    <select id="s_2" name="currency">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label>发票号码一：</label></td>
+                <td>
+                    <input type="text" name="invoice1" id="i_1"/>
+                </td>
+            </tr>
+            <tr>
+                <td><label>发票号码二：</label></td>
+                <td>
+                    <input type="text" name="invoice2" id="i_2"/>
+                </td>
+            </tr>
+            <tr>
+                <td><label>发票号码三：</label></td>
+                <td>
+                    <input type="text" name="" id="i_3"/>
+                </td>
+            </tr>
+            <tr>
+                <td><label>发票号码四：</label></td>
+                <td>
+                    <input type="text" name="" id="i_4"/>
+                </td>
+            </tr>
+            <tr>
+                <td><label>发票号码五：</label></td>
+                <td>
+                    <input type="text" name="" id="i_5"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button id="report">付款通知</button>
+                    <button id="cailiaoReport">材料付款通知</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+
+</html>

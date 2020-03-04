@@ -1,0 +1,194 @@
+{% extends 'order/index.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>sample_target</title>
+		{% block head %}
+		<script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="/static/js/tongyong.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/css/button.css" />
+		<script type="text/javascript">
+			$(function() {
+
+				//验证所有radio
+				function checkRadios() {
+
+					var sam_detail_no = $('#s_12').val();
+					if(sam_detail_no == '' || sam_detail_no == null) {
+						alert('请选择复样明细item单号');
+						return false;
+					} else {
+						var radiolen = $("input[type=radio]:visible").length;
+
+						if($("input[type=radio]:checked").length < radiolen) {       
+							alert("存在未确认项！");        
+							return false;      
+						} else {
+							return true;
+						}
+					}
+				}
+
+				$('#ins_1').bind('click', function() {
+					//验证
+
+					return checkRadios();
+
+				});
+				$("#upd_1").bind('click', function() {
+					return checkRadios();
+				});
+				$("#sel_1").bind('click', function() {
+
+					return checkRadios();
+				});
+				$("#del_1").bind('click', function() {
+					return checkRadios();
+				});
+
+				var omr_sure='{{ sample_target.omr_sure }}';
+				if(omr_sure == 'True') {
+					$('#i_3_1').attr('checked', 'checked');
+				} else if(omr_sure == 'False') {
+					$('#i_3_2').attr('checked', 'checked');
+				}
+				var fmr_sure='{{ sample_target.fmr_sure }}';
+				if(fmr_sure == 'True') {
+					$('#i_5_1').attr('checked', 'checked');
+				} else if(fmr_sure == 'False') {
+					$('#i_5_2').attr('checked', 'checked');
+				}
+				var omr_check='{{ sample_target.omr_check }}';
+				if(omr_check == 'True') {
+					$('#i_7_1').attr('checked', 'checked');
+				} else if(omr_check == 'False') {
+					$('#i_7_2').attr('checked', 'checked');
+				}
+				var fmr_check='{{ sample_target.fmr_check }}';
+				if(fmr_check== 'True') {
+					$('#i_9_1').attr('checked', 'checked');
+				} else if(fmr_check == 'False') {
+					$('#i_9_2').attr('checked', 'checked');
+				}
+
+			});
+		</script>
+		{% endblock %}
+	</head>
+
+	<body>
+		{% block body %}
+		<div style="text-align: -webkit-center;">
+			<form action="/order/sample_target" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="topbutton">
+                    {% if perms.Order.view_sketch_develop %}
+                        <button id="fir_1" type="submit" value="button" name="first">第一条</button>
+                        <button id="las_1" type="submit" value="button" name="last">上一条</button>
+                        <button id="nex_1" type="submit" value="button" name="next">下一条</button>
+                        <button id="fin_1" type="submit" value="button" name="final">最后一条</button>
+                    {% endif %}
+                    {% if perms.Order.add_sketch_develop %}
+                        <button id="ins_1" type="submit" value="button" name="add">保存信息</button>
+                    {% endif %}
+                    {% if perms.Order.delete_sketch_develop %}
+                        <button id="del_1" type="submit" value="button" name="delete">删除信息</button>
+                    {% endif %}
+                    {% if perms.Order.change_sketch_develop %}
+                        <button id="upd_1" type="submit" value="button" name="modify">修改信息</button>
+                    {% endif %}
+                    {% if perms.Order.view_sketch_develop %}
+                        <button id="sel_1" type="submit" value="button" name="view">查询信息</button>
+                    {% endif %}
+				</div>
+				<table>
+					<tr>
+						<td>
+							<lable id="l_a1">修改日期</lable>
+						</td>
+						<td> <input id="i_1" type="text" name="change_date" value="{{ sample_target.change_date }}" /></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a2">修改明细</lable>
+						</td>
+						<td> <input id="i_2" type="text" name="change_desc" value="{{ sample_target.change_desc }}" /></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a3">OMR是否确认</lable>
+						</td>
+						<td> 是<input id="i_3_1" type="radio" name="omr_sure" /> 否
+							<input id="i_3_2" type="radio" name="omr_sure" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a4">OMR确认时间</lable>
+						</td>
+						<td> <input id="i_4" type="text" name="omr_sure_date" value="{{ sample_target.omr_sure_date }}" /></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a5">FMR是否确认</lable>
+						</td>
+						<td> 是<input id="i_5_1" type="radio" name="fmr_sure" /> 否
+							<input id="i_5_2" type="radio" name="fmr_sure" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a6">FMR确认时间</lable>
+						</td>
+						<td> <input id="i_6" type="text" name="fmr_sure_date" value="{{ sample_target.fmr_sure_date }}" /></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a7">OMR是否检验</lable>
+						</td>
+						<td> 是<input id="i_7_1" type="radio" name="omr_check" /> 否
+							<input id="i_7_2" type="radio" name="omr_check" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a8">OMR检验时间</lable>
+						</td>
+						<td> <input id="i_8" type="text" name="omr_check_date" value="{{ sample_target.omr_check_date }}" /></td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a9">FMR是否检验</lable>
+						</td>
+						<td>是 <input id="i_9_1" type="radio" name="fmr_check" /> 否
+							<input id="i_9_2" type="radio" name="fmr_check" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<lable id="l_a10">FMR检验时间</lable>
+						</td>
+						<td> <input id="i_10" type="text" name="fmr_check_date" value="{{ sample_target.fmr_check_date }}" /></td>
+					</tr>
+
+					<tr>
+						<td>
+							<lable id="l_a12">复样明细item单号</lable>
+						</td>
+						<td>
+							{% comment %}<select id="s_12" type="text" name="sam_detail_no_id">
+								<option value="">请选择</option>
+							</select>{% endcomment %}
+                            {% comment %}这里item单号下拉框改为文本{% endcomment %}
+                            <input id="s_12" type="text" value="{{ sam_detail_no_id }}">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		{% endblock %}
+	</body>
+
+</html>

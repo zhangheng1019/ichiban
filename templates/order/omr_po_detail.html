@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>omr_po_detail</title>
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <script src="/static/js/md5.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <style type="text/css">
+        table {
+            border-style: outset;
+            width: 60%;
+            min-width: 550px;
+            max-width: 88%;
+        }
+
+        #i_1,
+        #i_2 {
+            width: 60px;
+        }
+
+        #s_24 {
+            min-width: 150px;
+        }
+
+        #i_19 {
+            width: 95%;
+        }
+
+        #tr_1,
+        #tr_2 input {
+            width: 100px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            $('#s_30').val(getQueryVariable('po'));
+            $('#s_30').prop('readonly', 'true');
+            var po = $('#s_30').val(); //我司PO
+            var customer_pono = $('#s_23').val(); //客人PO
+            var receive_date = $('#s_32').val(); //PO接单日期：
+            var cus_receive_date = $('#s_22').val(); //客人收货日期：
+            var fac_send_date = $('#s_25').val(); //工厂交货期：
+            var omr = $('#s_29').val(); //承办人员：
+            var item_no = $('#s_27').val(); //ITEM NO
+            var desc = $('#s_24').val(); //产品描述：
+            var amount = $('#i_1').val(); //数量：
+            var unit = $('#s_34').val(); //单位：
+            var oa_sure_date = $('#s_28').val(); //OASureDate：
+            var factory = $('#s_26').val(); //下单工厂：
+            var texture = $('#s_33').val(); //材质：
+            var port = $('#s_31').val(); //港口：
+            var process = $('#i_2').val(); //进度：
+            var produce_record = $('#i_3').val(); //生产记录表送出日
+            var midterm_inspect = $('#i_11').val();//期中验货日
+            var mark_notice_date = $('#i_4').val(); //唛头通知日期
+            var booking_so = $('#i_12').val(); //Booking S/O
+            var label_sure_date = $('#i_5').val(); //贴标确认日期
+            var ichiban_inspect = $('#i_13').val(); //我司验货日
+            var label_send_date = $('#i_6').val(); //贴标送出日期
+            var customer_inspect = $('#i_14').val(); //客人验货日
+            var sample_send_date = $('#i_7').val(); //测试样寄出日
+            var pl_come_date = $('#i_15').val(); //配料送交工厂
+            var sample_pass_date = $('#i_8').val(); //测试样通过日
+            var box_sure_date = $('#i_16').val(); //彩盒确认日期
+            var product_send_date = $('#i_9').val(); //彩盒确认日期
+            var box_send_date = $('#i_17').val(); //彩盒寄出日期
+            var product_sure_date = $('#i_10').val(); //生产确认样确认
+            var shipping_data = $('#i_18').val(); //shipping资料
+            var special_remark = $('#i_19').val();//注意事项
+            function showDatas(data) {
+                debugger;
+                var po = $('#s_30').val(data.data.omr_po_detail.po); //我司PO
+                var customer_pono = $('#s_23').val(data.data.omr_po_detail.customer_pono); //客人PO
+                var receive_date = $('#s_32').val(data.data.omr_po_detail.receive_date); //PO接单日期：
+                var cus_receive_date = $('#s_22').val(data.data.omr_po_detail.cus_receive_date); //客人收货日期：
+                var fac_send_date = $('#s_25').val(data.data.omr_po_detail.fac_send_date); //工厂交货期：
+                var omr = $('#s_29').val(data.data.omr_po_detail.omr); //承办人员：
+                var item_no = $('#s_27').val(data.data.omr_po_detail.item_no); //ITEM NO
+                var desc = $('#s_24').val(data.data.omr_po_detail.desc); //产品描述：
+                var amount = $('#i_1').val(data.data.omr_po_detail.amount); //数量：
+                var unit = $('#s_34').val(data.data.omr_po_detail.unit); //单位：
+                var oa_sure_date = $('#s_28').val(data.data.omr_po_detail.oa_sure_date); //OASureDate：
+                var factory = $('#s_26').val(data.data.omr_po_detail.factory); //下单工厂：
+                var texture = $('#s_33').val(data.data.omr_po_detail.texture); //材质：
+                var port = $('#s_31').val(data.data.omr_po_detail.port); //港口：
+                var process = $('#i_2').val(data.data.omr_po_detail.process); //进度：
+                var produce_record = $('#i_3').val(data.data.omr_po_detail.produce_record); //生产记录表送出日
+                var midterm_inspect = $('#i_11').val(data.data.omr_po_detail.midterm_inspect);//期中验货日
+                var mark_notice_date = $('#i_4').val(data.data.omr_po_detail.mark_notice_date); //唛头通知日期
+                var booking_so = $('#i_12').val(data.data.omr_po_detail.booking_so); //Booking S/O
+                var label_sure_date = $('#i_5').val(data.data.omr_po_detail.label_sure_date); //贴标确认日期
+                var ichiban_inspect = $('#i_13').val(data.data.omr_po_detail.ichiban_inspect); //我司验货日
+                var label_send_date = $('#i_6').val(data.data.omr_po_detail.label_send_date); //贴标送出日期
+                var customer_inspect = $('#i_14').val(data.data.omr_po_detail.customer_inspect); //客人验货日
+                var sample_send_date = $('#i_7').val(data.data.omr_po_detail.sample_send_date); //测试样寄出日
+                var pl_come_date = $('#i_15').val(data.data.omr_po_detail.pl_come_date); //配料送交工厂
+                var sample_pass_date = $('#i_8').val(data.data.omr_po_detail.sample_pass_date); //测试样通过日
+                var box_sure_date = $('#i_16').val(data.data.omr_po_detail.box_sure_date); //彩盒确认日期
+                var product_send_date = $('#i_9').val(data.data.omr_po_detail.product_send_date); //彩盒确认日期
+                var box_send_date = $('#i_17').val(data.data.omr_po_detail.box_send_date); //彩盒寄出日期
+                var product_sure_date = $('#i_10').val(data.data.omr_po_detail.product_sure_date); //生产确认样确认
+                var shipping_data = $('#i_18').val(data.data.omr_po_detail.shipping_data); //shipping资料
+                var special_remark = $('#i_19').val(data.data.omr_po_detail.special_remark);//注意事项
+            }
+
+            $('#sel_1').bind('click', function () {
+                var po = $('#s_30').val(); //我司PO
+                var item_no = $('#s_27').val(); //ITEM NO
+                if (po == '' || po == null || item_no == '' || item_no == null) {
+                    alert('请检查我司PO与ITEMNO!');
+                } else {
+                    $.ax(
+                        '/order/omr_po_detail/',
+                        {
+                            "view": "view",
+                            "po": po,
+                            "item_no": item_no
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            debugger;
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+
+            });
+            $('#upd_1').bind('click', function () {
+                var po = $('#s_30').val(); //我司PO
+                var item_no = $('#s_27').val(); //ITEM NO
+                if (po == '' || po == null || item_no == '' || item_no == null) {
+                    alert('请检查我司PO与ITEMNO!');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_'));
+                    formData.append('modify', 'modify');
+                    $.ajaxForm('/order/omr_po_detail/', formData, function (data) {
+                        alert(data.msg);
+                    })
+                }
+            });
+            $('#del_1').bind('click', function () {
+                alert('在此模块中不支持相应操作！');
+                return false;
+            });
+            $('#ins_1').bind('click', function () {
+                alert('在此模块中不支持相应操作！');
+                return false;
+            });
+            $('#fin_1').bind('click', function () {
+                var po = $('#s_30').val(); //我司PO
+                if (po == '' || po == null) {
+                    alert('请检查我司PO与ITEMNO!');
+                } else {
+                    $.ax(
+                        '/order/omr_po_detail/',
+                        {
+                            "final": "final",
+                            "po": po
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            debugger;
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#las_1').bind('click', function () {
+                var po = $('#s_30').val(); //我司PO
+                var item_no = $('#s_27').val(); //ITEM NO
+                if (po == '' || po == null || item_no == '' || item_no == null) {
+                    alert('请检查我司PO与ITEMNO!');
+                } else {
+                    $.ax(
+                        '/order/omr_po_detail/',
+                        {
+                            "last": "last",
+                            "po": po,
+                            "item_no": item_no
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            debugger;
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#nex_1').bind('click', function () {
+                var po = $('#s_30').val(); //我司PO
+                var item_no = $('#s_27').val(); //ITEM NO
+                if (po == '' || po == null || item_no == '' || item_no == null) {
+                    alert('请检查我司PO与ITEMNO!');
+                } else {
+                    $.ax(
+                        '/order/omr_po_detail/',
+                        {
+                            "next": "next",
+                            "po": po,
+                            "item_no": item_no
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            debugger;
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#fir_1').bind('click', function () {
+                var po = $('#s_30').val(); //我司PO
+                var item_no = $('#s_27').val(); //ITEM NO
+                if (po == '' || po == null) {
+                    alert('请检查我司PO与ITEMNO!');
+                } else {
+                    $.ax(
+                        '/order/omr_po_detail/',
+                        {
+                            "first": "first",
+                            "po": po
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            debugger;
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<div style="text-align: -webkit-center;">
+
+    <div class="topbutton">
+        <button id="fir_1" value="button" name="first">第一条</button>
+        <button id="las_1" value="button" name="last">上一条</button>
+        <button id="nex_1" value="button" name="next">下一条</button>
+        <button id="fin_1" value="button" name="final">最后一条</button>
+        <button id="ins_1" value="button" name="add">保存信息</button>
+        <button id="del_1" value="button" name="delete">删除信息</button>
+        <button id="upd_1" value="button" name="modify">修改信息</button>
+        <button id="sel_1" value="button" name="view">查询信息</button>
+    </div>
+    <form action="#" method="post" enctype="multipart/form-data" id="for_">
+        <table>
+            <tr>
+                <td>
+                    <lable id="l_a30">我司PO#：</lable>
+                </td>
+                <td>
+
+                    <!--<select id="s_30" type="text" name="order_number_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                    <input type="text" name="po" id="s_30"/>
+                </td>
+                <td>
+                    <lable id="l_a23">客人PO#：</lable>
+                </td>
+                <td>
+                    <!--<select id="s_23" type="text" name="customer_pono_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                    <input type="text" name="customer_pono" id="s_23"/>
+                </td>
+                <td>
+                    <lable id="l_a32">PO接单日期：</lable>
+                </td>
+                <td>
+                    <!--<select id="s_32" type="text" name="receive_date_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                    <input type="text" name="receive_date" id="s_32"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a22">客人收货日期：</lable>
+                </td>
+                <td>
+                    <!--<select id="s_22" type="text" name="cus_receive_date_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                    <input type="text" name="cus_receive_date" id="s_22"/>
+                </td>
+                <td>
+                    <lable id="l_a25">工厂交货期：</lable>
+                </td>
+                <td>
+                    <!--<select id="s_25" type="text" name="fac_send_date_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                    <input type="text" name="fac_send_date" id="s_25"/>
+                </td>
+                <td>
+                    <lable id="l_a29">承办人员：</lable>
+                </td>
+                <td>
+                    <!--<select id="s_29" type="text" name="omr_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                    <input type="text" name="omr" id="s_29"/>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr id="tr_2">
+                <td>
+                    <lable id="l_a27">ITEM NO#：</lable>
+                </td>
+                <td colspan="5">
+                    <!--<select id="s_27" type="text" name="item_no_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                    <input type="text" name="item_no" id="s_27"/>
+                    <lable id="l_a24">产品描述：</lable>
+
+                    <!--<select id="s_24" type="text" name="desc_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                    <input type="text" name="desc" id="s_24"/>
+                    <lable id="l_a1">数量：</lable>
+                    <input id="i_1" type="text" name="amount" value=""/>
+                    <lable id="l_a34">单位：</lable>
+                    <input type="text" name="unit" id="s_34"/>
+                    <!--<select id="s_34" type="text" name="unit_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                </td>
+            </tr>
+
+            <tr id="tr_1">
+                <td>
+                    <lable id="l_a28">OASureDate：</lable>
+                </td>
+                <td colspan="7">
+                    <!--<select id="s_28" type="text" name="oa_sure_date_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                    <input type="text" name="oa_sure_date" id="s_28"/>
+                    <lable id="l_a26">下单工厂：</lable>
+
+                    <!--<select id="s_26" type="text" name="factory_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                    <input type="text" name="factory" id="s_26"/>
+
+                    <lable id="l_a33">材质：</lable>
+
+                    <!--<select id="s_33" type="text" name="texture_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+                    <input type="text" name="texture" id="s_33"/>
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <lable id="l_a31">港口：</lable>
+
+                    <!--<select id="s_31" type="text" name="port_id">
+                        <option value="test">Tset</option>
+                    </select>-->
+
+                    <input type="text" name="port" id="s_31"/>
+                    <lable id="l_a2">进度：</lable>
+                    <input id="i_2" type="text" name="process" value=""/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a3">生产记录表送出日</lable>
+                </td>
+                <td><input id="i_3" type="text" name="produce_record" value=""/></td>
+                <td>
+                    <lable id="l_a11">期中验货日</lable>
+                </td>
+                <td><input id="i_11" type="text" name="midterm_inspect" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a4">唛头通知日期</lable>
+                </td>
+                <td><input id="i_4" type="text" name="mark_notice_date" value=""/></td>
+                <td>
+                    <lable id="l_a12">Booking S/O</lable>
+                </td>
+                <td><input id="i_12" type="text" name="booking_so" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a5">贴标确认日期</lable>
+                </td>
+                <td><input id="i_5" type="text" name="label_sure_date" value=""/></td>
+                <td>
+                    <lable id="l_a13">我司验货日</lable>
+                </td>
+                <td><input id="i_13" type="text" name="ichiban_inspect" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a6">贴标送出日期</lable>
+                </td>
+                <td><input id="i_6" type="text" name="label_send_date" value=""/></td>
+                <td>
+                    <lable id="l_a14">客人验货日</lable>
+                </td>
+                <td><input id="i_14" type="text" name="customer_inspect" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a7">测试样寄出日</lable>
+                </td>
+                <td><input id="i_7" type="text" name="sample_send_date" value=""/></td>
+                <td>
+                    <lable id="l_a15">配料送交工厂</lable>
+                </td>
+                <td><input id="i_15" type="text" name="pl_come_date" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a8">测试样通过日</lable>
+                </td>
+                <td><input id="i_8" type="text" name="sample_pass_date" value=""/></td>
+                <td>
+                    <lable id="l_a16">彩盒确认日期</lable>
+                </td>
+                <td><input id="i_16" type="text" name="box_sure_date" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a9">确认样寄交客户</lable>
+                </td>
+                <td><input id="i_9" type="text" name="product_send_date" value=""/></td>
+                <td>
+                    <lable id="l_a17">彩盒寄出日期</lable>
+                </td>
+                <td><input id="i_17" type="text" name="box_send_date" value=""/></td>
+
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a10">生产确认样确认</lable>
+                </td>
+                <td><input id="i_10" type="text" name="product_sure_date" value=""/></td>
+                <td>
+                    <lable id="l_a18">shipping资料</lable>
+                </td>
+                <td><input id="i_18" type="text" name="shipping_data" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a19">注意事项</lable>
+                </td>
+                <td colspan="5">
+                    <textarea id="i_19" rows="4" cols="40" name="special_remark"/>
+
+                    </textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+
+</html>

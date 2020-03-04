@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Item Information</title>
+
+    <style type="text/css">
+        .sample_detail_name, #i_14, #i_5 {
+            width: 700px
+        }
+
+        #i_1, #i_2, #i_3 {
+            width: 110px;
+        }
+
+        #i_6, #i_7, #i_8 {
+            width: 50px;
+        }
+
+        #s_31 {
+            width: 180px;
+        }
+
+        .sample_detail_table01 {
+            border: solid 1px black;
+
+        }
+    </style>
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <script type="text/javascript" src="/static/js/md5.js"></script>
+    <script src="/static/js/md5.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+     <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            //将需要验证是否为''或者null的元素对象放入数组中
+            {% comment %}var elargs = [$('#i_1'), $('#s_38'), $('#i_4'), $('#i_5'), $('#s_42'), $('#s_39'), $('#s_36'), $('#i_11'), $('#s_33')];
+            var elargs_change = [$('#i_1')];{% endcomment %}
+            setLanguage();
+            var item_no = $('#i_1').val();//样品Item No
+            var item_number = $('#s_38').val();//开发Item No
+            var parent_item = $('#i_2').val();//父Item No
+            var sample_detail_name = $('#i_4').val();//中文品名
+            var ename = $('#i_5').val();//英文品名
+            var category = $('#s_31').val();//产品系列
+            var texture = $('#s_42').val();//材质
+            var long = $('#i_6').val();//尺寸（长
+            var width = $('#i_7').val();//尺寸（宽）
+            var height = $('#i_8').val();//尺寸（高）
+            var fmr = $('#s_36').val();//FMR
+            var photo = $('#i_11').val();//样品图片
+            var photo_remark = $('#i_12').val();//图片说明
+            var omr = $('#s_39').val();//OMR
+            var sample_receive = $('#i_13').val();//收到样品日期
+            var company = $('#s_33').val();//开发公司
+            var other = $('#i_9').val();//篮子提手打开时高度
+            var desc = $('#i_14').val();//备注说明
+            var volume = $('#i_10').val();//样品材积
+            var volume_unit = $('#s_43').val();//材积单位
+            var data ={{ data|safe }};
+            debugger;
+            var text = "";
+            for (var i in data.data.Texture) {
+                text += "<option value=\"" + data.data.Texture[i].fields.name + "\">" + data.data.Texture[i].fields.name + "</option>";
+            }
+            $('#s_42').append(text);
+            text = "";
+            for (var i in data.data.Staff) {
+                text += "<option value=\"" + data.data.Staff[i].fields.name + "\">" + data.data.Staff[i].fields.name + "</option>";
+            }
+            $('#s_36').append(text);
+            $('#s_39').append(text);
+            text = "";
+            for (var i in data.data.Company) {
+                text += "<option value=\"" + data.data.Company[i].fields.name + "\">" + data.data.Company[i].fields.name + "</option>";
+            }
+            $('#s_33').append(text);
+            text = "";
+            for (var i in data.data.Category) {
+                text += "<option value=\"" + data.data.Category[i].fields.code + "\">" + data.data.Category[i].fields.code + "</option>";
+            }
+
+            $('#s_31').append(text);
+            $.getScript('/static/js/select.js', function() {
+					setSelect(['s_42','s_36','s_39','s_33','s_31']);
+				});
+				 $('select').css('width','200px');
+
+            function showDatas(data) {
+
+                var item_no = $('#i_1').val(data.data.sample_detail.item_no);//样品Item No
+                var item_number = $('#s_38').val(data.data.sample_detail.item_number);//开发Item No
+                var parent_item = $('#i_2').val(data.data.sample_detail.parent_item);//父Item No
+                var sample_detail_name = $('#i_4').val(data.data.sample_detail.name);//中文品名
+                var ename = $('#i_5').val(data.data.sample_detail.ename);//英文品名
+                {% comment %}var category = $('#s_31').val();//产品系列{% endcomment %}
+
+                selected($('#s_31'), data.data.sample_detail.category.code);
+                {% comment %}var texture = $('#s_42').val();//材质{% endcomment %}
+                selected($('s_42'), data.data.sample_detail.texture.name);
+
+                var long = $('#i_6').val(data.data.sample_detail.long);//尺寸（长
+                var width = $('#i_7').val(data.data.sample_detail.width);//尺寸（宽）
+                var height = $('#i_8').val(data.data.sample_detail.height);//尺寸（高）
+                {% comment %}var fmr = $('#s_36').val();//FMR{% endcomment %}
+                selected($('#s_36'), data.data.sample_detail.fmr.name);
+                {% comment %}  var photo = $('#i_11').val(data.data.sample_detail.);//样品图片{% endcomment %}
+                var photo_remark = $('#i_12').val(data.data.sample_detail.photo_remark);//图片说明
+                {% comment %}var omr = $('#s_39').val();//OMR{% endcomment %}
+                selected($('#s_39'), data.data.sample_detail.omr.name);
+                var sample_receive = $('#i_13').val(data.data.sample_detail.sample_receive);//收到样品日期
+                {% comment %}var company = $('#s_33').val();//开发公司{% endcomment %}
+                selected($('#s_33'), data.data.sample_detail.company.name)
+                var other = $('#i_9').val(data.data.sample_detail.other);//篮子提手打开时高度
+                var desc = $('#i_14').val(data.data.sample_detail.desc);//备注说明
+                var volume = $('#i_10').val(data.data.sample_detail.volume);//样品材积
+                var volume_unit = $('#s_43').val(data.data.sample_detail.volume_unit);//材积单位
+                //遍历div
+
+                var text = "";
+                text += "<table border=\"\" cellspacing=\"\" cellpadding=\"\">";
+                text += "			<tr>";
+                text += "				<th><label>NoteID</label></th>";
+                text += "				<th><label>代码</label></th>";
+                text += "				<th><label>描述</label></th>";
+                text += "				";
+                text += "			</tr>";
+                for (var i in data.data.item_note) {
+                    text += "			<tr>";
+                    text += "				<td>" + data.data.item_note[i].pk + "</td>";
+                    text += "				<td>" + data.data.item_note[i].fields.code + "</td>";
+                    text += "				<td>" + data.data.item_note[i].fields.desc + "</td>";
+                    text += "			</tr>";
+                }
+                text += "		</table>";
+                $('#item_zhushi').html(text);
+
+                text = "";
+                text += "<table border=\"\" cellspacing=\"\" cellpadding=\"\">";
+                text += "			<tr>";
+                text += "				<th><label>ID</label></th>";
+                text += "				<th><label>chekID</label></th>";
+                text += "				<th><label>包装类型</label></th>";
+                text += "				<th><label>长</label></th>";
+                text += "				<th><label>宽</label></th>";
+                text += "				<th><label>高</label></th>";
+                text += "				<th><label>单位</label></th>";
+                text += "				<th><label>净重</label></th>";
+                text += "				<th><label>毛重</label></th>";
+                text += "				<th><label>数量</label></th>";
+                text += "				";
+                text += "			</tr>";
+                for (var i in data.data.item_package) {
+
+
+                    text += "			<tr>";
+                    text += "				<td>" + data.data.item_package[i].id + "</td>";
+                    if (data.data.item_package[i].type_id == null) {
+                        text += "				<td></td>";
+                        text += "				<td></td>";
+                    } else {
+                        text += "				<td>" + data.data.item_package[i].type_id.id + "</td>";
+                        text += "				<td>" + data.data.item_package[i].type_id.name + "</td>";
+                    }
+                    text += "				<td>" + data.data.item_package[i].long + "</td>";
+                    text += "				<td>" + data.data.item_package[i].width + "</td>";
+                    text += "				<td>" + data.data.item_package[i].height + "</td>";
+                    text += "				<td>" + data.data.item_package[i].unit + "</td>";
+                    text += "				<td>" + data.data.item_package[i].net_weight + "</td>";
+                    text += "				<td>" + data.data.item_package[i].gross_weight + "</td>";
+                    if (data.data.item_package[i].amount == null) {
+                        text += "				<td>0</td>";
+                    } else {
+                        text += "				<td>" + data.data.item_package[i].amount + "</td>";
+                    }
+
+                    text += "			</tr>";
+                }
+                text += "		</table>";
+                $('#item_baozhuang').html(text);
+                var text = "";
+                text += "<table border=\"\" cellspacing=\"\" cellpadding=\"\">";
+                text += "			<tr>";
+                text += "				<th><label>FactoryQuoteID</label></th>";
+                text += "				<th><label>Factory</label></th>";
+                text += "				<th><label>ITEM ID</label></th>";
+                text += "				<th><label>工厂ItemNo</label></th>";
+                text += "				<th><label>报价</label></th>";
+                text += "				<th><label>货币</label></th>";
+                text += "				<th><label>包装</label></th>";
+                text += "				<th><label>出口方式</label></th>";
+                text += "				<th><label>港口</label></th>";
+                text += "				<th><label>品名</label></th>";
+                text += "				<th><label>默认报价</label></th>";
+                text += "				";
+                text += "			</tr>";
+                for (var i in data.data.factory_quote) {
+                    text += "			<tr>";
+                    text += "				<td>" + data.data.factory_quote[i].check_staff_id + "</td>";
+                    if (data.data.factory_quote[i].factory_id == null) {
+                        text += "				<td></td>";
+                    } else {
+                        text += "				<td>" + data.data.factory_quote[i].factory_id.code + "</td>";
+                    }
+
+                    text += "				<td>" + data.data.factory_quote[i].id + "</td>";
+                    text += "				<td>" + data.data.factory_quote[i].factory_number + "</td>";
+                    text += "				<td>" + data.data.factory_quote[i].cost + "</td>";
+                    if (data.data.factory_quote[i].currency_id == null) {
+                        text += "				<td></td>";
+                    } else {
+                        text += "				<td>" + data.data.factory_quote[i].currency_id.name + "</td>";
+                    }
+                    if (data.data.factory_quote[i].pack_texture_id == null) {
+                        text += "				<td></td>";
+                    } else {
+                        text += "				<td>" + data.data.factory_quote[i].pack_texture_id.name + "</td>";
+                    }
+
+
+                    text += "				<td>FOB</td>";
+                    text += "				<td>深圳</td>";
+                    text += "				<td>" + data.data.factory_quote[i].sample_desc + "</td>";
+                    text += "				<td>" + data.data.factory_quote[i].is_default_quote + "</td>";
+                    text += "			</tr>";
+                }
+                text += "		</table>";
+                $('#item_fac_baojia').html(text);
+
+            }
+
+            $('#ins_1').bind('click', function () {
+                //验证
+                var item_no = $('#i_1').val();//样品Item No
+                if (item_no == null || item_no == '') {
+                    alert('请输入样品item No');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_'));
+                    formData.append('add', 'add');
+                    $.ajax({
+                        type: "post",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        url: "/order/sample_detail/",
+                        async: true,
+                        success: function (data) {
+                            alert(data.msg);
+                        }
+                    });
+
+                }
+
+
+            });
+            $("#upd_1").bind('click', function () {
+                var item_no = $('#i_1').val();//样品Item No
+                if (item_no == null || item_no == '') {
+                    alert('请输入样品item No');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_'));
+                    formData.append('modify', 'modify');
+                    $.ajax({
+                        type: "post",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        url: "/order/sample_detail/",
+                        async: true,
+                        success: function (data) {
+                            alert(data.msg);
+                        }
+                    });
+
+                }
+
+            });
+            $("#sel_1").bind('click', function () {
+                //item_no
+                var item_no = $('#i_1').val();//样品Item No
+                if (item_no == null || item_no == '') {
+                    alert('请输入样品item No');
+                } else {
+                    $.ax(
+                        '/order/sample_detail/',
+                        {
+                            'view': 'view',
+                            'item_no': item_no
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $("#del_1").bind('click', function () {
+                alert('此模块中无法删除');
+                {% comment %}return checkForms(elargs_change);{% endcomment %}
+
+            });
+            $('#fin_1').bind('click', function () {
+
+                $.ax(
+                    '/order/sample_detail/',
+                    {
+                        'final': 'final'
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+            $('#las_1').bind('click', function () {
+                //item_no
+                var item_no = $('#i_1').val();//样品Item No
+                $.ax(
+                    '/order/sample_detail/',
+                    {
+                        'last': 'last',
+                        'item_no': item_no
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+            $('#nex_1').bind('click', function () {
+                var item_no = $('#i_1').val();//样品Item No
+                $.ax(
+                    '/order/sample_detail/',
+                    {
+                        'next': 'next',
+                        'item_no': item_no
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+            $('#fir_1').bind('click', function () {
+                $.ax(
+                    '/order/sample_detail/',
+                    {
+                        'first': 'first'
+                    },
+                    null,
+                    null,
+                    null,
+                    function (data) {
+                        if (data.status == 'fail' || data.status == 'unknown') {
+                            alert(data.msg);
+                        } else {
+                            showDatas(data);
+                        }
+                    },
+                    function () {
+                        alert("出错了");
+                    }
+                );
+            });
+        });
+
+
+    </script>
+</head>
+
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+
+<div style="text-align: -webkit-center;">
+
+    <div class="topbutton">
+        <button id="fir_1" value="button" name="first">第一条</button>
+        <button id="las_1" value="button" name="last">上一条</button>
+        <button id="nex_1" value="button" name="next">下一条</button>
+        <button id="fin_1" value="button" name="final">最后一条</button>
+        <button id="ins_1" value="button" name="add">保存信息</button>
+        <button id="del_1" value="button" name="delete">删除信息</button>
+        <button id="upd_1" value="button" name="modify">修改信息</button>
+        <button id="sel_1" value="button" name="view">查询信息</button>
+    </div>
+    <form action="#" method="post" enctype="multipart/form-data" id="for_">
+        <table class="sample_detail_table01">
+            <tr>
+                <td>
+                    <lable id="l_a1">样品Item No</lable>
+                </td>
+                <td><input id="i_1" type="text" name="item_no" value=""/></td>
+                <td>
+                    <lable id="l_a38">开发Item No</lable>
+                </td>
+                <td>
+                    <input type="text" id="s_38" value="" name="item_number"/>
+                </td>
+                <td>
+                    <lable id="l_a2">父Item No</lable>
+                </td>
+                <td><input id="i_2" type="text" name="parent_item" value=""/></td>
+                <td colspan="4">
+                    <lable id="l_a3">其他No</lable>
+
+                    <input id="i_3" type="text" name="other_item" value=""/>
+
+                    <lable id="l_a41">图稿</lable>
+                    <input type="text" name="sketch_no" id="s_41"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a4">中文品名</lable>
+                </td>
+                <td colspan="7"><input class="sample_detail_name" id="i_4" type="text" name="name" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a5">英文品名</lable>
+                </td>
+                <td colspan="7"><input id="i_5" type="text" name="ename" value=""/></td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a31">产品系列</lable>
+                </td>
+                <td colspan="2">
+                    <select name="category" id="s_31">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+                <td colspan="2">
+                    <lable id="l_a42">材质</lable>
+
+                    <select name="texture" id="s_42">
+                        <option value="">请选择</option>
+                    </select>
+                </td>
+                <td>
+                    <lable id="l_a6">尺寸（长、宽、高）</lable>
+                </td>
+                <td colspan="2">
+                    <input id="i_6" type="text" name="long" value=""/>x
+                    <input id="i_7" type="text" name="width" value=""/>x
+                    <input id="i_8" type="text" name="height" value=""/>
+                    <label>Inch</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a36">FMR</lable>
+                </td>
+                <td>
+                    <select id="s_36" name="fmr">
+                        <option value="">请选择</option>
+                    </select>
+
+                </td>
+                <td>
+                    <lable id="l_a11">样品图片</lable>
+                </td>
+                <td colspan="4"><input id="i_11" type="file" name="photo"/></td>
+                <td colspan="2">
+                    <lable id="l_a12">图片说明</lable>
+                    <input id="i_12" type="text" name="photo_remark" value=""/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a39">OMR</lable>
+                </td>
+                <td>
+                    <select id="s_39" name="omr">
+
+                        <option value="">请选择</option>
+                    </select>
+
+                </td>
+                <td>
+                    <lable id="l_a13">收到样品日期</lable>
+                </td>
+                <td><input id="i_13" type="text" name="sample_receive" value=""/></td>
+                <td>
+                    <lable id="l_a33">开发公司</lable>
+                </td>
+                <td>
+                    <select id="s_33" type="text" name="company">
+                        <option value="">请选择</option>
+                        {% comment %}<option value="升辉">升辉</option>
+                        <option value="台山">台山</option>
+                        <option value="香港">香港</option>
+                        <option value="永旭">永旭</option>{% endcomment %}
+                    </select>
+                </td>
+                <td colspan="4">
+                    <lable id="l_a9">篮子提手打开时高度</lable>
+                    <input id="i_9" type="text" name="other" value=""/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a14">备注说明</lable>
+                </td>
+                <td colspan="7"><input id="i_14" type="text" name="desc" value=""/></td>
+
+            </tr>
+            <tr>
+                <td>
+                    <lable id="l_a10">样品材积</lable>
+                </td>
+                <td><input id="i_10" type="text" name="volume" value=""/></td>
+                <td>
+                    <lable id="l_a43">材积单位</lable>
+                </td>
+                <td>
+                    <input type="text" id="s_43" name="volume_unit"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <hr/>
+    <label id="la_44">Item 注释</label>
+    <hr/>
+    <div id="item_zhushi"></div>
+    <hr/>
+    <label id="la_45"> Item包装</label>
+    <hr/>
+    <div id="item_baozhuang"></div>
+    <hr/>
+    <label id="la_46">工厂报价</label>
+    <hr/>
+    <div id="item_fac_baojia"></div>
+</div>
+</body>
+
+</html>

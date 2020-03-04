@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>FMR进度跟踪</title>
+    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/tongyong.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+    <script src="/static/js/md5.js"></script>
+    <script type="text/javascript" src="/static/js/select2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            var data = {{ data|safe }};
+            $('#div_1').html('');
+            var text = "";
+            text += "<table border=\"\" cellspacing=\"\" cellpadding=\"\">";
+            text += "				<tr>";
+            text += "					<th>ID</th>";
+            text += "					<th>PO#</th>";
+            text += "					<th>ITEM#</th>";
+            text += "					<th><lable>品名</lable></th>";
+            text += "					<th><lable>数量</lable></th>";
+            text += "					<th>vch</th>";
+            text += "					<th>factory</th>";
+            text += "					<th>PoRec</th>";
+            text += "					<th>OASure</th>";
+            text += "					<th>FtyDel</th>";
+            text += "					<th>Pro</th>";
+            text += "					<th>Process</th>";
+            text += "				</tr>";
+            for (var i  in data.data.fmr_info) {
+                text += "				<tr>";
+                text += "					<td>" + i + "</td>";
+                text += "					<td>" + data.data.fmr_info[i].po + "</td>";
+                text += "					<td>" + data.data.fmr_info[i].item_no + "</td>";
+                text += "					<td><lable> " + data.data.fmr_info[i].name + "</lable></td>";
+                text += "					<td>" + data.data.fmr_info[i].amount + "</td>";
+                text += "					<td>" + data.data.fmr_info[i].unit + "</td>";
+                text += "					<td>" + data.data.fmr_info[i].factory + "</td>";
+                text += "					<td>" + data.data.fmr_info[i].receive_date + "</td>";
+                text += "					<td>" + data.data.fmr_info[i].oa_sure_date + "</td>";
+                text += "					<td>" + data.data.fmr_info[i].fac_send_date + "</td>";
+                text += "					<td><lable>" + data.data.fmr_info[i].texture + "</lable></td>";
+                text += "					<td></td>";
+                text += "				</tr>";
+            }
+            text += "			</table>";
+            $('#div_1').html(text);
+
+        })
+    </script>
+
+</head>
+
+<body>
+<div id="na">
+    {% include 'order/index.html' %}
+</div>
+<div id="div_1" style="text-align: -webkit-center;">
+
+    <table border="" cellspacing="" cellpadding="">
+        <tr>
+            <th>ID</th>
+            <th>PO#</th>
+            <th>ITEM#</th>
+            <th>品名</th>
+            <th>数量</th>
+            <th>vch</th>
+            <th>factory</th>
+            <th>PoRec</th>
+            <th>OASure</th>
+            <th>FtyDel</th>
+            <th>Pro</th>
+            <th>Process</th>
+        </tr>
+        <tr>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+        </tr>
+    </table>
+
+</div>
+</body>
+
+</html>

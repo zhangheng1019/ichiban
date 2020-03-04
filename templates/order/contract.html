@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>合同</title>
+        <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/js/tongyong.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+        <script src="/static/js/md5.js"></script>
+        <script type="text/javascript" src="/static/js/select2.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+    </head>
+    <script type="text/javascript">
+        $(function () {
+            setLanguage();
+            $('#i_2').val(getQueryVariable('order_number'));
+            $('#i_2').prop('readonly', 'true');
+            var data ={{ data|safe }};
+            var text = "";
+            for (var i in data.data.Unit) {
+                text += "<option value=\"" + data.data.Unit[i].fields.name + "\">" + data.data.Unit[i].fields.name + "</option>";
+            }
+            $('#i_8').append(text);
+            $('#i_11').append(text);
+            text = "";
+            for (var i in data.data.Factory) {
+                text += "<option value=\"" + data.data.Factory[i].fields.code + "\">" + data.data.Factory[i].fields.name + "</option>";
+            }
+            $('#i_12').append(text);
+            text = "";
+            for (var i in data.data.Currency) {
+                text += "<option value=\"" + data.data.Currency[i].fields.code + "\">" + data.data.Currency[i].fields.code + "</option>";
+            }
+            $('#i_14').append(text);
+            $('#i_16').append(text);
+            var id = $('#i_1').val(); //ID
+            var po = $('#i_2').val(); //我司货号：
+            var item_no = $('#i_3').val(); //Item NO
+            var customer_item = $('#i_4').val(); //客人货号：
+            customer_item = $('#i_5').val(); //Customer 同上
+            var desc = $('#i_6').val(); //产品名称：
+            var amount = $('#i_7').val(); //客人数量：
+            var unit = $('#i_8').val(); //客人数量 单位
+            var oa_sure_date = $('#i_9').val(); //OA确认日期
+            var fac_amount = $('#i_10').val(); //订单数量：
+            var fac_unit = $('#i_11').val(); //订单数量 单位
+            var factory = $('#i_12').val(); //生产工厂
+            var fac_cost = $('#i_13').val(); //工厂价格
+            var fac_currency = $('#i_14').val(); //工厂价格单位
+            var fac_total = $('#i_15').val(); //Total Price
+            fac_currency = $('#i_16').val(); //Total Price 单位
+
+            var cancle_date = $('#i_17').val(); //订单取消
+            $.getScript('/static/js/select.js', function () {
+                setSelect(['i_8', 'i_11', 'i_12', 'i_14', 'i_16']);
+            });
+            $('select').css('width', '200px');
+            $("#i_12").off().on("change", function () {
+                $('#facCode').val($('#i_12').val());
+            });
+             //监听文本框并将totalprice 设置为只读
+            $('#i_13').on('input propertychange',function () {
+                $('#i_15').val(calc($('#i_13').val(),$('#i_10').val()));
+            })
+            //将Total Price设置为只读
+            $('#i_15').prop('readonly','true');
+
+            function showDatas(data) {
+
+                var id = $('#i_1').val(data.data.po_detail.id); //item ID
+                var po = $('#i_2').val(data.data.po_detail.po); //我司货号：
+                var item_no = $('#i_3').val(data.data.po_detail.item_no); //Item NO
+                var customer_item = $('#i_4').val(data.data.po_detail.customer_item); //客人货号：
+                customer_item = $('#i_5').val(data.data.po_detail.customer_item); //Customer 同上
+                var desc = $('#i_6').val(data.data.po_detail.desc); //产品名称：
+                var amount = $('#i_7').val(data.data.po_detail.amount); //客人数量：
+                {% comment %}var unit = $('#i_8').val(data.data.contract.); //客人数量 单位{% endcomment %}
+                selected($('#i_8'), data.data.po_detail.unit);
+                var oa_sure_date = $('#i_9').val(data.data.contract.oa_sure_date); //OA确认日期
+                var fac_amount = $('#i_10').val(data.data.contract.fac_amount); //订单数量：
+                {% comment %}var fac_unit = $('#i_11').val(data.data.contract.fac_unit); //订单数量 单位{% endcomment %}
+                selected($('#i_11'), data.data.contract.fac_unit);
+                {% comment %}var factory = $('#i_12').val(data.data.contract.); //生产工厂{% endcomment %}
+                if (data.data.contract.factory != null) {
+                    selected($('#i_12'), data.data.contract.factory.code);
+                }
+                var fac_cost = $('#i_13').val(data.data.contract.fac_cost); //工厂价格
+                {% comment %}var fac_currency = $('#i_14').val(data.data.contract.); //工厂价格单位{% endcomment %}
+                if (!$.isEmptyObject(data.data.contract.fac_currency)) {
+                    selected($('#i_14'), data.data.contract.fac_currency.code);
+                    selected($('#i_16'), data.data.contract.fac_currency.code);
+                }else{
+                    selected($('#i_14'), "");
+                    selected($('#i_16'), "");
+                }
+                debugger;
+                var fac_total = $('#i_15').val(data.data.contract.fac_total); //Total Price
+                {% comment %}fac_currency = $('#i_16').val(data.data.contract.); //Total Price 单位{% endcomment %}
+                var cancle_date = $('#i_17').val(data.data.contract.cancle_date); //订单取消
+            }
+
+
+            $('#sel_1').bind('click', function () {
+                var po = $('#i_2').val(); //我司货号：
+                var item_no = $('#i_3').val(); //Item NO
+                if (po == null || po == "" || item_no == null || item_no == "") {
+                    alert('请检查我司货号与itemNo！');
+                } else {
+                    $.ax(
+                        '/order/contract/',
+                        {
+                            "po": po,
+                            "item_no": item_no,
+                            "view": "view"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                                alert("查询成功");
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#upd_1').bind('click', function () {
+                var po = $('#i_2').val(); //我司货号：
+                var item_no = $('#i_3').val(); //Item NO
+                if (po == '' || po == null || item_no == '' || item_no == null) {
+                    alert('请检查我司货号与itemNo！');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_'));
+                    formData.append('modify', 'modify');
+                    $.ajax({
+                        type: "post",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        url: "/order/contract/",
+                        async: true,
+                        success: function (data) {
+                            alert(data.msg);
+                        }
+                    });
+                }
+            });
+            $('#ins_1').bind('click', function () {
+                var po = $('#i_2').val(); //我司货号：
+                var item_no = $('#i_3').val(); //Item NO
+                if (po == null || po == "" || item_no == null || item_no == "") {
+                    alert('请检查我司货号与itemNo！');
+                } else {
+                    var formData = new FormData(document.querySelector('#for_'));
+                    formData.append('add', 'add');
+                    $.ajax({
+                        type: "post",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        url: "/order/contract/",
+                        async: true,
+                        success: function (data) {
+                            alert(data.msg);
+                        }
+                    });
+                }
+            });
+            $('#fin_1').bind('click', function () {
+                var po = $('#i_2').val(); //我司货号：
+                if (po == null || po == '') {
+                    alert("请检查我司po！");
+                } else {
+                    $.ax(
+                        '/order/contract/',
+                        {
+                            "po": po,
+                            "final": "final"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#las_1').bind('click', function () {
+                var po = $('#i_2').val(); //我司货号：
+                var item_no = $('#i_3').val(); //Item NO
+                if (po == null || po == "" || item_no == null || item_no == "") {
+                    alert('请检查我司货号与itemNo！');
+                } else {
+                    $.ax(
+                        '/order/contract/',
+                        {
+                            "po": po,
+                            "item_no": item_no,
+                            "last": "last"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#nex_1').bind('click', function () {
+                var po = $('#i_2').val(); //我司货号：
+                var item_no = $('#i_3').val(); //Item NO
+                if (po == null || po == "" || item_no == null || item_no == "") {
+                    alert('请检查我司货号与itemNo！');
+                } else {
+                    $.ax(
+                        '/order/contract/',
+                        {
+                            "po": po,
+                            "item_no": item_no,
+                            "next": "next"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+            $('#fir_1').bind('click', function () {
+                var po = $('#i_2').val(); //我司货号：
+                if (po == null || po == '') {
+                    alert("请检查我司po！");
+                } else {
+
+                    $.ax(
+                        '/order/contract/',
+                        {
+                            "po": po,
+                            "first": "first"
+                        },
+                        null,
+                        null,
+                        null,
+                        function (data) {
+                            if (data.status == 'fail' || data.status == 'unknown') {
+                                alert(data.msg);
+                            } else {
+                                showDatas(data);
+                            }
+                        },
+                        function () {
+                            alert("出错了");
+                        }
+                    );
+                }
+            });
+        });
+    </script>
+    <body>
+        <div id="na">
+            {% include 'order/index.html' %}
+        </div>
+        <div id="" style="text-align: -webkit-center;" class="topbutton">
+        <button id="fir_1" value="button" name="first">第一条</button>
+        <button id="las_1" value="button" name="last">上一条</button>
+        <button id="nex_1" value="button" name="next">下一条</button>
+        <button id="fin_1" value="button" name="final">最后一条</button>
+        <button id="ins_1" value="button" name="add">保存信息</button>
+        <button id="del_1" value="button" name="delete">删除信息</button>
+        <button id="upd_1" value="button" name="modify">修改信息</button>
+        <button id="sel_1" value="button" name="view">查询信息</button>
+
+        <form action="#" method="post" enctype="multipart/form-data" id="for_">
+            <table border="" cellspacing="" cellpadding="">
+                <tr>
+                    <td><label id="la_1">ID</label>
+                        <input type="text" name="id" id="i_1"/>
+                    </td>
+                    <td><label id="la_2">我司货号：</label>
+                        <input type="text" name="po" id="i_2"/>
+                    </td>
+                    <td><label id="la_3">Item NO：</label>
+                        <input type="text" name="item_no" id="i_3"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label id="la_4">客人货号：</label>
+                        <input type="text" name="customer_item" id="i_4"/>
+                    </td>
+                    <td>
+                        <label id="la_5">Customer#：</label>
+                        <input type="text" name="customer_item" id="i_5"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label id="la_6">产品名称：</label>
+                        <input type="text" name="desc" id="i_6"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label id="la_7">客人数量：</label>
+                        <input type="text" name="amount" id="i_7"/>
+                        {% comment %}<input type="text" name="unit" id="i_8"/>{% endcomment %}
+                        <select name="unit" id="i_8">
+                            <option value="">请选择</option>
+                            <option value="EA">EA</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <hr/>
+            <label id="la_8">下单工厂</label>
+            <hr/>
+            <div>
+                <table border="" cellspacing="" cellpadding="">
+                    <tr>
+                        <td><label id="la_9">OA确认日期</label>
+                            <input type="text" name="oa_sure_date" id="i_9"/>
+                        </td>
+                        <td colspan="2"><label id="la_10">订单数量：</label>
+                            <input type="text" name="fac_amount" id="i_10"/>
+                            {% comment %}<input type="text" name="fac_unit" id="i_11"/>{% endcomment %}
+                            <select name="fac_unit" id="i_11">
+                                <option value="">请选择</option>
+                                <option value="EA">EA</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label id="la_11">生产工厂:</label>
+                            {% comment %}<input type="text" name="factory" id="i_12"/>{% endcomment %}
+                            <input type="text" name="" id="facCode" style="width: 80px;">
+                            <select name="factory" id="i_12">
+                                <option value="">请选择</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label id="la_12">工厂价格:</label>
+                            <input type="text" name="fac_cost" id="i_13"/>
+                            {% comment %}<input type="text" name="fac_currency" id="i_14"/>{% endcomment %}
+                            <select name="fac_currency" id="i_14">
+                                <option value="">请选择</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label id="la_13">Total Price:</label>
+                            <input type="text" name="fac_total" id="i_15"/>
+                            {% comment %}<input type="text" name="fac_currency" id="i_16"/>{% endcomment %}
+                            <select name="fac_currency" id="i_16">
+                                <option value="">请选择</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <label id="la_14">订单取消</label>
+                            <input type="text" name="cancle_date" id="i_17"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </form>
+    </div>
+    </body>
+</html>
