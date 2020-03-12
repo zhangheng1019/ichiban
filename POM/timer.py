@@ -342,8 +342,10 @@ def factory_process():
         # 计算时间间隔
         after_order_days = (now - receive_date).days    # 下单后多少天
         befor_sale_days = (sale_date - now).days        # 出货前多少天
-        after_order_things = FactoryProcess.objects.filter(date_by='下单后', remind_date=after_order_days)  # 下单后事项
-        befor_sale_things = FactoryProcess.objects.filter(date_by='出货前', remind_date=befor_sale_days)    # 出货前事项
+        after_order_things = FactoryProcess.objects.filter(date_by='下单后',
+                                                           remind_date=after_order_days)  # 下单后事项
+        befor_sale_things = FactoryProcess.objects.filter(date_by='出货前',
+                                                          remind_date=befor_sale_days)    # 出货前事项
 
 
 # 提醒材质进度控制事项
@@ -356,7 +358,9 @@ def texture_reminds():
         now = datetime.datetime.now().date()  # 当前时间
         # 计算时间间隔
         after_order_days = (now - receive_date).days  # 下单时间距今多少天
-        after_order_things = TextureReminds.objects.filter(texture_cate=i.texture, date_by='下单后', remind_date=after_order_days)  # 下单后事项
+        after_order_things = TextureReminds.objects.filter(texture_cate=i.texture,
+                                                           date_by='下单后',
+                                                           remind_date=after_order_days)  # 下单后事项
 
 
 # 写入日常任务（每天自动生成每天都要做的日常task）
@@ -397,7 +401,7 @@ def start_timer():
     scheduler.add_job(po_data_check, 'interval', hours=8, id='po_data_check_id')
     # 每天的零时刷新日常任务
     # scheduler.add_job(daily_task, trigger='cron', day='*', hour='0', id='daily_task_id')
-    # 每天的零时更新工厂产能提醒事项
+    # 每天的零时更新工厂产能提醒事项 - 并发送邮件
     scheduler.add_job(factory_ability, trigger='cron', day='*', hour='0', id='factory_ability_id')
     # 每天的零时更新工厂进度提醒事项
     # scheduler.add_job(factory_process, trigger='cron', day='*', hour='0', id='factory_process_id')
@@ -423,8 +427,14 @@ def stop_timer():
 # if __name__ == '__main__':
 #     # 选择后台运行模式
 #     scheduler = BackgroundScheduler()
-#     # 每8小时运行一次主程序
-#     scheduler.add_job(po_data_check, 'interval', hours=8)
+#     # 每间隔8个小时运行一次(po信息更新同步)主程序
+#     scheduler.add_job(po_data_check, 'interval', hours=8, id='po_data_check_id')
+#     # 每天的零时刷新日常任务
+#     # scheduler.add_job(daily_task, trigger='cron', day='*', hour='0', id='daily_task_id')
+#     # 每天的零时更新工厂产能提醒事项 - 并发送邮件
+#     scheduler.add_job(factory_ability, trigger='cron', day='*', hour='0', id='factory_ability_id')
+#     # 每天的零时更新工厂进度提醒事项
+#     # scheduler.add_job(factory_process, trigger='cron', day='*', hour='0', id='factory_process_id')
 #     # 记录运行日志
 #     scheduler.add_listener(my_listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
 #     scheduler._logger = logging

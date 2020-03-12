@@ -62,10 +62,10 @@ MIDDLEWARE = [
 # --------------------------屏蔽跨域------------------------
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True  # 允许跨域名访问
 
 CORS_ORIGIN_WHITELIST = (
-    '*'
+    '*',
 )
 
 CORS_ALLOW_METHODS = (
@@ -129,11 +129,11 @@ LOGIN_URL = '/login/'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'apple',
-#         'USER': 'root',
-#         'PASSWORD': '194356',
-#         'HOST': 'localhost',
-#         'PORT': 3306,
+#         'NAME': 'apple',                              # 数据库
+#         'USER': 'root',                               # 数据库连接账户
+#         'PASSWORD': '194356',                         # 数据库连接密码
+#         'HOST': 'localhost',                          # 数据库服务地址
+#         'PORT': 3306,                                 # 数据库连接端口
 #         'OPTIONS': {
 #             'charset': 'utf8mb4'
 #         },

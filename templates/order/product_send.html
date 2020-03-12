@@ -329,14 +329,24 @@
         {% include 'order/index.html' %}
     </div>
     <div id="" style="text-align: -webkit-center;" class="topbutton">
-        <button id="fir_1" value="button" name="first">第一条</button>
-        <button id="las_1" value="button" name="last">上一条</button>
-        <button id="nex_1" value="button" name="next">下一条</button>
-        <button id="fin_1" value="button" name="final">最后一条</button>
-        <button id="ins_1" value="button" name="add">保存信息</button>
-        {#    <button id="del_1" value="button" name="delete">删除信息</button>#}
-        <button id="upd_1" value="button" name="modify">修改信息</button>
-        <button id="sel_1" value="button" name="view">查询信息</button>
+        {% if perms.Order.view_product_send %}
+            <button id="fir_1" type="submit" value="button" name="first">第一条</button>
+            <button id="las_1" type="submit" value="button" name="last">上一条</button>
+            <button id="nex_1" type="submit" value="button" name="next">下一条</button>
+            <button id="fin_1" type="submit" value="button" name="final">最后一条</button>
+        {% endif %}
+        {% if perms.Order.add_product_send %}
+            <button id="ins_1" type="submit" value="button" name="add">保存信息</button>
+        {% endif %}
+        {% if perms.Order.delete_product_send %}
+            <button id="del_1" type="submit" value="button" name="delete">删除信息</button>
+        {% endif %}
+        {% if perms.Order.change_product_send %}
+            <button id="upd_1" type="submit" value="button" name="modify">修改信息</button>
+        {% endif %}
+        {% if perms.Order.view_product_send %}
+            <button id="sel_1" type="submit" value="button" name="view">查询信息</button>
+        {% endif %}
 
         <form action="#" method="post" enctype="multipart/form-data" id="for_">
             <table border="" cellspacing="" cellpadding="">

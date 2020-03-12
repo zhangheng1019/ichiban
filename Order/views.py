@@ -35,14 +35,14 @@ class IndexView(View):
         return super(IndexView, self).dispatch(request, *args, **kwargs)
 
 
-class LoginView(IndexView):
-    """演示类视图的定义和使用"""
+class LoginView(View):
+    """登陆视图"""
     template_name = 'order/login.html'
 
     def get(self, request):
         """处理GET请求业务逻辑"""
         # 记录用户登录前所取得地址，用于登陆成功后重定向
-        next_url = request.GET.get('next')
+        next_url = request.GET.get('next', '/')
         if next_url == '/login/':
             request.session['next_url'] = '/'
         else:

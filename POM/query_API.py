@@ -294,7 +294,6 @@ def order_remind_add(**kwargs):
                 }
                 obj = Remind(**dict_info)
                 obj.save()
-                # print('-------------------------结束保存提醒事件')
     return {'status': 'success', 'msg': '生成提醒事项并存储数据库成功。'}
 
 
@@ -353,22 +352,39 @@ def order_remind_modify(request):
 
 # 每当相关订单更改(新增、修改、删除)后，修改（已有更新）提醒事项 -- ok
 def order_remind_refresh(**kwargs):
+    # 只修改Po的信息
+    if 'po' in kwargs and 'item_no' not in kwargs:
+        # 如果订单不存在，也就是进行了删除操作
+        if not Po.objects.filter(order_number=kwargs['po'].order_number).exists():
+            return JsonResponse({'status': 'success', 'msg': '该订单在Po表中中已被删除，无需添加事项。'})
+        # 如果该订单原本就无事项存在
+        remind = Remind.objects.filter(po=kwargs['po'].order_number)
+        if not remind.exists():
+            return JsonResponse({'status': 'success', 'msg': '该订单在数据库中无事项。'})
+        # 计算原先日期间隔，应用于修改后的最终提醒时间上
+        _start = datetime.datetime.strptime(remind[0].end_time, '%Y-%m-%d').date()
+        _end = datetime.datetime.strptime(remind[0].begin_time, '%Y-%m-%d').date()
+        rec_date = datetime.datetime.strptime(kwargs['po'].receive_date, '%Y-%m-%d').date()
+        days = _end - _start
+        end_date = str(rec_date + days)
+        remind.update(person=kwargs['po'].omr.name,
+                      begin_time=kwargs['po'].receive_date,
+                      end_time=end_date,
+                      plan_date=end_date)
+        return JsonResponse({'status': 'success', 'msg': '事项更新成功'})
     # 筛选出所有相关该订单的提醒事项
     if 'po' and 'item_no' in kwargs:
         remind = Remind.objects.filter(po=kwargs['po'], item_no=kwargs['item_no'])
-        # 1、删除所有该订单相关的提醒事项
-        if remind:
+        # 1、如果该订单存在事项，则删除所有该订单相关的提醒事项
+        if remind.exists():
             remind.delete()
         # 2、查询该popoint条目是否还存在（po信息是否删除） - 不存在直接终止函数，经过则添加提醒事项
         try:
             # 数据库里面的订单实例变量名 - po
             po = PoPoint.objects.get(order_number=kwargs['po'], item_no=kwargs['item_no'])
-            # print('***********************************kwargs', kwargs)
             for point in Point.objects.all():
-                # print('****************************原提醒时间已经删除，进入重新匹配事件区间')
                 # 3、如果满足表达式，添加该触发点的所有事件到数据库
                 if eval(point.code):
-                    # print('****************************满足表达式，开始等待写入')
                     try:
                         # 获取触发点的id
                         point_id = Point.objects.filter(code=point.code)[0].id
@@ -411,17 +427,12 @@ def order_remind_refresh(**kwargs):
                             }
                             obj = Remind(**dict_info)
                             obj.save()
-                            # print('*******************写入数据成功', dict_info)
                     except:
-                        # print('*************************写入数据出错')
                         pass
                     break  # 一旦匹配到规则，立即终止循环(有没有可能一个po有多个触发点)
+            return JsonResponse({'status': 'success', 'msg': '订单%s%s修改后，事项更新成功。' % (kwargs['po'], kwargs['item_no'])})
         except:
-            # print('******************************po报错')
             return JsonResponse({'status': 'success', 'msg': '该订单在popoint表中已经被删除。无需添加事项'})
-    # print('*******************************订单%s%s修改后，事项更新成功。' % (kwargs['po'], kwargs['item_no']))
-    return '订单%s%s修改后，事项更新成功。' % (kwargs['po'], kwargs['item_no'])
-    # return JsonResponse({'status': 'success', 'msg': '订单%s%s修改后，事项更新成功。' % (kwargs['po'], kwargs['item_no'])})
 
 
 # 新增与订单无关提醒事项 -- 主管新增其他提醒事项 -- ok

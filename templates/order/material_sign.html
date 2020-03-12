@@ -241,14 +241,24 @@
         <div>
     <div style="">
         <div class="topbutton">
-            <button id="fir_1" type="submit" value="button" name="first">第一条</button>
-            <button id="las_1" type="submit" value="button" name="last">上一条</button>
-            <button id="nex_1" type="submit" value="button" name="next">下一条</button>
-            <button id="fin_1" type="submit" value="button" name="final">最后一条</button>
-            <button id="ins_1" type="submit" value="button" name="add">保存信息</button>
-            <button id="del_1" type="submit" value="button" name="delete">删除信息</button>
-            <button id="upd_1" type="submit" value="button" name="modify">修改信息</button>
-            <button id="sel_1" type="submit" value="button" name="view">查询信息</button>
+            {% if perms.Order.view_material_sign %}
+                <button id="fir_1" type="submit" value="button" name="first">第一条</button>
+                <button id="las_1" type="submit" value="button" name="last">上一条</button>
+                <button id="nex_1" type="submit" value="button" name="next">下一条</button>
+                <button id="fin_1" type="submit" value="button" name="final">最后一条</button>
+            {% endif %}
+            {% if perms.Order.add_material_sign %}
+                <button id="ins_1" type="submit" value="button" name="add">保存信息</button>
+            {% endif %}
+            {% if perms.Order.delete_material_sign %}
+                <button id="del_1" type="submit" value="button" name="delete">删除信息</button>
+            {% endif %}
+            {% if perms.Order.change_material_sign %}
+                <button id="upd_1" type="submit" value="button" name="modify">修改信息</button>
+            {% endif %}
+            {% if perms.Order.view_material_sign %}
+                <button id="sel_1" type="submit" value="button" name="view">查询信息</button>
+            {% endif %}
         </div>
         <div style="text-align: left;">
             <hr/>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+    <head>
     <meta charset="UTF-8">
     <title>事项展示</title>
     <script type="text/javascript" src="/static/js/2.1.4jquery.min.js"></script>
@@ -94,7 +94,7 @@
                             text += "<td> <input type=\"file\" id=\"file" + data.data.reminds[i].pk + "\"/></td>";
                         } else {
                             text += "                    <td></td>";
-                            {#text += "<td> <input type=\"file\" id=\"file" + data.data.reminds[i].pk + "\"/></td>";#}
+                            //text += "<td> <input type=\"file\" id=\"file" + data.data.reminds[i].pk + "\"/></td>";
                         }
 
 
@@ -129,7 +129,7 @@
                             text += "<td> <input type=\"file\" id=\"file" + data.data.reminds[i].pk + "\"/></td>";
                         } else {
                             text += "                    <td></td>";
-                            {#text += "<td> <input type=\"file\" id=\"file" + data.data.reminds[i].pk + "\"/></td>";#}
+                            //text += "<td> <input type=\"file\" id=\"file" + data.data.reminds[i].pk + "\"/></td>";
                         }
                         text += "                </tr>";
                     }
@@ -271,89 +271,95 @@
 </head>
 
 
-<body>
-<div id="content">
-    <hr/>
-    <label>
-        当天监控事项
-    </label>
-    <hr/>
-    <div id="todayCase">
-        <table border="1">
-            <thead>
-            <th>
-                <input type="checkbox" id="check"/>
-            </th>
-            <th>
-                <label>工厂</label>
-            </th>
-            <th>
-                <label>订单PO号</label>
-            </th>
-            <th>
-                <label>订单item号</label>
-            </th>
-            <th>
-                <label>品名</label>
-            </th>
-            <th>
-                <label>数量</label>
-            </th>
-            <th>
-                <label>事项内容</label>
-            </th>
-            <th>
-                <label>应该完成时间</label>
-            </th>
-            <th>
-                <label>是否完成</label>
-            </th>
-            <th>
-                <label>实际完成时间</label>
-            </th>
-            <th>
-                <label>操作人</label>
-            </th>
-            <th>
-                <label>操作</label>
-            </th>
-            <th>
-                <label>备注</label>
-            </th>
-            <th>
-                <label>是否上传</label>
-            </th>
-            </thead>
-            <tbody>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-            </tr>
-            </tbody>
+    <body>
+        <br>
+        <div style="font-size: 18px;">
+            {% if user.is_authenticated %}
+                Welcome <span style=""><b>{{ user.username }} </b></span>.&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="/logout/" style="color: blue;">注销登录</a>
+            {% endif %}
+        </div><br>
+        <div id="content">
+        <hr/>
+        <label>
+            当天监控事项
+        </label>
+        <hr/>
+        <div id="todayCase">
+            <table border="1">
+                <thead>
+                <th>
+                    <input type="checkbox" id="check"/>
+                </th>
+                <th>
+                    <label>工厂</label>
+                </th>
+                <th>
+                    <label>订单PO号</label>
+                </th>
+                <th>
+                    <label>订单item号</label>
+                </th>
+                <th>
+                    <label>品名</label>
+                </th>
+                <th>
+                    <label>数量</label>
+                </th>
+                <th>
+                    <label>事项内容</label>
+                </th>
+                <th>
+                    <label>应该完成时间</label>
+                </th>
+                <th>
+                    <label>是否完成</label>
+                </th>
+                <th>
+                    <label>实际完成时间</label>
+                </th>
+                <th>
+                    <label>操作人</label>
+                </th>
+                <th>
+                    <label>操作</label>
+                </th>
+                <th>
+                    <label>备注</label>
+                </th>
+                <th>
+                    <label>是否上传</label>
+                </th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                </tr>
+                </tbody>
 
-        </table>
-        <label>共 79页 &nbsp;当前第 70 页</label>
+            </table>
+            <label>共 79页 &nbsp;当前第 70 页</label>
+        </div>
+        <br/>
+        <button id="first_d">&laquo;</button>
+        <button id="last_d">&lt;</button>
+        <button id="next_d">&gt;</button>
+        <button id="final_d">&raquo;</button>
+        <br/>
     </div>
-    <br/>
-    <button id="first_d">&laquo;</button>
-    <button id="last_d">&lt;</button>
-    <button id="next_d">&gt;</button>
-    <button id="final_d">&raquo;</button>
-    <br/>
-</div>
-
-</body>
+    </body>
 
 </html>

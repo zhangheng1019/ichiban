@@ -1,0 +1,1055 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3c5e4234-e184-431e-8b2f-248442da59ba" name="默认更改列表" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/Order/signals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Order/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/POM/logs/pom_logs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/POM/logs/pom_logs.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/POM/query_API.py" beforeDir="false" afterPath="$PROJECT_DIR$/POM/query_API.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/POM/timer.py" beforeDir="false" afterPath="$PROJECT_DIR$/POM/timer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/POM/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/POM/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apple/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/apple/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apple/try.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/apple/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/apple/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/message.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/message.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/contract.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/contract.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/material_sign.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/material_sign.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/material_sign_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/material_sign_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/omr.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/omr.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/omr_po_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/omr_po_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/po.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/po.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/po_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/po_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/product_send.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/product_send.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/repeat_sample.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/repeat_sample.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/repeat_sample_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/repeat_sample_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/sample_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/sample_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/sample_target.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/sample_target.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/sketch_design.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/sketch_design.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/sketch_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/sketch_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/sketch_develop.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/sketch_develop.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/order/sketch_type.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/order/sketch_type.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/pom/case.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pom/case.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/pom/caseDetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pom/caseDetail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/pom/caseImport.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/pom/caseImport.html" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/apple$test__2_.coverage" NAME="test (2) Coverage Results" MODIFIED="1583465446223" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/apple$test__1_.coverage" NAME="test (1) Coverage Results" MODIFIED="1578279307965" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/apple" />
+    <SUITE FILE_PATH="coverage/apple$test.coverage" NAME="test Coverage Results" MODIFIED="1576043351028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Order" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-1965320464">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="25" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.1" value="5" />
+          <entry key="project.open.time.10" value="3" />
+          <entry key="project.open.time.114" value="1" />
+          <entry key="project.open.time.119" value="1" />
+          <entry key="project.open.time.12" value="1" />
+          <entry key="project.open.time.128" value="1" />
+          <entry key="project.open.time.14" value="2" />
+          <entry key="project.open.time.15" value="1" />
+          <entry key="project.open.time.19" value="1" />
+          <entry key="project.open.time.27" value="1" />
+          <entry key="project.open.time.33" value="1" />
+          <entry key="project.open.time.36" value="1" />
+          <entry key="project.open.time.37" value="3" />
+          <entry key="project.open.time.38" value="3" />
+          <entry key="project.open.time.39" value="2" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.40" value="5" />
+          <entry key="project.open.time.41" value="3" />
+          <entry key="project.open.time.42" value="4" />
+          <entry key="project.open.time.43" value="5" />
+          <entry key="project.open.time.44" value="5" />
+          <entry key="project.open.time.45" value="3" />
+          <entry key="project.open.time.46" value="1" />
+          <entry key="project.open.time.47" value="2" />
+          <entry key="project.open.time.48" value="5" />
+          <entry key="project.open.time.49" value="1" />
+          <entry key="project.open.time.5" value="2" />
+          <entry key="project.open.time.50" value="1" />
+          <entry key="project.open.time.52" value="1" />
+          <entry key="project.open.time.54" value="2" />
+          <entry key="project.open.time.55" value="1" />
+          <entry key="project.open.time.57" value="1" />
+          <entry key="project.open.time.6" value="4" />
+          <entry key="project.open.time.63" value="1" />
+          <entry key="project.open.time.7" value="5" />
+          <entry key="project.open.time.71" value="2" />
+          <entry key="project.open.time.77" value="1" />
+          <entry key="project.open.time.8" value="3" />
+          <entry key="project.open.time.82" value="1" />
+          <entry key="project.open.time.83" value="1" />
+          <entry key="project.open.time.89" value="1" />
+          <entry key="project.open.time.9" value="4" />
+          <entry key="project.open.time.92" value="1" />
+          <entry key="project.opened" value="95" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="css" value="4" />
+          <entry key="dummy" value="6" />
+          <entry key="html" value="8509" />
+          <entry key="js" value="77" />
+          <entry key="py" value="130652" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="CSS" value="4" />
+          <entry key="HTML" value="8509" />
+          <entry key="JavaScript" value="77" />
+          <entry key="PLAIN_TEXT" value="6" />
+          <entry key="Python" value="130652" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="css" value="8" />
+          <entry key="html" value="396" />
+          <entry key="js" value="20" />
+          <entry key="log" value="7" />
+          <entry key="png" value="3" />
+          <entry key="po" value="2" />
+          <entry key="py" value="673" />
+          <entry key="py___jb_tmp___" value="1" />
+          <entry key="pyi" value="1" />
+          <entry key="rnc" value="1" />
+          <entry key="ts" value="2" />
+          <entry key="txt" value="5" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="CSS" value="8" />
+          <entry key="HTML" value="396" />
+          <entry key="Image" value="3" />
+          <entry key="JavaScript" value="20" />
+          <entry key="Locale" value="2" />
+          <entry key="Log" value="4" />
+          <entry key="PLAIN_TEXT" value="9" />
+          <entry key="Python" value="673" />
+          <entry key="PythonStub" value="1" />
+          <entry key="RNG Compact" value="1" />
+          <entry key="TypeScript" value="2" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apple/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1512">
+              <caret line="63" column="29" selection-start-line="63" selection-start-column="29" selection-end-line="63" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apple/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="43" column="29" selection-start-line="43" selection-start-column="29" selection-end-line="43" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Order/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="309">
+              <caret line="3201" column="35" selection-start-line="3201" selection-start-column="35" selection-end-line="3201" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+                <element signature="e#1242#2273#0" />
+                <element signature="e#2324#2392#0" />
+                <element signature="e#2436#3058#0" />
+                <element signature="e#3099#3155#0" />
+                <element signature="e#3192#3244#0" />
+                <element signature="e#3289#3351#0" />
+                <element signature="e#3391#3446#0" />
+                <element signature="e#3544#15458#0" />
+                <element signature="e#15517#36003#0" />
+                <element signature="e#36061#58735#0" />
+                <element signature="e#58793#81475#0" />
+                <element signature="e#81529#82654#0" />
+                <element signature="e#82711#83695#0" />
+                <element signature="e#83753#84541#0" />
+                <element signature="e#84599#96069#0" />
+                <element signature="e#96134#108079#0" />
+                <element signature="e#108137#109972#0" />
+                <element signature="e#110253#116332#0" />
+                <element signature="e#116374#122313#0" />
+                <element signature="e#122355#128285#0" />
+                <element signature="e#128328#134231#0" />
+                <element signature="e#134272#134665#0" />
+                <element signature="e#134709#135056#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Order/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="301">
+              <caret line="676" column="73" selection-start-line="676" selection-start-column="73" selection-end-line="676" selection-end-column="73" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Order/signals.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="336">
+              <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
+              <folding>
+                <element signature="e#14#50#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/POM/query_API.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="316">
+              <caret line="372" column="41" lean-forward="true" selection-start-line="372" selection-start-column="41" selection-end-line="372" selection-end-column="41" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+                <element signature="e#723#2233#0" />
+                <element signature="e#4330#5723#0" />
+                <element signature="e#5791#6234#0" />
+                <element signature="e#6318#7576#0" />
+                <element signature="e#7678#11382#0" />
+                <element signature="e#11483#13276#0" />
+                <element signature="e#17187#19035#0" />
+                <element signature="e#19135#21016#0" />
+                <element signature="e#21095#22754#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/POM/timer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2548">
+              <caret line="428" column="39" lean-forward="true" selection-start-line="428" selection-start-column="39" selection-end-line="428" selection-end-column="39" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+                <element signature="e#1161#1246#0" />
+                <element signature="e#1356#7852#0" />
+                <element signature="e#7929#10203#0" />
+                <element signature="e#15232#15980#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>debugger;</find>
+      <find>emp</find>
+      <find>cho</find>
+      <find>split</find>
+      <find>messages</find>
+      <find>default</find>
+      <find>l = field_list('Sample_detail', 'item_no')</find>
+      <find>l = field_list(&quot;Po&quot;, &quot;order_number&quot;)</find>
+      <find>field_list</find>
+      <find>contract</find>
+      <find>blank=True,</find>
+      <find>last_date = datetime.now().strftime('%Y-%m-%d')</find>
+      <find>status = request.POST.get('status')</find>
+      <find>status = request.POST.get('status', '')</find>
+      <find>status = request.POST.get('status', 'False')</find>
+      <find>'is_order': 'True',</find>
+      <find>#sub</find>
+      <find>/pom/store_remind/</find>
+      <find>Material</find>
+      <find>omr_po_detail</find>
+      <find>factory</find>
+      <find>omr</find>
+      <find>datetime.now()</find>
+      <find>process</find>
+      <find>case.</find>
+      <find>page_type</find>
+      <find>today_reminds</find>
+      <find>today_page_info</find>
+      <find>staff</find>
+      <find>today_re</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Order/query_API.py" />
+        <option value="$PROJECT_DIR$/templates/pom/pager.html" />
+        <option value="$PROJECT_DIR$/Order/apps.py" />
+        <option value="$PROJECT_DIR$/static/js/select.js" />
+        <option value="$PROJECT_DIR$/templates/order/index.html" />
+        <option value="$PROJECT_DIR$/templates/pom/caseImport(2).html" />
+        <option value="$PROJECT_DIR$/POM/signals.py" />
+        <option value="$PROJECT_DIR$/POM/apps.py" />
+        <option value="$PROJECT_DIR$/Basic_info/migrations/0003_auto_20200204_1138.py" />
+        <option value="$PROJECT_DIR$/Report/views.py" />
+        <option value="$PROJECT_DIR$/apple/views.py" />
+        <option value="$PROJECT_DIR$/email.py" />
+        <option value="$PROJECT_DIR$/send_email.py" />
+        <option value="$PROJECT_DIR$/POM/adminx.py" />
+        <option value="$PROJECT_DIR$/POM/urls.py" />
+        <option value="$PROJECT_DIR$/Basic_info/models.py" />
+        <option value="$PROJECT_DIR$/Basic_info/adminx.py" />
+        <option value="$PROJECT_DIR$/POM/models.py" />
+        <option value="$PROJECT_DIR$/Order/adminx.py" />
+        <option value="$PROJECT_DIR$/Order/models.py" />
+        <option value="$PROJECT_DIR$/Order/urls.py" />
+        <option value="$PROJECT_DIR$/Basic_info/urls.py" />
+        <option value="$PROJECT_DIR$/Basic_info/views.py" />
+        <option value="$PROJECT_DIR$/apple/bd_leader.py" />
+        <option value="$PROJECT_DIR$/test.py" />
+        <option value="$PROJECT_DIR$/templates/pom/case.html" />
+        <option value="$PROJECT_DIR$/templates/pom/caseImport.html" />
+        <option value="$PROJECT_DIR$/templates/pom/caseDetail.html" />
+        <option value="$PROJECT_DIR$/templates/order/sketch_type.html" />
+        <option value="$PROJECT_DIR$/templates/order/sketch_detail.html" />
+        <option value="$PROJECT_DIR$/templates/order/sketch_design.html" />
+        <option value="$PROJECT_DIR$/templates/order/po.html" />
+        <option value="$PROJECT_DIR$/templates/order/contract.html" />
+        <option value="$PROJECT_DIR$/templates/order/material_sign.html" />
+        <option value="$PROJECT_DIR$/templates/order/material_sign_detail.html" />
+        <option value="$PROJECT_DIR$/templates/order/omr.html" />
+        <option value="$PROJECT_DIR$/templates/order/omr_po_detail.html" />
+        <option value="$PROJECT_DIR$/templates/order/po_detail.html" />
+        <option value="$PROJECT_DIR$/templates/order/product_send.html" />
+        <option value="$PROJECT_DIR$/templates/order/repeat_sample.html" />
+        <option value="$PROJECT_DIR$/templates/order/repeat_sample_detail.html" />
+        <option value="$PROJECT_DIR$/templates/order/sample_detail.html" />
+        <option value="$PROJECT_DIR$/templates/order/sample_target.html" />
+        <option value="$PROJECT_DIR$/templates/order/sketch_develop.html" />
+        <option value="$PROJECT_DIR$/apple/settings.py" />
+        <option value="$PROJECT_DIR$/apple/urls.py" />
+        <option value="$PROJECT_DIR$/POM/views.py" />
+        <option value="$PROJECT_DIR$/Order/signals.py" />
+        <option value="$PROJECT_DIR$/Order/views.py" />
+        <option value="$PROJECT_DIR$/POM/query_API.py" />
+        <option value="$PROJECT_DIR$/POM/timer.py" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="width" value="640" />
+    <option name="height" value="1040" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+          <State>
+            <id>Python</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Python</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="apple" type="b2602c69:ProjectViewProjectNode" />
+              <item name="apple" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="apple" type="b2602c69:ProjectViewProjectNode" />
+              <item name="apple" type="462c0819:PsiDirectoryNode" />
+              <item name="apple" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="apple" type="b2602c69:ProjectViewProjectNode" />
+              <item name="apple" type="462c0819:PsiDirectoryNode" />
+              <item name="Order" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="apple" type="b2602c69:ProjectViewProjectNode" />
+              <item name="apple" type="462c0819:PsiDirectoryNode" />
+              <item name="POM" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="apple" type="b2602c69:ProjectViewProjectNode" />
+              <item name="apple" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="apple" type="b2602c69:ProjectViewProjectNode" />
+              <item name="外部库" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="apple" type="b2602c69:ProjectViewProjectNode" />
+              <item name="外部库" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 &gt;" type="70bed36:NamedLibraryElementNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="E:/0002--资料备份/资料转移-张恒/Python学习文件/Python学习笔记/18-项目源代码/13-zerocar-master-本地项目" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Desktop\apple\templates\finance" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Desktop\apple\apple" />
+      <recent name="E:\Desktop\apple\templates\pom" />
+      <recent name="E:\Desktop\apple\POM" />
+      <recent name="E:\Desktop\apple\templates\order" />
+      <recent name="E:\Desktop\apple" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.test (2)">
+    <configuration name="test (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="apple" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="E:\Anaconda3\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/apple" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/apple/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="apple" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="apple" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Order" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Order/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="apple" type="Python.DjangoServer" factoryName="Django server">
+      <module name="apple" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Django server.apple" />
+      <item itemvalue="Python.test" />
+      <item itemvalue="Python.test (1)" />
+      <item itemvalue="Python.test (2)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.test (2)" />
+        <item itemvalue="Python.test (1)" />
+        <item itemvalue="Python.test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3c5e4234-e184-431e-8b2f-248442da59ba" name="默认更改列表" comment="" />
+      <created>1573020730911</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1573020730911</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15884861" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32962137" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32998884" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32998884" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5010661" side_tool="true" weight="0.34336677" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.4989339" visible="true" weight="0.39464882" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32998884" />
+      <window_info anchor="bottom" id="调试" order="13" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" weight="0.32995737" />
+      <window_info anchor="right" id="SciView" order="4" weight="0.32995737" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myShow1" value="true" />
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Basic_info/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://E:/Anaconda3/Lib/site-packages/django/views/generic/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24">
+          <caret line="48" column="8" selection-start-line="48" selection-start-column="8" selection-end-line="48" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Basic_info/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="21" column="39" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/永旭.txt" />
+    <entry file="file://$PROJECT_DIR$/apple/bd_leader.py" />
+    <entry file="file://E:/Anaconda3/Lib/site-packages/gevent/monkey.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="97" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/POM/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="265" selection-start-line="265" selection-end-line="265" />
+          <folding>
+            <element signature="e#143#1762#0" />
+            <element signature="e#1798#8760#0" />
+            <element signature="e#8799#9975#0" />
+            <element signature="e#10009#11088#0" />
+            <element signature="e#11127#12647#0" />
+            <element signature="e#12682#16412#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Basic_info/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="12" column="58" selection-start-line="12" selection-start-column="58" selection-end-line="12" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="114" selection-start-line="114" selection-end-line="114" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apple/try.py" />
+    <entry file="file://$PROJECT_DIR$/Order/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pom/caseImport.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="439" column="7" lean-forward="true" selection-start-line="439" selection-start-column="7" selection-end-line="439" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pom/caseDetail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="10" column="38" lean-forward="true" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/pom/case.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="412" selection-start-line="412" selection-end-line="418" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="91" column="26" lean-forward="true" selection-start-line="91" selection-start-column="26" selection-end-line="91" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/contract.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="314" column="23" lean-forward="true" selection-start-line="314" selection-start-column="23" selection-end-line="314" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/develop_function.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/fmr.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/item_note.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/item_package.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/material_sign_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="374" column="52" selection-start-line="374" selection-start-column="52" selection-end-line="374" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/material_sign.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="243" selection-start-line="243" selection-end-line="260" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/omr_po_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="300" column="19" lean-forward="true" selection-start-line="300" selection-start-column="19" selection-end-line="300" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/package_texture.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/package_type.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/omr.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="272" column="39" lean-forward="true" selection-start-line="272" selection-start-column="39" selection-end-line="272" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/po_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="318" column="19" lean-forward="true" selection-start-line="318" selection-start-column="19" selection-end-line="318" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/product_send.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="339" column="19" lean-forward="true" selection-start-line="339" selection-start-column="19" selection-end-line="339" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/repeat_sample.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="293" selection-start-line="293" selection-end-line="310" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/sample_target.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="86" column="56" selection-start-line="86" selection-start-column="56" selection-end-line="86" selection-end-column="56" />
+          <caret line="92" column="55" selection-start-line="92" selection-start-column="55" selection-end-line="92" selection-end-column="55" />
+          <caret line="95" column="58" selection-start-line="95" selection-start-column="58" selection-end-line="95" selection-end-column="58" />
+          <caret line="98" column="58" selection-start-line="98" selection-start-column="58" selection-end-line="98" selection-end-column="58" />
+          <caret line="101" column="56" selection-start-line="101" selection-start-column="56" selection-end-line="101" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/sample_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="430" column="38" selection-start-line="430" selection-start-column="38" selection-end-line="430" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/repeat_sample_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="343" column="63" lean-forward="true" selection-start-line="343" selection-start-column="63" selection-end-line="343" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/sketch_type.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="56" column="39" lean-forward="true" selection-start-line="56" selection-start-column="39" selection-end-line="56" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/sketch_develop.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="457" column="39" selection-start-line="457" selection-start-column="39" selection-end-line="457" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/sketch_detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="383" selection-start-line="383" selection-end-line="400" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/sketch_design.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="309" column="43" selection-start-line="309" selection-start-column="43" selection-end-line="309" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/po.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9432">
+          <caret line="393" column="33" selection-start-line="393" selection-start-column="33" selection-end-line="393" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/order/sea_rate.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1536">
+          <caret line="64" column="6" selection-start-line="64" selection-start-column="6" selection-end-line="64" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Finance/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="114" column="25" selection-start-line="114" selection-start-column="25" selection-end-line="114" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/img/微信图片_20191128145357.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/img/微信图片_20191128145402.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://E:/Anaconda3/Lib/site-packages/xadmin/static/xadmin/css/themes/bootstrap-xadmin.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="59" column="33" lean-forward="true" selection-start-line="59" selection-start-column="33" selection-end-line="59" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apple/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1512">
+          <caret line="63" column="29" selection-start-line="63" selection-start-column="29" selection-end-line="63" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apple/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="43" column="29" selection-start-line="43" selection-start-column="29" selection-end-line="43" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Order/query_API.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-116">
+          <caret line="1282" column="4" selection-start-line="1282" selection-start-column="4" selection-end-line="1282" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/POM/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="471">
+          <caret line="55" column="42" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#2478#7518#0" />
+            <element signature="e#3919#5354#0" />
+            <element signature="e#5405#7420#0" />
+            <element signature="e#7627#10884#0" />
+            <element signature="e#10960#12805#0" />
+            <element signature="e#12862#15320#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Order/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="676" column="73" selection-start-line="676" selection-start-column="73" selection-end-line="676" selection-end-column="73" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Order/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="3201" column="35" selection-start-line="3201" selection-start-column="35" selection-end-line="3201" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#1242#2273#0" />
+            <element signature="e#2324#2392#0" />
+            <element signature="e#2436#3058#0" />
+            <element signature="e#3099#3155#0" />
+            <element signature="e#3192#3244#0" />
+            <element signature="e#3289#3351#0" />
+            <element signature="e#3391#3446#0" />
+            <element signature="e#3544#15458#0" />
+            <element signature="e#15517#36003#0" />
+            <element signature="e#36061#58735#0" />
+            <element signature="e#58793#81475#0" />
+            <element signature="e#81529#82654#0" />
+            <element signature="e#82711#83695#0" />
+            <element signature="e#83753#84541#0" />
+            <element signature="e#84599#96069#0" />
+            <element signature="e#96134#108079#0" />
+            <element signature="e#108137#109972#0" />
+            <element signature="e#110253#116332#0" />
+            <element signature="e#116374#122313#0" />
+            <element signature="e#122355#128285#0" />
+            <element signature="e#128328#134231#0" />
+            <element signature="e#134272#134665#0" />
+            <element signature="e#134709#135056#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Order/signals.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
+          <folding>
+            <element signature="e#14#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/POM/timer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2548">
+          <caret line="428" column="39" lean-forward="true" selection-start-line="428" selection-start-column="39" selection-end-line="428" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#1161#1246#0" />
+            <element signature="e#1356#7852#0" />
+            <element signature="e#7929#10203#0" />
+            <element signature="e#15232#15980#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/POM/query_API.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="316">
+          <caret line="372" column="41" lean-forward="true" selection-start-line="372" selection-start-column="41" selection-end-line="372" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#723#2233#0" />
+            <element signature="e#4330#5723#0" />
+            <element signature="e#5791#6234#0" />
+            <element signature="e#6318#7576#0" />
+            <element signature="e#7678#11382#0" />
+            <element signature="e#11483#13276#0" />
+            <element signature="e#17187#19035#0" />
+            <element signature="e#19135#21016#0" />
+            <element signature="e#21095#22754#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.19689119" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

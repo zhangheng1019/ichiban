@@ -55,10 +55,10 @@ def store_reminds_view(request):
             except:
                 return JsonResponse({'status': 'fail', 'msg': '存储到数据库出错，请检查订单相关数据合法性！'})
         else:
-            # try:
-            remind_msg = other_remind_add(request)
-            # except:
-            #     return JsonResponse({'status': 'fail', 'msg': '存储到数据库出错，请检查数据合法性！'})
+            try:
+                remind_msg = other_remind_add(request)
+            except:
+                return JsonResponse({'status': 'fail', 'msg': '存储到数据库出错，请检查数据合法性！'})
     return JsonResponse({'status': 'success', 'msg': '生成提醒事项并提交数据库成功。'})
 
 

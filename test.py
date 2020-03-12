@@ -1,92 +1,148 @@
-# encoding:utf-8
-import requests
-import webbrowser
-import random
-import time
-
-from django.http import JsonResponse
-
-ak_list = ["tqVYV4fb2DH0q9MSqUoxXpk5DWmUysmT", "PY6pILKGRoOZNxUGStlYyzMzHkVjmcoi"]
-ak = random.choice(ak_list)  # 随机选一个ak
-headers = {
-    'X-Requested-With': 'XMLHttpRequest',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                  'Chrome/56.0.2924.87 Safari/537.36',
-    'Referer': 'https://restapi.amap.com/'
-}
 
 
-def get_JWcode(addr):
-    url = 'https://api.map.baidu.com/geocoding/v3/?address=%s&output=json&ak=%s' % (addr, random.choice(ak_list))
-    r = requests.get(url, headers=headers)
-    if r.status_code == 200:
-        try:
-            loc_info = r.json()["result"]["location"]
-            lng = loc_info['lng']
-            lat = loc_info['lat']
-            return lng, lat
-        except Exception as e:
-            print("get_JWcode()函数捕获到错误：", e)
-            return None
-    else:
-        print("status_code ========>", r.status_code)
-        return None
+# 链表
+# class Node:
+#     def __init__(self, data=None, next=None):
+#         self.data = data
+#         self.next = next
 
 
-def do_task():
-    l = [
-        '深圳市龙华区观湖街道松元厦社区福楼村32 - 1栋',
-        '深圳市龙华区观澜镇大和村14栋',
-        '深圳市龙华区富泉新村北区H8栋',
-        '深圳市龙华区金侨花园6栋',
-        '深圳市龙华民治东龙新村1区26栋',
-        '深圳市龙华区富泉新村一区4巷',
-        '深圳市龙华民丰路龙悦居2期6栋',
-        '深圳市布吉桂芳园',
-        '深圳市龙华区观兰镇桂花第二市场29栋',
-        '深圳市龙岗区坂田街道祥龙花园7栋',
-        '深圳市龙华区水斗新村九巷三栋',
-        '深圳市罗湖区莲塘街道莲花社区名俊豪庭',
-        '深圳市坂田街道天景山庄西区22栋',
-        '深圳市龙华区龙华街道玉翠新村A区162 - 2栋',
-        '深圳市龙华区龙华街道玉翠新村A区162 - 2栋',
-        '深圳市龙岗区布吉桂芳园',
-        '广东省深圳市龙岗区坂田街道岗头新围仔新梅8巷',
-        '深圳市龙华新区三联社区弓村十五巷一栋',
-        '深圳市龙岗区 金地名峰',
-        '深圳市龙岗区坂田街道岗头路50号',
-        '深圳市龙岗区布吉镇百合星城',
-        '深圳市宝安区石岩街道办上屋新村41栋',
-    ]
-    res = []
-    s_addr = '深圳市龙华区宇威商流E城'
-    s_jwd = get_JWcode(s_addr)
-    for e_addr in l:
-        time.sleep(1)
-        print('===================e_addr:', e_addr)
-        e_jwd = get_JWcode(e_addr)
-        url1 = 'http://api.map.baidu.com/direction/v2/driving?origin=%s,%s&destination=%s,%s' \
-               '&ak=%s' % (s_jwd[1], s_jwd[0], e_jwd[1], e_jwd[0], "tqVYV4fb2DH0q9MSqUoxXpk5DWmUysmT")
-        url2 = 'http://api.map.baidu.com/direction/v2/transit?origin=%s,%s&destination=%s,%s' \
-               '&ak=%s' % (s_jwd[1], s_jwd[0], e_jwd[1], e_jwd[0], "tqVYV4fb2DH0q9MSqUoxXpk5DWmUysmT")
-        r1 = requests.get(url1, headers=headers)
-        r2 = requests.get(url2, headers=headers)
-        print('到try了')
-        print('r1.json():', r1.json())
-        print('r2.json():', r2.json())
-        try:
-            duration1 = r1.json()['result']['routes'][0]['duration']
-            duration2 = r2.json()['result']['routes'][0]['duration']
-            dis = r2.json()['result']['routes'][0]['distance'] // 1000
-            minutes_car = duration1 // 60  # 秒转分钟单位
-            minutes_bus = duration2 // 60  # 秒转分钟单位
-            res.append((minutes_bus, minutes_car, dis))
-        except Exception as e:
-            res.append((0, 0, 0))
-        # print('打车大约需要%d分钟，公交大约需要%d分钟' % (minutes_car, minutes_bus))
-        print('================l:', l)
-        print('----------------res:', res)
-    with open('艺隆.txt', 'w') as file_object:
-        file_object.write('%s%s' % (l, res))
+# def rev(link):
+#     if link is None or link.next is None:
+#         return link
+#     pre = link
+#     cur = link.next
+#     pre.next = None
+#     while cur:
+#         temp = cur.next
+#         cur.next = pre
+#         pre = cur
+#         cur = temp
+#     return pre
+#
+#
+# if __name__ == '__main__':
+#     link = Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Node(7, Node(8, Node(9)))))))))
+#     print('===========================', link.next.data)
+#     root = rev(link)
+#     print('链表反转：', root)
+#     while root:
+#         print(root.data)
+#         root = root.next
 
-do_task()
+
+# def ReverseList(head):
+#     # write code here
+#     if not head or not head.next:
+#         return head
+#     print('开始运行递归内函数')
+#     NewHead = ReverseList(head.next)
+#     print('结束运行递归内函数')
+#     print('head：', head.data)
+#     head.next.next = head
+#     head.next = None
+#     print(NewHead.data, NewHead.next)
+#     return NewHead
+#
+#
+# head = Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Node(7, Node(8, Node(9)))))))))
+# res = ReverseList(head)
+
+
+# 深浅拷贝
+# from copy import copy, deepcopy
+# a = [0, 1, [2, 3, 4]]
+# b = copy(a)
+# c = deepcopy(a)
+# print('a改变前== b:', b, 'c:', c)
+# a[2][1] = 5
+# print('a改变后== b:', b, 'c:', c)
+
+
+# def consumer():
+#     r = ''
+#     while True:
+#         n = yield r
+#         if not n:
+#             return
+#         print('[CONSUMER] Consuming %s...' % n)
+#         r = '200 OK'
+#
+# def produce(c):
+#     c.send(None)
+#     n = 0
+#     while n < 5:
+#         n = n + 1
+#         print('[PRODUCER] Producing %s...' % n)
+#         r = c.send(n)
+#         print('[PRODUCER] Consumer return: %s' % r)
+#     c.close()
+#
+# c = consumer()
+# produce(c)
+
+
+# 协程
+# from greenlet import greenlet
+#
+#
+# def test1():
+#     print('已经切换到1')
+#     print(12)
+#     print('准备切换到2')
+#     gr2.switch()
+#     print('已经切换到1')
+#     print(34)
+#     print('准备切换到2')
+#     gr2.switch()
+#
+#
+# def test2():
+#     print('已经切换到2')
+#     print(56)
+#     print('准备切换到1')
+#     gr1.switch()
+#     print('已经切换到2')
+#     print(78)
+#
+#
+# gr1 = greenlet(test1)  # 启动一个协程
+# gr2 = greenlet(test2)
+# gr1.switch()  # 手动切换
+
+
+import gevent
+
+from urllib import request
+import gevent, time
+from gevent import monkey
+
+monkey.patch_all()  # 把当前程序的所有的io操作给我单独的做上标记
+
+
+def f(url):
+    print('GET: %s' % url)
+    resp = request.urlopen(url)
+    data = resp.read()
+    print('%d bytes received from %s.' % (len(data), url))
+    page = open('url.html', 'wb')
+    page.write(data)
+    page.close()
+
+
+urls = ['https://www.python.org/',
+        'https://www.yahoo.com/',
+        'https://github.com/']
+time_start = time.time()
+for url in urls:
+    f(url)
+print("同步cost", time.time() - time_start)
+async_time_start = time.time()
+gevent.joinall([
+    gevent.spawn(f, 'https://www.python.org/'),
+    gevent.spawn(f, 'https://www.yahoo.com/'),
+    gevent.spawn(f, 'https://github.com/'),
+])
+print("异步cost", time.time() - async_time_start)
+
+

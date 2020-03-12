@@ -1,375 +1,381 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta charset="UTF-8">
-    <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/js/tongyong.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
-    <script src="/static/js/md5.js"></script>
-    <script type="text/javascript" src="/static/js/select2.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
-    <script type="text/javascript" src="/static/js/select.js"></script>
-    <title>事项录入</title>
-    <script type="text/javascript">
-        $(function () {
+    <head>
+        <meta charset="UTF-8">
+        <script src="/static/js/2.1.4jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="/static/js/tongyong.js"></script>
+        <link rel="stylesheet" type="text/css" href="/static/css/button.css"/>
+        <script src="/static/js/md5.js"></script>
+        <script type="text/javascript" src="/static/js/select2.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/static/css/select2.min.css"/>
+        <script type="text/javascript" src="/static/js/select.js"></script>
+        <title>事项录入</title>
+        <script type="text/javascript">
+            $(function () {
 
-            $('#order_case').hide();
-            $('#selectCategory').hide();
-            $('#sub_select').bind('click', function () {
-                var checked = $('input:checked');
+                $('#order_case').hide();
+                $('#selectCategory').hide();
+                $('#sub_select').bind('click', function () {
+                    var checked = $('input:checked');
 
-                if (checked.length == 0) {
-                    var text = "";
-                    for (var i = 0; i < checked.length; i++) {
-                        text += "";
+                    if (checked.length == 0) {
+                        var text = "";
+                        for (var i = 0; i < checked.length; i++) {
+                            text += "";
+                        }
+                        alert('请选择条件！');
+                    } else {
+                        $('#order_case').show();
+                        var categoryArray = [];
+                        for (var i = 0; i < checked.length; i++) {
+                            //console.log(checked[i].name);
+                            categoryArray.push(checked[i].id);
+                        }
+                        var dateArrays = [];
+                        for (var i = 0; i < $('#date input:radio').length; i++) {
+                            dateArrays.push($('#date input:radio')[i].id);
+                        }
+                        var intArrays = [];
+                        for (var i = 0; i < $('#int input').length; i++) {
+                            intArrays.push($('#int input')[i].id);
+                        }
+                        //获取选中类别的数据
+                        $.ajax({
+                            type: "post",
+                            data: {
+                                "field_name_list": categoryArray
+                            },
+                            traditional: true,
+                            url: "/pom/get_field_data/",
+                            async: true,
+                            success: function (data) {
+                                debugger;
+                                if (data.status != false) {
+                                    //获取日期和金额数量的id数组
+                                    var dateArrays = [];
+                                    for (var i = 0; i < $('#date input:radio').length; i++) {
+                                        dateArrays.push($('#date input:radio')[i].id);
+                                    }
+                                    var intArrays = [];
+                                    for (var i = 0; i < $('#int input').length; i++) {
+                                        intArrays.push($('#int input')[i].id);
+                                    }
+                                    var text = "";
+                                    var selects = [];
+                                    $.each(data.data, function (i, value) {
+                                        //时间
+                                        if (dateArrays.indexOf(i) > -1) {
+                                            text += "<label>" + $('#' + i).next().text() + "</label>";
+                                            text += "		<input type=\"text\" id=\"subDate\" name=\"" + i + "\" /><label>(天)</label>";
+                                            text += "		<input type=\"radio\" name=\"calcDate\" id=\"before\" value=\"+\"/><label>前</label>";
+                                            text += "		<input type=\"radio\" name=\"calcDate\" id=\"after\" value=\"-\"/><label>后</label>";
+                                            text += "<br/>";
+                                        } //金额数量
+                                        else if (intArrays.indexOf(i) > -1) {
+                                            text += "";
+                                            text += "<label>" + $('#' + i).next().text() + "</label>";
+                                            text += "<select id=\"" + i + 's' + "\" name=\"" + i + "\" class=\"amount\">";
+                                            text += "	<option value=\"\">请选择</option>";
+                                            for (var j in value) {
+                                                text += "	<option value=\"" + value[j] + "\">" + value[j] + "</option>";
+                                            }
+                                            text += "</select>";
+                                            text += "		<input  type=\"radio\" name=\"" + i + "\" value=\">=\"/><label>大于等于</label>";
+                                            text += "		<input  type=\"radio\" name=\"" + i + "\"  value=\"<=\"/><label>小于等于</label>";
+                                            text += "		<input  type=\"radio\" name=\"" + i + "\" value=\"==\"/><label>等于</label>";
+                                            text += "		<input  type=\"radio\" name=\"" + i + "\" value=\">\"/><label>大于</label>";
+                                            text += "		<input  type=\"radio\" name=\"" + i + "\" value=\"<\" /><label>小于</label>";
+                                            text += "<br/>";
+                                        } //其他条件
+                                        else {
+                                            text += "<label>" + $('#' + i).next().text() + "</label>";
+                                            text += "<select class=\"other\"  id=\"" + i + 's' + "\" name=\"" + i + "\">";
+                                            text += "	<option value=\"\">请选择</option>";
+                                            for (var j in value) {
+                                                text += "	<option value=\"" + value[j] + "\">" + value[j] + "</option>";
+                                            }
+                                            text += "</select>";
+                                            text += "<br/>";
+                                            selects.push(i + 's');
+                                        }
+                                    });
+
+                                    $('#showCategory').html(text);
+                                    $.getScript('/static/js/select.js', function () {
+                                        setSelectnums(selects);
+                                    });
+                                    $('select').css('width', '200px');
+                                }
+                            }
+                        });
                     }
-                    alert('请选择条件！');
-                } else {
-                    $('#order_case').show();
-                    var categoryArray = [];
-                    for (var i = 0; i < checked.length; i++) {
-                        //console.log(checked[i].name);
-                        categoryArray.push(checked[i].id);
+                });
+
+                $('#sub').bind('click', function () {
+                    debugger;
+                    var case_content = $('#case_content').val();
+                    var case_content_e = $('#case_content_e').val();
+                    var isupload = $('#upload').val();
+                    var subInputs = $('#showCategory input');
+                    if(case_content==''||case_content_e==''||isupload==''){
+                        return false;
+                    }else {
+                        for (var i = 0; i < subInputs.length; i++) {
+                            if ($('#' + subInputs[i].id).val() == '') {
+                                alert('请检查');
+                                return false;
+                            }
+                        }
                     }
-                    var dateArrays = [];
-                    for (var i = 0; i < $('#date input:radio').length; i++) {
-                        dateArrays.push($('#date input:radio')[i].id);
+                    var subArr = [];
+                    var dateObj = {};
+                    //获取时间
+                    var date = $('#subDate').val();
+                    var subc = $('input[name="calcDate"]').val();
+                    var dateName = $('#subDate').attr('name');
+                    dateObj['date_field'] = dateName;
+                    dateObj['rule'] = subc + '' + date;
+                    dateObj=JSON.stringify(dateObj);
+                    subArr.push(dateObj);
+                    //金额/数量
+                    var calc, amount;
+                    for (let i = 0; i < $('.amount').length; i++) {
+                        amount = $('#' + $('.amount')[i].name + 's').val();
+                        calc = $('#showCategory input[name="' + $('.amount')[i].name + '"]:checked').val();
+                        subArr.push($('.amount')[i].name + ' ' + calc + ' ' + amount);
                     }
-                    var intArrays = [];
-                    for (var i = 0; i < $('#int input').length; i++) {
-                        intArrays.push($('#int input')[i].id);
+
+                    //其他条件
+                    var condition, conditionArr, conditionValue;
+                    for (let i = 0; i < $('.other').length; i++) {
+                        condition = $('.other')[i].name;
+                        conditionArr = $('#' + $('.other')[i].id).val();
+                        conditionValue = '';
+                        for (let j = 0; j < conditionArr.length; j++) {
+                            conditionValue += "po." + condition + ' == ' +'"' + conditionArr[j] +'"' + ' or ';
+                        }
+                        conditionValue = conditionValue.substring(0, conditionValue.length - 4);
+                        subArr.push(conditionValue);
                     }
-                    //获取选中类别的数据
                     $.ajax({
                         type: "post",
                         data: {
-                            "field_name_list": categoryArray
+                            "action": "order",
+                            "order_point_list": subArr,
+                            "event_name": case_content,
+                            "event_edesc": case_content_e,
+                            "is_upload_file": isupload
                         },
                         traditional: true,
-                        url: "/pom/get_field_data/",
+                        url: "/pom/store_reminds/",
                         async: true,
                         success: function (data) {
-                            debugger;
-                            if (data.status != false) {
-                                //获取日期和金额数量的id数组
-                                var dateArrays = [];
-                                for (var i = 0; i < $('#date input:radio').length; i++) {
-                                    dateArrays.push($('#date input:radio')[i].id);
-                                }
-                                var intArrays = [];
-                                for (var i = 0; i < $('#int input').length; i++) {
-                                    intArrays.push($('#int input')[i].id);
-                                }
-                                var text = "";
-                                var selects = [];
-                                $.each(data.data, function (i, value) {
-                                    //时间
-                                    if (dateArrays.indexOf(i) > -1) {
-                                        text += "<label>" + $('#' + i).next().text() + "</label>";
-                                        text += "		<input type=\"text\" id=\"subDate\" name=\"" + i + "\" /><label>(天)</label>";
-                                        text += "		<input type=\"radio\" name=\"calcDate\" id=\"before\" value=\"+\"/><label>前</label>";
-                                        text += "		<input type=\"radio\" name=\"calcDate\" id=\"after\" value=\"-\"/><label>后</label>";
-                                        text += "<br/>";
-                                    } //金额数量
-                                    else if (intArrays.indexOf(i) > -1) {
-                                        text += "";
-                                        text += "<label>" + $('#' + i).next().text() + "</label>";
-                                        text += "<select id=\"" + i + 's' + "\" name=\"" + i + "\" class=\"amount\">";
-                                        text += "	<option value=\"\">请选择</option>";
-                                        for (var j in value) {
-                                            text += "	<option value=\"" + value[j] + "\">" + value[j] + "</option>";
-                                        }
-                                        text += "</select>";
-                                        text += "		<input  type=\"radio\" name=\"" + i + "\" value=\">=\"/><label>大于等于</label>";
-                                        text += "		<input  type=\"radio\" name=\"" + i + "\"  value=\"<=\"/><label>小于等于</label>";
-                                        text += "		<input  type=\"radio\" name=\"" + i + "\" value=\"==\"/><label>等于</label>";
-                                        text += "		<input  type=\"radio\" name=\"" + i + "\" value=\">\"/><label>大于</label>";
-                                        text += "		<input  type=\"radio\" name=\"" + i + "\" value=\"<\" /><label>小于</label>";
-                                        text += "<br/>";
-                                    } //其他条件
-                                    else {
-                                        text += "<label>" + $('#' + i).next().text() + "</label>";
-                                        text += "<select class=\"other\"  id=\"" + i + 's' + "\" name=\"" + i + "\">";
-                                        text += "	<option value=\"\">请选择</option>";
-                                        for (var j in value) {
-                                            text += "	<option value=\"" + value[j] + "\">" + value[j] + "</option>";
-                                        }
-                                        text += "</select>";
-                                        text += "<br/>";
-                                        selects.push(i + 's');
-                                    }
-                                });
-
-                                $('#showCategory').html(text);
-                                $.getScript('/static/js/select.js', function () {
-                                    setSelectnums(selects);
-                                });
-                                $('select').css('width', '200px');
-                            }
+                            alert(data.msg);
                         }
-                    });
-                }
-            });
+                    })
+                });
 
-            $('#sub').bind('click', function () {
-                debugger;
-                var case_content = $('#case_content').val();
-                var case_content_e = $('#case_content_e').val();
-                var isupload = $('#upload').val();
-                var subInputs = $('#showCategory input');
-                if(case_content==''||case_content_e==''||isupload==''){
-                    return false;
-                }else {
+                $('#subAbout').bind('click', function () {
+                    var about = $('#about').val();
+                    if (about == 'True') {
+                        $('#selectCategory').show();
+                        $('#order_case').hide();
+                        $('#orderSub').show();
+                        $('#withoutOrderSub').hide();
+                    } else if (about == 'False') {
+                        $('#withoutOrderSub').show();
+                        $('#orderSub').hide();
+                        $('#selectCategory').hide();
+                        $('#order_case').show();
+                        $('#showCategory').html('');
+                        var data ={{ data|safe }};
+                        {#debugger;#}
+                        var text = "";
+                        for (var j in data.data.Staff) {
+                            text += "	<option value=\"" + data.data.Staff[j].pk + "\">" + data.data.Staff[j].fields.name + "</option>";
+                        }
+                        $('#s_1').append(text);
+                        debugger;
+
+                        $.getScript('/static/js/select.js', function () {
+                            setSelectnums(['s_1']);
+                        });
+                        $('select').css('width', '200px');
+                    }
+                });
+
+                //与订单无关的事项提交
+                $('#withoutOrderButton').bind('click', function () {
+                    $('#showCategory').html('');
+                    var subInputs = $('#order_case input');
                     for (var i = 0; i < subInputs.length; i++) {
                         if ($('#' + subInputs[i].id).val() == '') {
                             alert('请检查');
                             return false;
                         }
                     }
-                }
-                var subArr = [];
-                var dateObj = {};
-                //获取时间
-                var date = $('#subDate').val();
-                var subc = $('input[name="calcDate"]').val();
-                var dateName = $('#subDate').attr('name');
-                dateObj['date_field'] = dateName;
-                dateObj['rule'] = subc + '' + date;
-                dateObj=JSON.stringify(dateObj);
-                subArr.push(dateObj);
-                //金额/数量
-                var calc, amount;
-                for (let i = 0; i < $('.amount').length; i++) {
-                    amount = $('#' + $('.amount')[i].name + 's').val();
-                    calc = $('#showCategory input[name="' + $('.amount')[i].name + '"]:checked').val();
-                    subArr.push($('.amount')[i].name + ' ' + calc + ' ' + amount);
-                }
+                    var case_content = $('#case_content').val();
+                    var case_content_e = $('#case_content_e').val();
+                    var isupload = $('#upload').val();
+                    var begin_time = $('#begin_time').val();
+                    var end_time = $('#end_time').val();
+                    var rate = $('#rate').val();
+                    var plan_date = $('#plan_date').val();
+                    var conditionArr = $('#s_1').val();
 
-                //其他条件
-                var condition, conditionArr, conditionValue;
-                for (let i = 0; i < $('.other').length; i++) {
-                    condition = $('.other')[i].name;
-                    conditionArr = $('#' + $('.other')[i].id).val();
-                    conditionValue = '';
-                    for (let j = 0; j < conditionArr.length; j++) {
-                        conditionValue += "po." + condition + ' == ' +'"' + conditionArr[j] +'"' + ' or ';
-                    }
-                    conditionValue = conditionValue.substring(0, conditionValue.length - 4);
-                    subArr.push(conditionValue);
-                }
-                $.ajax({
-                    type: "post",
-                    data: {
-                        "action": "order",
-                        "order_point_list": subArr,
-                        "event_name": case_content,
-                        "event_edesc": case_content_e,
-                        "is_upload_file": isupload
-                    },
-                    traditional: true,
-                    url: "/pom/store_reminds/",
-                    async: true,
-                    success: function (data) {
-                        alert(data.msg);
-                    }
-                })
-            });
-
-            $('#subAbout').bind('click', function () {
-                var about = $('#about').val();
-                if (about == 'True') {
-                    $('#selectCategory').show();
-                    $('#order_case').hide();
-                    $('#orderSub').show();
-                    $('#withoutOrderSub').hide();
-                } else if (about == 'False') {
-                    $('#withoutOrderSub').show();
-                    $('#orderSub').hide();
-                    $('#selectCategory').hide();
-                    $('#order_case').show();
-                    $('#showCategory').html('');
-                    var data ={{ data|safe }};
-                    {#debugger;#}
-                    var text = "";
-                    for (var j in data.data.Staff) {
-                        text += "	<option value=\"" + data.data.Staff[j].pk + "\">" + data.data.Staff[j].fields.name + "</option>";
-                    }
-                    $('#s_1').append(text);
-                    debugger;
-
-                    $.getScript('/static/js/select.js', function () {
-                        setSelectnums(['s_1']);
+                    $.ajax({
+                        type: "post",
+                        data: {
+                            "action": "other",
+                            "name": case_content,
+                            "edesc": case_content_e,
+                            "person_list": conditionArr,
+                            "begin_time": begin_time,
+                            "end_time": end_time,
+                            "plan_date": plan_date,
+                            "rate": rate,
+                            "is_upload_file": isupload
+                        },
+                        url: "/pom/store_reminds/",
+                        async: true,
+                        traditional: true,
+                        success: function (data) {
+                            alert(data.msg);
+                        }
                     });
-                    $('select').css('width', '200px');
-                }
-            });
-
-            //与订单无关的事项提交
-            $('#withoutOrderButton').bind('click', function () {
-                $('#showCategory').html('');
-                var subInputs = $('#order_case input');
-                for (var i = 0; i < subInputs.length; i++) {
-                    if ($('#' + subInputs[i].id).val() == '') {
-                        alert('请检查');
-                        return false;
-                    }
-                }
-                var case_content = $('#case_content').val();
-                var case_content_e = $('#case_content_e').val();
-                var isupload = $('#upload').val();
-                var begin_time = $('#begin_time').val();
-                var end_time = $('#end_time').val();
-                var rate = $('#rate').val();
-                var plan_date = $('#plan_date').val();
-                var conditionArr = $('#s_1').val();
-
-                $.ajax({
-                    type: "post",
-                    data: {
-                        "action": "other",
-                        "name": case_content,
-                        "edesc": case_content_e,
-                        "person_list": conditionArr,
-                        "begin_time": begin_time,
-                        "end_time": end_time,
-                        "plan_date": plan_date,
-                        "rate": rate,
-                        "is_upload_file": isupload
-                    },
-                    url: "/pom/store_reminds/",
-                    async: true,
-                    traditional: true,
-                    success: function (data) {
-                        alert(data.msg);
-                    }
                 });
             });
-        });
-    </script>
+        </script>
 
-</head>
+    </head>
 
-<body>
+    <body>
+    <br>
+    <div style="font-size: 18px;">
+        {% if user.is_authenticated %}
+            Welcome <span style=""><b>{{ user.username }} </b></span>.&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/logout/" style="color: blue;">注销登录</a>
+        {% endif %}
+    </div><br>
 
-<div id="showAmount"></div>
+    <div id="showAmount"></div>
 
-<div id="aboutOrder" style="text-align: -webkit-center">
-    <label>请选择是否与订单相关：</label>
-    <select id="about">
-        <option value="True">是</option>
-        <option value="False">否</option>
-    </select>
-    <button id="subAbout">确认</button>
-</div>
-
-
-<div id="selectCategory" style="text-align: -webkit-center;">
-    <div id="category">
-        <font style="color: cornflowerblue;font-size: x-large;"> <label>请选择条件：</label></font><br/>
-        <input type="checkbox" name="customer" id="customer" value=""/><label>客人</label>
-        <input type="checkbox" name="customer_pono" id="customer_pono" value=""/><label>客人po</label>
-        <input type="checkbox" name="order_number" id="order_number" value=""/><label>我司订单编号</label> <br/>
-        <hr/>
-        <input type="checkbox" name="delivery_condition" id="delivery_condition" value=""/><label>客人交货条件</label>
-        <input type="checkbox" name="port" id="port" value=""/><label>客人出货港口</label>
-        <input type="checkbox" name="omr" id="omr" value=""/><label>承办员</label> <br/>
-        <hr/>
-        <input type="checkbox" name="pay_type" id="pay_type" value=""/><label>财务付款方式</label>
-        <input type="checkbox" name="item_no" id="item_no" value=""/><label>我司Item No</label>
-        <input type="checkbox" name="customer_item" id="customer_item" value=""/><label>客人Item No</label> <br/>
-        <hr/>
-        <input type="checkbox" name="desc" id="desc" value=""/><label>中文描述</label>
-        <input type="checkbox" name="edesc" id="edesc" value=""/><label>英文描述</label>
-        <input type="checkbox" name="fac_no" id="fac_no" value=""/><label>工厂货号</label> <br/>
-        <hr/>
-        <input type="checkbox" name="texture" id="texture" value=""/><label>材质</label>
-
-        <br/>
-        <hr/>
-        <input type="checkbox" name="each_box" id="each_box" value=""/><label>单一包装材质</label>
-
-        <input type="checkbox" name="fac_delivery" id="fac_delivery" value=""/><label>工厂交货条件</label>
-        <input type="checkbox" name="fac_delivery_port" id="fac_delivery_port" value=""/><label>工厂出货港口</label> <br/>
-        <hr/>
-        <input type="checkbox" name="fmr" id="fmr" value=""/><label>FMR人员</label>
-        <input type="checkbox" name="fqc" id="fqc" value=""/><label>FQC人员</label>
-        <input type="checkbox" name="factory" id="factory" value=""/><label>生产工厂</label> <br/>
-        <hr/>
-
-        <input type="checkbox" name="qc1" id="qc1" value=""/><label>第一次检验人员</label>
-        <input type="checkbox" name="qc2" id="qc2" value=""/><label>第二次检验人员</label>
-        <input type="checkbox" name="qc3" id="qc3" value=""/><label>第三次检验人员</label> <br/>
-        <hr/>
-        <input type="checkbox" name="rqc1" id="rqc1" value=""/><label>第一次复检人员</label>
-        <input type="checkbox" name="rqc2" id="rqc2" value=""/><label>第二次复检人员</label>
-        <input type="checkbox" name="no_pass" id="no_pass" value=""/><label>验货不通过放货</label> <br/>
-        <hr/>
-        <input type="checkbox" name="send_person" id="send_person" value=""/><label>放货人</label>
-        <input type="checkbox" name="process" id="process" value=""/><label>进度</label>
-        <br/>
-        <hr/>
-
+    <div id="aboutOrder" style="text-align: -webkit-center">
+        <label>请选择是否与订单相关：</label>
+        <select id="about">
+            <option value="True">是</option>
+            <option value="False">否</option>
+        </select>
+        <button id="subAbout">确认</button>
     </div>
 
-    <div id="int">
-        <input type="checkbox" name="amount" id="amount" value=""/><label>数量</label>
-        <input type="checkbox" name="costrate" id="costrate" value=""/><label>客人要价</label>
-        <input type="checkbox" name="outside_box" id="outside_box" value=""/><label>外盒数量</label>
-        <input type="checkbox" name="middle_box" id="middle_box" value=""/><label>中盒数量</label>
-        <input type="checkbox" name="inner_box" id="inner_box" value=""/><label>内盒数量</label>
-        <input type="checkbox" name="fac_cost" id="fac_cost" value=""/><label>工厂价格</label>
-        <input type="checkbox" name="fac_total" id="fac_total" value=""/><label>工厂合计金额</label>
+    <div id="selectCategory" style="text-align: -webkit-center;">
+        <div id="category">
+            <font style="color: cornflowerblue;font-size: x-large;"> <label>请选择条件：</label></font><br/>
+            <input type="checkbox" name="customer" id="customer" value=""/><label>客人</label>
+            <input type="checkbox" name="customer_pono" id="customer_pono" value=""/><label>客人po</label>
+            <input type="checkbox" name="order_number" id="order_number" value=""/><label>我司订单编号</label> <br/>
+            <hr/>
+            <input type="checkbox" name="delivery_condition" id="delivery_condition" value=""/><label>客人交货条件</label>
+            <input type="checkbox" name="port" id="port" value=""/><label>客人出货港口</label>
+            <input type="checkbox" name="omr" id="omr" value=""/><label>承办员</label> <br/>
+            <hr/>
+            <input type="checkbox" name="pay_type" id="pay_type" value=""/><label>财务付款方式</label>
+            <input type="checkbox" name="item_no" id="item_no" value=""/><label>我司Item No</label>
+            <input type="checkbox" name="customer_item" id="customer_item" value=""/><label>客人Item No</label> <br/>
+            <hr/>
+            <input type="checkbox" name="desc" id="desc" value=""/><label>中文描述</label>
+            <input type="checkbox" name="edesc" id="edesc" value=""/><label>英文描述</label>
+            <input type="checkbox" name="fac_no" id="fac_no" value=""/><label>工厂货号</label> <br/>
+            <hr/>
+            <input type="checkbox" name="texture" id="texture" value=""/><label>材质</label>
+
+            <br/>
+            <hr/>
+            <input type="checkbox" name="each_box" id="each_box" value=""/><label>单一包装材质</label>
+
+            <input type="checkbox" name="fac_delivery" id="fac_delivery" value=""/><label>工厂交货条件</label>
+            <input type="checkbox" name="fac_delivery_port" id="fac_delivery_port" value=""/><label>工厂出货港口</label> <br/>
+            <hr/>
+            <input type="checkbox" name="fmr" id="fmr" value=""/><label>FMR人员</label>
+            <input type="checkbox" name="fqc" id="fqc" value=""/><label>FQC人员</label>
+            <input type="checkbox" name="factory" id="factory" value=""/><label>生产工厂</label> <br/>
+            <hr/>
+
+            <input type="checkbox" name="qc1" id="qc1" value=""/><label>第一次检验人员</label>
+            <input type="checkbox" name="qc2" id="qc2" value=""/><label>第二次检验人员</label>
+            <input type="checkbox" name="qc3" id="qc3" value=""/><label>第三次检验人员</label> <br/>
+            <hr/>
+            <input type="checkbox" name="rqc1" id="rqc1" value=""/><label>第一次复检人员</label>
+            <input type="checkbox" name="rqc2" id="rqc2" value=""/><label>第二次复检人员</label>
+            <input type="checkbox" name="no_pass" id="no_pass" value=""/><label>验货不通过放货</label> <br/>
+            <hr/>
+            <input type="checkbox" name="send_person" id="send_person" value=""/><label>放货人</label>
+            <input type="checkbox" name="process" id="process" value=""/><label>进度</label>
+            <br/>
+            <hr/>
+
+        </div>
+
+        <div id="int">
+            <input type="checkbox" name="amount" id="amount" value=""/><label>数量</label>
+            <input type="checkbox" name="costrate" id="costrate" value=""/><label>客人要价</label>
+            <input type="checkbox" name="outside_box" id="outside_box" value=""/><label>外盒数量</label>
+            <input type="checkbox" name="middle_box" id="middle_box" value=""/><label>中盒数量</label>
+            <input type="checkbox" name="inner_box" id="inner_box" value=""/><label>内盒数量</label>
+            <input type="checkbox" name="fac_cost" id="fac_cost" value=""/><label>工厂价格</label>
+            <input type="checkbox" name="fac_total" id="fac_total" value=""/><label>工厂合计金额</label>
+        </div>
+
+        <div id="date">
+            <font style="color: cornflowerblue;font-size: x-large;"> <label>请选择日期：</label></font><br/>
+
+            <input type="radio" name="date" id="cus_receive_date" value=""/><label>客人收货日期</label>
+            <input type="radio" name="date" id="fina_date" value=""/><label>最终交货日期</label>
+            <input type="radio" name="date" id="receive_date" value=""/><label>接单日期</label>
+            <br/>
+            <hr/>
+            <input type="radio" name="date" id="fac_send_date" value=""/><label>工厂交货日期</label>
+            <input type="radio" name="date" id="produce_native_date" value=""/><label>生产通知单日</label>
+            <input type="radio" name="date" id="sale_date" value=""/><label>消出货日期</label>
+            <br/>
+            <hr/>
+            <input type="radio" name="date" id="cancle_date" value=""/><label>订单取消日期</label>
+            <input type="radio" name="date" id="produce_record" value=""/><label>生产记录表送出日</label>
+            <input type="radio" name="date" id="mark_notice_date" value=""/><label>唛头通知日期</label>
+            <br/>
+            <hr/>
+            <input type="radio" name="date" id="label_sure_date" value=""/><label>贴标确认日期</label>
+            <input type="radio" name="date" id="label_send_date" value=""/><label>贴标送出日期</label>
+            <input type="radio" name="date" id="sample_send_date" value=""/><label>测试样寄出日</label>
+            <br/>
+            <hr/>
+            <input type="radio" name="date" id="sample_pass_date" value=""/><label>测试样通过日</label>
+            <input type="radio" name="date" id="product_send_date" value=""/><label>确认样寄交客户</label>
+            <input type="radio" name="date" id="product_sure_date" value=""/><label>生产确认样确认</label>
+            <br/>
+            <hr/>
+            <input type="radio" name="date" id="midterm_inspect" value=""/><label>期中验货日</label>
+            <input type="radio" name="date" id="ichiban_inspect" value=""/><label>我司验货日</label>
+            <input type="radio" name="date" id="customer_inspect" value=""/><label>客人验货日</label>
+            <br/>
+            <hr/>
+            <input type="radio" name="date" id="pl_come_date" value=""/><label>配料送交工厂</label>
+            <input type="radio" name="date" id="box_sure_date" value=""/><label>彩盒确认日期</label>
+            <input type="radio" name="date" id="box_send_date" value=""/><label>彩盒寄出日期</label>
+            <br/>
+            <hr/>
+            <input type="radio" name="date" id="shipping_data" value=""/><label>shipping资料</label>
+            <input type="radio" name="date" id="booking_so" value=""/><label>Booking S/O</label>
+            <input type="radio" name="date" id="customDate" value=""/><label>自定义日期</label>
+            <br/>
+            <hr/>
+        </div>
+        <button id="sub_select">确认选择</button>
     </div>
 
-    <div id="date">
-        <font style="color: cornflowerblue;font-size: x-large;"> <label>请选择日期：</label></font><br/>
-
-        <input type="radio" name="date" id="cus_receive_date" value=""/><label>客人收货日期</label>
-        <input type="radio" name="date" id="fina_date" value=""/><label>最终交货日期</label>
-        <input type="radio" name="date" id="receive_date" value=""/><label>接单日期</label>
-        <br/>
-        <hr/>
-        <input type="radio" name="date" id="fac_send_date" value=""/><label>工厂交货日期</label>
-        <input type="radio" name="date" id="produce_native_date" value=""/><label>生产通知单日</label>
-        <input type="radio" name="date" id="sale_date" value=""/><label>消出货日期</label>
-        <br/>
-        <hr/>
-        <input type="radio" name="date" id="cancle_date" value=""/><label>订单取消日期</label>
-        <input type="radio" name="date" id="produce_record" value=""/><label>生产记录表送出日</label>
-        <input type="radio" name="date" id="mark_notice_date" value=""/><label>唛头通知日期</label>
-        <br/>
-        <hr/>
-        <input type="radio" name="date" id="label_sure_date" value=""/><label>贴标确认日期</label>
-        <input type="radio" name="date" id="label_send_date" value=""/><label>贴标送出日期</label>
-        <input type="radio" name="date" id="sample_send_date" value=""/><label>测试样寄出日</label>
-        <br/>
-        <hr/>
-        <input type="radio" name="date" id="sample_pass_date" value=""/><label>测试样通过日</label>
-        <input type="radio" name="date" id="product_send_date" value=""/><label>确认样寄交客户</label>
-        <input type="radio" name="date" id="product_sure_date" value=""/><label>生产确认样确认</label>
-        <br/>
-        <hr/>
-        <input type="radio" name="date" id="midterm_inspect" value=""/><label>期中验货日</label>
-        <input type="radio" name="date" id="ichiban_inspect" value=""/><label>我司验货日</label>
-        <input type="radio" name="date" id="customer_inspect" value=""/><label>客人验货日</label>
-        <br/>
-        <hr/>
-        <input type="radio" name="date" id="pl_come_date" value=""/><label>配料送交工厂</label>
-        <input type="radio" name="date" id="box_sure_date" value=""/><label>彩盒确认日期</label>
-        <input type="radio" name="date" id="box_send_date" value=""/><label>彩盒寄出日期</label>
-        <br/>
-        <hr/>
-        <input type="radio" name="date" id="shipping_data" value=""/><label>shipping资料</label>
-        <input type="radio" name="date" id="booking_so" value=""/><label>Booking S/O</label>
-        <input type="radio" name="date" id="customDate" value=""/><label>自定义日期</label>
-        <br/>
-        <hr/>
-    </div>
-    <button id="sub_select">确认选择</button>
-</div>
-
-<div id="order_case" style="text-align: -webkit-center;">
+    <div id="order_case" style="text-align: -webkit-center;">
     <table>
         <tr>
             <td>

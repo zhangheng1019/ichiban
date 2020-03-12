@@ -27,6 +27,7 @@ from xadmin.plugins import xversion
 xversion.register_models()
 
 from .test import *
+
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),  # 后台管理
